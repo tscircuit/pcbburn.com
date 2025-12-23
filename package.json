@@ -1,0 +1,46 @@
+{
+  "name": "pcbburn.com",
+  "version": "0.0.0",
+  "module": "index.ts",
+  "type": "module",
+  "scripts": {
+    "start": "cosmos",
+    "dev": "cosmos",
+    "build": "tsc -b && vite build",
+    "format": "biome format . --write",
+    "format:check": "biome format .",
+    "lint": "biome lint .",
+    "lint:fix": "biome lint . --write",
+    "typecheck": "tsc -b",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@tscircuit/plop": "^0.0.72",
+    "circuit-json-to-lbrn": "^0.0.24",
+    "circuit-to-svg": "^0.0.278",
+    "react": "^19.1.0",
+    "react-cosmos": "^7.1.0",
+    "react-dom": "^19.1.0"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^1.9.4",
+    "@types/bun": "latest",
+    "@types/react": "^19.0.8",
+    "@types/react-dom": "^19.0.8",
+    "@vitejs/plugin-react": "^5.1.1",
+    "autoprefixer": "^10.4.23",
+    "bun-match-svg": "^0.0.14",
+    "patch-package": "^8.0.1",
+    "postcss": "^8.5.6",
+    "react-cosmos-plugin-vite": "^7.1.0",
+    "tailwindcss": "^3.4.0",
+    "tscircuit": "^0.0.1020",
+    "typescript": "^5.0.0",
+    "vite": "^7.2.4",
+    "web-worker": "^1.3.0",
+    "winterspec": "^0.0.100"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  }
+}
