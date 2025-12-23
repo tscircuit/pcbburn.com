@@ -5,8 +5,9 @@
   "type": "module",
   "scripts": {
     "start": "cosmos",
-    "dev": "cosmos",
+    "dev": "vite",
     "build": "tsc -b && vite build",
+    "cosmos": "cosmos",
     "format": "biome format . --write",
     "format:check": "biome format .",
     "lint": "biome lint .",

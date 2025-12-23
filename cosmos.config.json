@@ -1,12 +1,4 @@
 {
-  "port": 5000,
-  "staticPath": "public",
-  "watchDirs": ["src"],
-  "hostname": null,
-  "https": false,
-  "proxy": {},
-  "publicUrl": "/",
-  "exportPath": "cosmos-export",
   "plugins": ["react-cosmos-plugin-vite"],
-  "globalImports": ["src/index.css"]
+  "globalImports": ["./src/index.css"]
 }
