@@ -3,70 +3,47 @@
 @tailwind utilities;
 
 :root {
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
-
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
-
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  /* Light mode theme for PCBBurn - clean professional interface */
+  --background: oklch(0.99 0.002 265);
+  --foreground: oklch(0.15 0.01 265);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.15 0.01 265);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.15 0.01 265);
+  --primary: oklch(0.55 0.18 250);
+  --primary-foreground: oklch(0.98 0.005 265);
+  --secondary: oklch(0.96 0.005 265);
+  --secondary-foreground: oklch(0.15 0.01 265);
+  --muted: oklch(0.96 0.005 265);
+  --muted-foreground: oklch(0.45 0.01 265);
+  --accent: oklch(0.5 0.2 180);
+  --accent-foreground: oklch(0.98 0.005 265);
+  --destructive: oklch(0.55 0.25 25);
+  --destructive-foreground: oklch(0.98 0.005 265);
+  --border: oklch(0.88 0.008 265);
+  --input: oklch(0.92 0.005 265);
+  --ring: oklch(0.55 0.18 250);
+  --chart-1: oklch(0.55 0.18 250);
+  --chart-2: oklch(0.5 0.2 180);
+  --chart-3: oklch(0.58 0.18 140);
+  --chart-4: oklch(0.6 0.16 85);
+  --chart-5: oklch(0.56 0.19 305);
+  --radius: 0.5rem;
+  --sidebar: oklch(0.98 0.003 265);
+  --sidebar-foreground: oklch(0.2 0.01 265);
+  --sidebar-primary: oklch(0.55 0.18 250);
+  --sidebar-primary-foreground: oklch(0.98 0.005 265);
+  --sidebar-accent: oklch(0.96 0.005 265);
+  --sidebar-accent-foreground: oklch(0.15 0.01 265);
+  --sidebar-border: oklch(0.88 0.008 265);
+  --sidebar-ring: oklch(0.55 0.18 250);
 }
 
-a {
-  font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
-}
-a:hover {
-  color: #535bf2;
-}
-
-body {
-  margin: 0;
-  display: flex;
-  place-items: center;
-  min-width: 320px;
-  min-height: 100vh;
-}
-
-h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
-}
-
-button {
-  border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
-  font-family: inherit;
-  background-color: #1a1a1a;
-  cursor: pointer;
-  transition: border-color 0.25s;
-}
-button:hover {
-  border-color: #646cff;
-}
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
-}
-
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
+@layer base {
+  * {
+    @apply border-border;
   }
-  a:hover {
-    color: #747bff;
-  }
-  button {
-    background-color: #f9f9f9;
+  body {
+    @apply bg-background text-foreground;
   }
 }

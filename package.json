@@ -19,6 +19,7 @@
     "@tscircuit/plop": "^0.0.72",
     "circuit-json-to-lbrn": "^0.0.24",
     "circuit-to-svg": "^0.0.278",
+    "lucide-react": "^0.562.0",
     "react": "^19.1.0",
     "react-cosmos": "^7.1.0",
     "react-dom": "^19.1.0"
