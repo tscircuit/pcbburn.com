@@ -1,7 +1,7 @@
 import React from "react"
 
 type ButtonVariant = "default" | "ghost" | "outline"
-type ButtonSize = "sm" | "lg" | "default"
+type ButtonSize = "sm" | "lg" | "default" | "icon"
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: ButtonVariant
@@ -35,6 +35,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       sm: "h-9 px-3",
       lg: "h-11 px-8",
       default: "h-10 py-2 px-4",
+      icon: "h-10 w-10",
     }
 
     const classes = `${baseClasses} ${variantClasses[variant]} ${sizeClasses[size]} ${className}`

@@ -17,12 +17,15 @@
   },
   "dependencies": {
     "@tscircuit/plop": "^0.0.72",
-    "circuit-json-to-lbrn": "^0.0.24",
-    "circuit-to-svg": "^0.0.278",
+    "circuit-json": "^0.0.342",
+    "circuit-json-to-lbrn": "^0.0.25",
+    "circuit-to-svg": "^0.0.301",
+    "lbrnts": "^0.0.9",
     "lucide-react": "^0.562.0",
     "react": "^19.1.0",
     "react-cosmos": "^7.1.0",
-    "react-dom": "^19.1.0"
+    "react-dom": "^19.1.0",
+    "react-router-dom": "^6.28.0"
   },
   "devDependencies": {
     "@biomejs/biome": "^1.9.4",

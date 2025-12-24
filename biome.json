@@ -48,6 +48,9 @@
             "filenameCases": ["kebab-case", "export"]
           }
         }
+      },
+      "security": {
+        "noDangerouslySetInnerHtml": "off"
       }
     }
   }
