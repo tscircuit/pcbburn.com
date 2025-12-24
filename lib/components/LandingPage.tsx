@@ -21,7 +21,7 @@ export default function LandingPage() {
               to="https://tscircuit.com"
               className="text-sm text-muted-foreground hover:text-foreground transition-colors"
             >
-              Tscircuit
+              tscircuit
             </Link>
             <Link
               to="/features"
@@ -35,11 +35,15 @@ export default function LandingPage() {
             >
               Documentation
             </Link>
+            <Link
+              to="https://github.com/tscircuit/pcbburn.com"
+              target="_blank"
+              className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+            >
+              Github
+            </Link>
           </nav>
           <div className="flex items-center gap-3">
-            <Button variant="ghost" size="sm" asChild>
-              <Link to="/login">Sign In</Link>
-            </Button>
             <Button
               className="transition-all hover:opacity-80"
               size="sm"
