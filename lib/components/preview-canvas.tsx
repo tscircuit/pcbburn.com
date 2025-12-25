@@ -17,13 +17,15 @@ import { convertCircuitJsonToLbrn } from "circuit-json-to-lbrn"
 import { convertCircuitJsonToPcbSvg } from "circuit-to-svg"
 import { generateLightBurnSvg } from "lbrnts"
 import { useState, useEffect, useRef } from "react"
+import { identity, compose, scale, translate } from "transformation-matrix"
+import type { Matrix } from "transformation-matrix"
 export function PreviewCanvas() {
   const { circuitData, lbrnOptions } = useWorkspace()
   const [svgToPreview, setSvgToPreview] = useState<"lbrn" | "pcb">("lbrn")
   const [lbrnSvg, setLbrnSvg] = useState<string>("")
   const [pcbSvg, setPcbSvg] = useState<string>("")
   const [isGenerating, setIsGenerating] = useState(false)
-  const [zoom, setZoom] = useState(1)
+  const [transformMatrix, setTransformMatrix] = useState<Matrix>(identity())
 
   // Generate SVGs when circuit data or options change
   useEffect(() => {
@@ -60,19 +62,15 @@ export function PreviewCanvas() {
 
     generateSvgs()
   }, [circuitData, lbrnOptions])
-  const [panX, setPanX] = useState(0)
-  const [panY, setPanY] = useState(0)
   const [isDragging, setIsDragging] = useState(false)
   const [dragStart, setDragStart] = useState({ x: 0, y: 0 })
   const containerRef = useRef<HTMLDivElement>(null)
 
-  const handleZoomIn = () => setZoom((z) => z * 1.2)
-  const handleZoomOut = () => setZoom((z) => Math.max(0.1, z / 1.2))
-  const handleFitToScreen = () => {
-    setZoom(1)
-    setPanX(0)
-    setPanY(0)
-  }
+  const handleZoomIn = () =>
+    setTransformMatrix(compose(transformMatrix, scale(1.2, 1.2)))
+  const handleZoomOut = () =>
+    setTransformMatrix(compose(transformMatrix, scale(1 / 1.2, 1 / 1.2)))
+  const handleFitToScreen = () => setTransformMatrix(identity())
   const handleRotate = () => {
     // TODO: implement rotation if needed
   }
@@ -82,13 +80,15 @@ export function PreviewCanvas() {
 
   const handleMouseDown = (e: React.MouseEvent) => {
     setIsDragging(true)
-    setDragStart({ x: e.clientX - panX, y: e.clientY - panY })
+    setDragStart({ x: e.clientX, y: e.clientY })
   }
 
   const handleMouseMove = (e: React.MouseEvent) => {
     if (isDragging) {
-      setPanX(e.clientX - dragStart.x)
-      setPanY(e.clientY - dragStart.y)
+      const deltaX = (e.clientX - dragStart.x) / transformMatrix.a
+      const deltaY = (e.clientY - dragStart.y) / transformMatrix.a
+      setTransformMatrix(compose(transformMatrix, translate(deltaX, deltaY)))
+      setDragStart({ x: e.clientX, y: e.clientY })
     }
   }
 
@@ -99,7 +99,7 @@ export function PreviewCanvas() {
   const handleWheel = (e: React.WheelEvent) => {
     e.preventDefault()
     const delta = e.deltaY > 0 ? 0.9 : 1.1
-    setZoom((z) => Math.max(0.1, z * delta))
+    setTransformMatrix(compose(transformMatrix, scale(delta, delta)))
   }
   return (
     <div className="h-full flex flex-col bg-muted/20">
@@ -113,7 +113,7 @@ export function PreviewCanvas() {
           className="gap-1.5 bg-primary/10 text-primary border-primary/30"
         >
           <ZoomIn className="size-3" />
-          {Math.round(zoom * 100)}%
+          {Math.round(transformMatrix.a * 100)}%
         </Badge>
         <Separator orientation="vertical" className="h-6" />
         <div className="flex items-center gap-1">
@@ -189,7 +189,7 @@ export function PreviewCanvas() {
       <div className="flex-1 overflow-hidden relative">
         <Card
           ref={containerRef}
-          className="w-full h-full bg-white border-0 shadow-none relative overflow-hidden cursor-grab active:cursor-grabbing"
+          className={`w-full h-full ${svgToPreview === "pcb" ? "bg-black" : "bg-white"} border-0 shadow-none relative overflow-hidden `}
           onMouseDown={handleMouseDown}
           onMouseMove={handleMouseMove}
           onMouseUp={handleMouseUp}
@@ -197,22 +197,23 @@ export function PreviewCanvas() {
           onWheel={handleWheel}
         >
           {/* Grid Background */}
-          <div
-            className="absolute inset-0 opacity-[0.15]"
-            style={{
-              backgroundImage: `
-               linear-gradient(to right, oklch(0.75 0.01 250) 1px, transparent 1px),
-               linear-gradient(to bottom, oklch(0.75 0.01 250) 1px, transparent 1px)
-             `,
-              backgroundSize: "20px 20px",
-            }}
-          />
+          {svgToPreview === "lbrn" && (
+            <div
+              className="absolute inset-0 opacity-[0.15]"
+              style={{
+                backgroundImage: `
+                 linear-gradient(to right, oklch(0.75 0.01 250) 1px, transparent 1px),
+                 linear-gradient(to bottom, oklch(0.75 0.01 250) 1px, transparent 1px)
+                `,
+                backgroundSize: "20px 20px",
+              }}
+            />
+          )}
           {/* PCB Preview Content */}
           <div className="absolute inset-0 flex items-center justify-center">
             <div
-              className="origin-center"
               style={{
-                transform: `translate(${panX}px, ${panY}px) scale(${zoom})`,
+                transform: `matrix(${transformMatrix.a}, ${transformMatrix.b}, ${transformMatrix.c}, ${transformMatrix.d}, ${transformMatrix.e}, ${transformMatrix.f})`,
               }}
             >
               {isGenerating ? (
