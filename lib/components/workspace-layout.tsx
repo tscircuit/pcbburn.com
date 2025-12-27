@@ -25,7 +25,7 @@ export function WorkspaceContent({
   sidebarOpen,
   setSidebarOpen,
 }: { sidebarOpen: boolean; setSidebarOpen: (open: boolean) => void }) {
-  const { circuitData } = useWorkspace()
+  const { circuitJson } = useWorkspace()
 
   return (
     <div className="h-screen flex flex-col bg-background">
@@ -56,7 +56,7 @@ export function WorkspaceContent({
       {/* Main Content Area */}
       <div className="flex-1 flex overflow-hidden">
         {/* Left Settings Panel - Only show when circuit is loaded */}
-        {circuitData && (
+        {circuitJson && (
           <aside
             className={`${
               sidebarOpen ? "translate-x-0" : "-translate-x-full"
@@ -68,7 +68,7 @@ export function WorkspaceContent({
 
         {/* Canvas Preview Area */}
         <main className="flex-1 overflow-hidden">
-          {circuitData ? <PreviewCanvas /> : <BlankWorkspace />}
+          {circuitJson ? <PreviewCanvas /> : <BlankWorkspace />}
         </main>
       </div>
     </div>

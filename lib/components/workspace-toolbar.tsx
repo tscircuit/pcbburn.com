@@ -3,12 +3,12 @@ import { Download } from "lucide-react"
 import { useWorkspace } from "./workspace-context"
 
 export function WorkspaceToolbar() {
-  const { lbrnData } = useWorkspace()
+  const { lbrnFileContent } = useWorkspace()
 
   const handleExport = () => {
-    if (!lbrnData) return
+    if (!lbrnFileContent) return
 
-    const blob = new Blob([lbrnData.xml], { type: "application/xml" })
+    const blob = new Blob([lbrnFileContent.xml], { type: "application/xml" })
     const url = URL.createObjectURL(blob)
     const a = document.createElement("a")
     a.href = url
@@ -26,7 +26,7 @@ export function WorkspaceToolbar() {
         size="sm"
         className="gap-2 bg-transparent"
         onClick={handleExport}
-        disabled={!lbrnData}
+        disabled={!lbrnFileContent}
       >
         <Download className="size-4" />
         <span className="hidden sm:inline">Export LBRN</span>

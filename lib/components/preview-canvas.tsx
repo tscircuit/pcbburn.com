@@ -6,10 +6,9 @@ import {
   Layers,
   Move,
   ZoomIn,
-  ZoomOut,
-  Maximize2,
-  Grid3x3,
-  RotateCw,
+  Columns2,
+  RotateCcwSquare,
+  RotateCwSquare,
 } from "lucide-react"
 import { useWorkspace } from "./workspace-context"
 import type { CircuitJson } from "circuit-json"
@@ -17,19 +16,18 @@ import { convertCircuitJsonToLbrn } from "circuit-json-to-lbrn"
 import { convertCircuitJsonToPcbSvg } from "circuit-to-svg"
 import { generateLightBurnSvg } from "lbrnts"
 import { useState, useEffect, useRef } from "react"
-import { identity, compose, scale, translate } from "transformation-matrix"
-import type { Matrix } from "transformation-matrix"
+import { toString as transformToString } from "transformation-matrix"
+import { useMouseMatrixTransform } from "use-mouse-matrix-transform"
 export function PreviewCanvas() {
-  const { circuitData, lbrnOptions } = useWorkspace()
+  const { circuitJson, lbrnOptions } = useWorkspace()
   const [svgToPreview, setSvgToPreview] = useState<"lbrn" | "pcb">("lbrn")
   const [lbrnSvg, setLbrnSvg] = useState<string>("")
   const [pcbSvg, setPcbSvg] = useState<string>("")
   const [isGenerating, setIsGenerating] = useState(false)
-  const [transformMatrix, setTransformMatrix] = useState<Matrix>(identity())
 
-  // Generate SVGs when circuit data or options change
+  // Generate SVGs when circuitJson or options change
   useEffect(() => {
-    if (!circuitData) {
+    if (!circuitJson) {
       setLbrnSvg("")
       setPcbSvg("")
       return
@@ -40,7 +38,7 @@ export function PreviewCanvas() {
       try {
         // Generate LBRN SVG
         const lbrnProject = convertCircuitJsonToLbrn(
-          circuitData.json as CircuitJson,
+          circuitJson.json as CircuitJson,
           lbrnOptions,
         )
         const lbrnSvgResult = generateLightBurnSvg(lbrnProject)
@@ -48,7 +46,7 @@ export function PreviewCanvas() {
 
         // Generate PCB SVG
         const pcbSvgResult = convertCircuitJsonToPcbSvg(
-          circuitData.json as CircuitJson,
+          circuitJson.json as CircuitJson,
         )
         setPcbSvg(String(pcbSvgResult))
       } catch (err) {
@@ -61,45 +59,47 @@ export function PreviewCanvas() {
     }
 
     generateSvgs()
-  }, [circuitData, lbrnOptions])
-  const [isDragging, setIsDragging] = useState(false)
-  const [dragStart, setDragStart] = useState({ x: 0, y: 0 })
-  const containerRef = useRef<HTMLDivElement>(null)
+  }, [circuitJson, lbrnOptions])
+  const lbrnSvgDivRef = useRef<HTMLDivElement>(null)
+  const pcbSvgDivRef = useRef<HTMLDivElement>(null)
 
-  const handleZoomIn = () =>
-    setTransformMatrix(compose(transformMatrix, scale(1.2, 1.2)))
-  const handleZoomOut = () =>
-    setTransformMatrix(compose(transformMatrix, scale(1 / 1.2, 1 / 1.2)))
-  const handleFitToScreen = () => setTransformMatrix(identity())
+  const lbrnHook = useMouseMatrixTransform({
+    onSetTransform(transform) {
+      if (lbrnSvgDivRef.current) {
+        lbrnSvgDivRef.current.style.transform = transformToString(transform)
+      }
+    },
+    enabled: true,
+  })
+
+  const pcbHook = useMouseMatrixTransform({
+    onSetTransform(transform) {
+      if (pcbSvgDivRef.current) {
+        pcbSvgDivRef.current.style.transform = transformToString(transform)
+      }
+    },
+    enabled: true,
+  })
+
+  const currentMatrix =
+    svgToPreview === "lbrn" ? lbrnHook.transform : pcbHook.transform
+
+  // Sync transform to active SVG div on view switch or transform change
+  useEffect(() => {
+    const activeRef = svgToPreview === "lbrn" ? lbrnSvgDivRef : pcbSvgDivRef
+    const activeTransform =
+      svgToPreview === "lbrn" ? lbrnHook.transform : pcbHook.transform
+
+    if (activeRef.current) {
+      activeRef.current.style.transform = transformToString(activeTransform)
+    }
+  }, [svgToPreview, lbrnHook.transform, pcbHook.transform])
+
   const handleRotate = () => {
     // TODO: implement rotation if needed
   }
   const handleSideBySide = () => {
     // TODO: implement side by side view
-  }
-
-  const handleMouseDown = (e: React.MouseEvent) => {
-    setIsDragging(true)
-    setDragStart({ x: e.clientX, y: e.clientY })
-  }
-
-  const handleMouseMove = (e: React.MouseEvent) => {
-    if (isDragging) {
-      const deltaX = (e.clientX - dragStart.x) / transformMatrix.a
-      const deltaY = (e.clientY - dragStart.y) / transformMatrix.a
-      setTransformMatrix(compose(transformMatrix, translate(deltaX, deltaY)))
-      setDragStart({ x: e.clientX, y: e.clientY })
-    }
-  }
-
-  const handleMouseUp = () => {
-    setIsDragging(false)
-  }
-
-  const handleWheel = (e: React.WheelEvent) => {
-    e.preventDefault()
-    const delta = e.deltaY > 0 ? 0.9 : 1.1
-    setTransformMatrix(compose(transformMatrix, scale(delta, delta)))
   }
   return (
     <div className="h-full flex flex-col bg-muted/20">
@@ -113,7 +113,7 @@ export function PreviewCanvas() {
           className="gap-1.5 bg-primary/10 text-primary border-primary/30"
         >
           <ZoomIn className="size-3" />
-          {Math.round(transformMatrix.a * 100)}%
+          {Math.round(currentMatrix.a * 100)}%
         </Badge>
         <Separator orientation="vertical" className="h-6" />
         <div className="flex items-center gap-1">
@@ -121,37 +121,19 @@ export function PreviewCanvas() {
             variant="ghost"
             size="icon"
             className="size-7"
-            aria-label="Zoom In"
-            onClick={handleZoomIn}
-          >
-            <ZoomIn className="size-3.5" />
-          </Button>
-          <Button
-            variant="ghost"
-            size="icon"
-            className="size-7"
-            aria-label="Zoom Out"
-            onClick={handleZoomOut}
-          >
-            <ZoomOut className="size-3.5" />
-          </Button>
-          <Button
-            variant="ghost"
-            size="icon"
-            className="size-7"
-            aria-label="Fit to Screen"
-            onClick={handleFitToScreen}
-          >
-            <Maximize2 className="size-3.5" />
-          </Button>
-          <Button
-            variant="ghost"
-            size="icon"
-            className="size-7"
-            aria-label="Rotate"
+            aria-label="Rotate Left"
             onClick={handleRotate}
           >
-            <RotateCw className="size-3.5" />
+            <RotateCcwSquare className="size-3.5" />
+          </Button>
+          <Button
+            variant="ghost"
+            size="icon"
+            className="size-7"
+            aria-label="Rotate Right"
+            onClick={handleRotate}
+          >
+            <RotateCwSquare className="size-3.5" />
           </Button>
           <Button
             variant="ghost"
@@ -160,7 +142,7 @@ export function PreviewCanvas() {
             aria-label="Side by Side"
             onClick={handleSideBySide}
           >
-            <Grid3x3 className="size-3.5" />
+            <Columns2 className="size-3.5" />
           </Button>
         </div>
         <div className="flex items-center gap-2">
@@ -188,53 +170,38 @@ export function PreviewCanvas() {
       {/* Canvas Area */}
       <div className="flex-1 overflow-hidden relative">
         <Card
-          ref={containerRef}
-          className={`w-full h-full ${svgToPreview === "pcb" ? "bg-black" : "bg-white"} border-0 shadow-none relative overflow-hidden `}
-          onMouseDown={handleMouseDown}
-          onMouseMove={handleMouseMove}
-          onMouseUp={handleMouseUp}
-          onMouseLeave={handleMouseUp}
-          onWheel={handleWheel}
+          ref={svgToPreview === "lbrn" ? lbrnHook.ref : pcbHook.ref}
+          className="w-full h-full border-0 shadow-none relative overflow-hidden"
+          style={{
+            backgroundColor: svgToPreview === "pcb" ? "black" : "white",
+          }}
         >
-          {/* Grid Background */}
-          {svgToPreview === "lbrn" && (
-            <div
-              className="absolute inset-0 opacity-[0.15]"
-              style={{
-                backgroundImage: `
-                 linear-gradient(to right, oklch(0.75 0.01 250) 1px, transparent 1px),
-                 linear-gradient(to bottom, oklch(0.75 0.01 250) 1px, transparent 1px)
-                `,
-                backgroundSize: "20px 20px",
-              }}
-            />
-          )}
           {/* PCB Preview Content */}
-          <div className="absolute inset-0 flex items-center justify-center">
-            <div
-              style={{
-                transform: `matrix(${transformMatrix.a}, ${transformMatrix.b}, ${transformMatrix.c}, ${transformMatrix.d}, ${transformMatrix.e}, ${transformMatrix.f})`,
-              }}
-            >
-              {isGenerating ? (
-                <div className="text-center text-muted-foreground">
-                  <div className="size-12 rounded-full border-2 border-primary/20 border-t-primary animate-spin mx-auto mb-4" />
-                  <p>Generating {svgToPreview.toUpperCase()} preview...</p>
-                </div>
-              ) : (
-                <div
-                  dangerouslySetInnerHTML={{
-                    __html: svgToPreview === "lbrn" ? lbrnSvg : pcbSvg,
-                  }}
-                />
-              )}
-            </div>
+          <div
+            ref={svgToPreview === "lbrn" ? lbrnSvgDivRef : pcbSvgDivRef}
+            style={{
+              transformOrigin: "0 0",
+            }}
+            className="absolute inset-0"
+          >
+            {isGenerating ? (
+              <div className="text-center text-muted-foreground">
+                <div className="size-12 rounded-full border-2 border-primary/20 border-t-primary animate-spin mx-auto mb-4" />
+                <p>Generating {svgToPreview.toUpperCase()} preview...</p>
+              </div>
+            ) : (
+              <div
+                dangerouslySetInnerHTML={{
+                  __html: svgToPreview === "lbrn" ? lbrnSvg : pcbSvg,
+                }}
+              />
+            )}
           </div>
 
           {/* Overlay Info */}
           <div className="absolute bottom-4 left-4 right-4 flex items-center justify-between">
             <Badge className="bg-background/90 backdrop-blur-sm border-border">
-              {circuitData ? circuitData.fileName : "circuit-board-v2.json"}
+              {circuitJson ? circuitJson.fileName : "circuit-board-v2.json"}
             </Badge>
             <Badge
               variant="outline"

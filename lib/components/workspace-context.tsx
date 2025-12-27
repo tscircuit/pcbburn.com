@@ -1,11 +1,11 @@
 import { createContext, useContext, useState, type ReactNode } from "react"
 
-interface CircuitData {
+interface CircuitJson {
   json: any
   fileName: string
 }
 
-interface LbrnData {
+interface LbrnFileContent {
   xml: string | any
   options: any
 }
@@ -21,16 +21,16 @@ interface LbrnOptions {
 }
 
 interface WorkspaceState {
-  circuitData: CircuitData | null
-  lbrnData: LbrnData | null
+  circuitJson: CircuitJson | null
+  lbrnFileContent: LbrnFileContent | null
   lbrnOptions: LbrnOptions
   isConverting: boolean
   error: string | null
 }
 
 interface WorkspaceContextType extends WorkspaceState {
-  setCircuitData: (data: CircuitData | null) => void
-  setLbrnData: (data: LbrnData | null) => void
+  setCircuitJson: (data: CircuitJson | null) => void
+  setLbrnFileContent: (data: LbrnFileContent | null) => void
   setLbrnOptions: (options: Partial<LbrnOptions>) => void
   setIsConverting: (converting: boolean) => void
   setError: (error: string | null) => void
@@ -42,8 +42,9 @@ const WorkspaceContext = createContext<WorkspaceContextType | undefined>(
 )
 
 export function WorkspaceProvider({ children }: { children: ReactNode }) {
-  const [circuitData, setCircuitData] = useState<CircuitData | null>(null)
-  const [lbrnData, setLbrnData] = useState<LbrnData | null>(null)
+  const [circuitJson, setCircuitJson] = useState<CircuitJson | null>(null)
+  const [lbrnFileContent, setLbrnFileContent] =
+    useState<LbrnFileContent | null>(null)
   const [lbrnOptions, setLbrnOptionsState] = useState<LbrnOptions>({
     includeCopper: true,
     includeSoldermask: false,
@@ -61,7 +62,7 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
   }
 
   const convertToLbrn = async (options?: Partial<LbrnOptions>) => {
-    if (!circuitData) return
+    if (!circuitJson) return
 
     setIsConverting(true)
     setError(null)
@@ -71,9 +72,9 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
 
       const finalOptions = { ...lbrnOptions, ...options }
 
-      const xml = convertCircuitJsonToLbrn(circuitData.json, finalOptions)
+      const xml = convertCircuitJsonToLbrn(circuitJson.json, finalOptions)
 
-      setLbrnData({
+      setLbrnFileContent({
         xml,
         options: finalOptions,
       })
@@ -86,13 +87,13 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
   }
 
   const value: WorkspaceContextType = {
-    circuitData,
-    lbrnData,
+    circuitJson,
+    lbrnFileContent,
     lbrnOptions,
     isConverting,
     error,
-    setCircuitData,
-    setLbrnData,
+    setCircuitJson,
+    setLbrnFileContent,
     setLbrnOptions,
     setIsConverting,
     setError,

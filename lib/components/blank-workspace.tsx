@@ -6,7 +6,7 @@ import { Upload, FileUp, Zap, ArrowRight, CircuitBoard } from "lucide-react"
 import { useWorkspace } from "./workspace-context"
 
 export function BlankWorkspace() {
-  const { setCircuitData } = useWorkspace()
+  const { setCircuitJson } = useWorkspace()
   const [isDragOver, setIsDragOver] = useState(false)
 
   const handleFileUpload = async (
@@ -27,7 +27,7 @@ export function BlankWorkspace() {
     try {
       const text = await file.text()
       const json = JSON.parse(text)
-      setCircuitData({
+      setCircuitJson({
         json,
         fileName: file.name,
       })

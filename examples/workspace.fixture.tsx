@@ -11,14 +11,14 @@ import lgaInterconnectCircuitJson from "./assets/lga-interconnect.circuit.json"
 
 // Component that initializes with sample circuit data
 const WorkspaceWithSampleCircuit = () => {
-  const { setCircuitData, circuitData } = useWorkspace()
+  const { setCircuitJson, circuitJson } = useWorkspace()
 
   React.useEffect(() => {
-    setCircuitData({
+    setCircuitJson({
       json: lgaInterconnectCircuitJson,
       fileName: "lga-interconnect.circuit.json",
     })
-  }, [setCircuitData])
+  }, [setCircuitJson])
 
   return <WorkspaceContent sidebarOpen={true} setSidebarOpen={() => {}} />
 }

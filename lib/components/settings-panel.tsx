@@ -17,9 +17,9 @@ type LbrnOptions = {
 
 export function SettingsPanel() {
   const {
-    circuitData,
-    setCircuitData,
-    lbrnData,
+    circuitJson,
+    setCircuitJson,
+    lbrnFileContent,
     lbrnOptions,
     setLbrnOptions,
     convertToLbrn,
@@ -52,7 +52,7 @@ export function SettingsPanel() {
     try {
       const text = await file.text()
       const json = JSON.parse(text)
-      setCircuitData({
+      setCircuitJson({
         json,
         fileName: file.name,
       })
@@ -115,7 +115,7 @@ export function SettingsPanel() {
                   <Upload className="size-8 text-muted-foreground" />
                   <div>
                     <p className="text-sm font-medium">
-                      {circuitData
+                      {circuitJson
                         ? "Change Circuit JSON"
                         : "Upload Circuit JSON"}
                     </p>
@@ -126,22 +126,22 @@ export function SettingsPanel() {
                 </div>
               </label>
             </div>
-            {circuitData && (
+            {circuitJson && (
               <Badge variant="outline" className="gap-1.5">
                 <FileUp className="size-3" />
-                {circuitData.fileName}
+                {circuitJson.fileName}
               </Badge>
             )}
             <Button
               onClick={() => convertToLbrn()}
-              disabled={!circuitData || isConverting || !!lbrnData}
+              disabled={!circuitJson || isConverting || !!lbrnFileContent}
               size="sm"
               className="w-full gap-2"
             >
               <Zap className="size-4" />
               {isConverting
                 ? "Converting..."
-                : lbrnData
+                : lbrnFileContent
                   ? "File Previewed"
                   : "Preview File"}
             </Button>
