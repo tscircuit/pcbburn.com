@@ -38,7 +38,6 @@ export function useSvgGeneration({
           circuitJson as CircuitJson,
           lbrnOptions,
         )
-        console.log(lbrnProject)
         const lbrnSvgResult = generateLightBurnSvg(lbrnProject, {
           width: 800,
           height: 600,
