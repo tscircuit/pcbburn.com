@@ -1,9 +1,5 @@
 import { createContext, useContext, useState, type ReactNode } from "react"
-
-interface CircuitJson {
-  json: any
-  fileName: string
-}
+import type { CircuitJson } from "circuit-json"
 
 interface LbrnFileContent {
   xml: string | any
@@ -72,7 +68,7 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
 
       const finalOptions = { ...lbrnOptions, ...options }
 
-      const xml = convertCircuitJsonToLbrn(circuitJson.json, finalOptions)
+      const xml = convertCircuitJsonToLbrn(circuitJson, finalOptions)
 
       setLbrnFileContent({
         xml,

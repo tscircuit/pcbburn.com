@@ -11,89 +11,26 @@ import {
   RotateCwSquare,
 } from "lucide-react"
 import { useWorkspace } from "./workspace-context"
-import type { CircuitJson } from "circuit-json"
-import { convertCircuitJsonToLbrn } from "circuit-json-to-lbrn"
-import { convertCircuitJsonToPcbSvg } from "circuit-to-svg"
-import { generateLightBurnSvg } from "lbrnts"
-import { useState, useEffect, useRef } from "react"
-import { toString as transformToString } from "transformation-matrix"
-import { useMouseMatrixTransform } from "use-mouse-matrix-transform"
+import { useState, useRef } from "react"
+import { useSvgGeneration, useSvgTransform } from "../hooks/preview-hooks"
 export function PreviewCanvas() {
   const { circuitJson, lbrnOptions } = useWorkspace()
   const [svgToPreview, setSvgToPreview] = useState<"lbrn" | "pcb">("lbrn")
-  const [lbrnSvg, setLbrnSvg] = useState<string>("")
-  const [pcbSvg, setPcbSvg] = useState<string>("")
-  const [isGenerating, setIsGenerating] = useState(false)
+  const { lbrnSvg, pcbSvg, isGenerating } = useSvgGeneration({
+    circuitJson,
+    lbrnOptions,
+  })
 
-  // Generate SVGs when circuitJson or options change
-  useEffect(() => {
-    if (!circuitJson) {
-      setLbrnSvg("")
-      setPcbSvg("")
-      return
-    }
-
-    const generateSvgs = async () => {
-      setIsGenerating(true)
-      try {
-        // Generate LBRN SVG
-        const lbrnProject = convertCircuitJsonToLbrn(
-          circuitJson.json as CircuitJson,
-          lbrnOptions,
-        )
-        const lbrnSvgResult = generateLightBurnSvg(lbrnProject)
-        setLbrnSvg(String(lbrnSvgResult))
-
-        // Generate PCB SVG
-        const pcbSvgResult = convertCircuitJsonToPcbSvg(
-          circuitJson.json as CircuitJson,
-        )
-        setPcbSvg(String(pcbSvgResult))
-      } catch (err) {
-        console.error("Failed to generate SVGs:", err)
-        setLbrnSvg("")
-        setPcbSvg("")
-      } finally {
-        setIsGenerating(false)
-      }
-    }
-
-    generateSvgs()
-  }, [circuitJson, lbrnOptions])
   const lbrnSvgDivRef = useRef<HTMLDivElement>(null)
   const pcbSvgDivRef = useRef<HTMLDivElement>(null)
 
-  const lbrnHook = useMouseMatrixTransform({
-    onSetTransform(transform) {
-      if (lbrnSvgDivRef.current) {
-        lbrnSvgDivRef.current.style.transform = transformToString(transform)
-      }
-    },
-    enabled: true,
+  const { transform, ref } = useSvgTransform({
+    svgToPreview,
+    lbrnSvgDivRef,
+    pcbSvgDivRef,
   })
 
-  const pcbHook = useMouseMatrixTransform({
-    onSetTransform(transform) {
-      if (pcbSvgDivRef.current) {
-        pcbSvgDivRef.current.style.transform = transformToString(transform)
-      }
-    },
-    enabled: true,
-  })
-
-  const currentMatrix =
-    svgToPreview === "lbrn" ? lbrnHook.transform : pcbHook.transform
-
-  // Sync transform to active SVG div on view switch or transform change
-  useEffect(() => {
-    const activeRef = svgToPreview === "lbrn" ? lbrnSvgDivRef : pcbSvgDivRef
-    const activeTransform =
-      svgToPreview === "lbrn" ? lbrnHook.transform : pcbHook.transform
-
-    if (activeRef.current) {
-      activeRef.current.style.transform = transformToString(activeTransform)
-    }
-  }, [svgToPreview, lbrnHook.transform, pcbHook.transform])
+  const currentMatrix = transform
 
   const handleRotate = () => {
     // TODO: implement rotation if needed
@@ -170,7 +107,7 @@ export function PreviewCanvas() {
       {/* Canvas Area */}
       <div className="flex-1 overflow-hidden relative">
         <Card
-          ref={svgToPreview === "lbrn" ? lbrnHook.ref : pcbHook.ref}
+          ref={ref}
           className="w-full h-full border-0 shadow-none relative overflow-hidden"
           style={{
             backgroundColor: svgToPreview === "pcb" ? "black" : "white",
@@ -199,10 +136,7 @@ export function PreviewCanvas() {
           </div>
 
           {/* Overlay Info */}
-          <div className="absolute bottom-4 left-4 right-4 flex items-center justify-between">
-            <Badge className="bg-background/90 backdrop-blur-sm border-border">
-              {circuitJson ? circuitJson.fileName : "circuit-board-v2.json"}
-            </Badge>
+          <div className="absolute bottom-4 right-4 flex items-center">
             <Badge
               variant="outline"
               className="bg-background/90 backdrop-blur-sm gap-1.5"

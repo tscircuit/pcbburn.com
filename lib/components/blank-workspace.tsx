@@ -26,11 +26,8 @@ export function BlankWorkspace() {
 
     try {
       const text = await file.text()
-      const json = JSON.parse(text)
-      setCircuitJson({
-        json,
-        fileName: file.name,
-      })
+      const CircuitJson = JSON.parse(text)
+      setCircuitJson(CircuitJson)
     } catch (err) {
       alert("Invalid JSON file")
     }
@@ -70,9 +67,9 @@ export function BlankWorkspace() {
             <span className="block text-primary">to Laser-Ready Files</span>
           </h1>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            Upload your Circuit JSON file to start converting it into LBRN
-            format for precise PCB laser cutting. Supports tscircuit and KiCad
-            Circuit JSON formats.
+            Upload your Circuit JSON or KiCad file to start converting it into
+            LBRN format for precise PCB laser cutting. Supports Circuit JSON
+            from tscircuit and KiCad files.
           </p>
         </div>
 
@@ -158,8 +155,7 @@ export function BlankWorkspace() {
             </div>
             <h3 className="font-semibold">Laser Cut</h3>
             <p className="text-sm text-muted-foreground">
-              Export optimized LBRN files for precise PCB fabrication with laser
-              ablation.
+              Export LBRN files for laser PCB fabrication ablation.
             </p>
           </Card>
         </div>

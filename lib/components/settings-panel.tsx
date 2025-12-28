@@ -1,8 +1,8 @@
 import React, { useState } from "react"
-import { Badge } from "@/components/ui/badge"
+
 import { Button } from "@/components/ui/button"
 import { Separator } from "@/components/ui/separator"
-import { Settings, Zap, Upload, FileUp, Check } from "lucide-react"
+import { Settings, Zap, Upload, Check } from "lucide-react"
 import { useWorkspace } from "./workspace-context"
 
 type LbrnOptions = {
@@ -51,11 +51,8 @@ export function SettingsPanel() {
 
     try {
       const text = await file.text()
-      const json = JSON.parse(text)
-      setCircuitJson({
-        json,
-        fileName: file.name,
-      })
+      const CircuitJson = JSON.parse(text)
+      setCircuitJson(CircuitJson)
     } catch (err) {
       alert("Invalid JSON file")
     }
@@ -126,12 +123,6 @@ export function SettingsPanel() {
                 </div>
               </label>
             </div>
-            {circuitJson && (
-              <Badge variant="outline" className="gap-1.5">
-                <FileUp className="size-3" />
-                {circuitJson.fileName}
-              </Badge>
-            )}
             <Button
               onClick={() => convertToLbrn()}
               disabled={!circuitJson || isConverting || !!lbrnFileContent}
