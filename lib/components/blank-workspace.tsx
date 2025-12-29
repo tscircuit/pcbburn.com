@@ -180,18 +180,6 @@ export function BlankWorkspace() {
           </div>
         </Card>
 
-        {/* Supported Formats */}
-        <div className="flex justify-center gap-4">
-          <Badge variant="outline" className="gap-1.5">
-            tscircuit JSON
-          </Badge>
-          <Badge variant="outline" className="gap-1.5">
-            KiCad Circuit JSON
-          </Badge>
-          <Badge variant="outline" className="gap-1.5">
-            LBRN Export
-          </Badge>
-        </div>
       </div>
     </div>
   )
