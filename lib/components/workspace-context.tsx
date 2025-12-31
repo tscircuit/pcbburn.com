@@ -5,26 +5,16 @@ import React, {
   type ReactNode,
 } from "react"
 import type { CircuitJson } from "circuit-json"
-
+import type { ConvertCircuitJsonToLbrnOptions } from "circuit-json-to-lbrn"
 interface LbrnFileContent {
   xml: string | any
   options: any
 }
 
-interface LbrnOptions {
-  includeCopper: boolean
-  includeSoldermask: boolean
-  includeSilkscreen: boolean
-  includeLayers: Array<"top" | "bottom">
-  laserSpotSize: number
-  traceMargin: number
-  origin?: { x: number; y: number }
-}
-
 interface WorkspaceState {
   circuitJson: CircuitJson | null
   lbrnFileContent: LbrnFileContent | null
-  lbrnOptions: LbrnOptions
+  lbrnOptions: ConvertCircuitJsonToLbrnOptions
   isConverting: boolean
   error: string | null
 }
@@ -32,7 +22,7 @@ interface WorkspaceState {
 interface WorkspaceContextType extends WorkspaceState {
   setCircuitJson: (data: CircuitJson | null) => void
   setLbrnFileContent: (data: LbrnFileContent | null) => void
-  setLbrnOptions: (options: Partial<LbrnOptions>) => void
+  setLbrnOptions: (options: Partial<ConvertCircuitJsonToLbrnOptions>) => void
   setIsConverting: (converting: boolean) => void
   setError: (error: string | null) => void
   convertToLbrn: (options?: any) => Promise<void>
@@ -46,15 +36,16 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
   const [circuitJson, setCircuitJsonState] = useState<CircuitJson | null>(null)
   const [lbrnFileContent, setLbrnFileContent] =
     useState<LbrnFileContent | null>(null)
-  const [lbrnOptions, setLbrnOptionsState] = useState<LbrnOptions>({
-    includeCopper: true,
-    includeSoldermask: false,
-    includeSilkscreen: false,
-    includeLayers: ["top", "bottom"],
-    laserSpotSize: 0.005,
-    traceMargin: 0,
-    origin: { x: 0, y: 0 },
-  })
+  const [lbrnOptions, setLbrnOptionsState] =
+    useState<ConvertCircuitJsonToLbrnOptions>({
+      includeCopper: true,
+      includeSoldermask: false,
+      includeSilkscreen: false,
+      includeLayers: ["top", "bottom"],
+      laserSpotSize: 0.005,
+      traceMargin: 0,
+      origin: { x: 0, y: 0 },
+    })
   const [isConverting, setIsConverting] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
@@ -63,7 +54,9 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
     setLbrnFileContent(null) // Reset LBRN content when new circuit is loaded
   }
 
-  const setLbrnOptions = (options: Partial<LbrnOptions>) => {
+  const setLbrnOptions = (
+    options: Partial<ConvertCircuitJsonToLbrnOptions>,
+  ) => {
     setLbrnOptionsState((prev) => ({ ...prev, ...options }))
   }
 
@@ -74,7 +67,9 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
     }
   }, [circuitJson, lbrnFileContent, isConverting])
 
-  const convertToLbrn = async (options?: Partial<LbrnOptions>) => {
+  const convertToLbrn = async (
+    options?: Partial<ConvertCircuitJsonToLbrnOptions>,
+  ) => {
     if (!circuitJson) return
 
     setIsConverting(true)

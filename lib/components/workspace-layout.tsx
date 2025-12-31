@@ -66,7 +66,7 @@ export function WorkspaceContent({
           <aside
             className={`${
               sidebarOpen ? "translate-x-0" : "-translate-x-full"
-            } fixed md:relative z-40 w-80 h-[calc(100vh-3.5rem)] bg-card border-r border-border overflow-y-auto transition-transform md:translate-x-0`}
+            } fixed md:relative z-40 w-fit min-w-72 max-w-lg h-[calc(100vh-3.5rem)] bg-card border-r border-border overflow-y-auto transition-transform md:translate-x-0`}
           >
             <SettingsPanel />
           </aside>

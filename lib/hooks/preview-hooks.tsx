@@ -5,19 +5,14 @@ import { convertCircuitJsonToLbrn } from "circuit-json-to-lbrn"
 import { generateLightBurnSvg } from "lbrnts"
 import { convertCircuitJsonToPcbSvg } from "circuit-to-svg"
 import type { CircuitJson } from "circuit-json"
-
-export interface LbrnOptions {
-  // Define based on usage, e.g., any options for LBRN conversion
-  // TODO export the ConvertCircuitJsonToLbrnOptions type from circuit-json-to-lbrn and import/use it here
-  [key: string]: any
-}
+import type { ConvertCircuitJsonToLbrnOptions } from "circuit-json-to-lbrn"
 
 export function useSvgGeneration({
   circuitJson,
   lbrnOptions,
 }: {
   circuitJson: CircuitJson | null
-  lbrnOptions: LbrnOptions
+  lbrnOptions: ConvertCircuitJsonToLbrnOptions
 }) {
   const [lbrnSvg, setLbrnSvg] = useState("")
   const [pcbSvg, setPcbSvg] = useState("")
