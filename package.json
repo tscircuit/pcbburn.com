@@ -18,7 +18,7 @@
   "dependencies": {
     "@tscircuit/plop": "^0.0.72",
     "circuit-json": "^0.0.342",
-    "circuit-json-to-lbrn": "^0.0.33",
+    "circuit-json-to-lbrn": "^0.0.35",
     "circuit-to-svg": "^0.0.301",
     "lbrnts": "^0.0.11",
     "lucide-react": "^0.562.0",

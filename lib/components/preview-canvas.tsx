@@ -136,12 +136,12 @@ export function PreviewCanvas() {
           </div>
 
           {/* Overlay Info */}
-          <div className="absolute bottom-4 right-4 flex items-center">
+          <div className="absolute bottom-4 text-muted-foreground right-4 flex items-center">
             <Badge
               variant="outline"
-              className="bg-background/90 backdrop-blur-sm gap-1.5"
+              className="bg-background/50 text-muted-foreground backdrop-blur-sm gap-1.5"
             >
-              <Move className="size-3" />
+              <Move className="size-3 text-muted-foreground" />
               Pan & Zoom
             </Badge>
           </div>
