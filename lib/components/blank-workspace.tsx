@@ -5,7 +5,7 @@ import { Upload, FileUp, Zap, ArrowRight, CircuitBoard } from "lucide-react"
 import { useWorkspace } from "./workspace-context"
 
 export function BlankWorkspace() {
-  const { setCircuitJson } = useWorkspace()
+  const { processCircuitFile, processCircuitDrop } = useWorkspace()
   const [isDragOver, setIsDragOver] = useState(false)
 
   const handleFileUpload = async (
@@ -13,22 +13,7 @@ export function BlankWorkspace() {
   ) => {
     const file = event.target.files?.[0]
     if (file) {
-      processFile(file)
-    }
-  }
-
-  const processFile = async (file: File) => {
-    if (!file.name.endsWith(".json")) {
-      alert("Please upload a JSON file")
-      return
-    }
-
-    try {
-      const text = await file.text()
-      const CircuitJson = JSON.parse(text)
-      setCircuitJson(CircuitJson)
-    } catch (err) {
-      alert("Invalid JSON file")
+      await processCircuitFile(file)
     }
   }
 
@@ -42,14 +27,10 @@ export function BlankWorkspace() {
     setIsDragOver(false)
   }
 
-  const handleDrop = (e: React.DragEvent) => {
+  const handleDrop = async (e: React.DragEvent) => {
     e.preventDefault()
     setIsDragOver(false)
-
-    const files = e.dataTransfer.files
-    if (files.length > 0) {
-      processFile(files[0])
-    }
+    await processCircuitDrop(e.dataTransfer)
   }
 
   return (
@@ -86,7 +67,7 @@ export function BlankWorkspace() {
           >
             <input
               type="file"
-              accept=".json"
+              accept=".json,.kicad_pcb"
               onChange={handleFileUpload}
               className="hidden"
               id="blank-workspace-file"

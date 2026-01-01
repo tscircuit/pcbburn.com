@@ -8,6 +8,7 @@
         "circuit-json": "^0.0.342",
         "circuit-json-to-lbrn": "^0.0.35",
         "circuit-to-svg": "^0.0.301",
+        "kicad-to-circuit-json": "^0.0.17",
         "lbrnts": "^0.0.11",
         "lucide-react": "^0.562.0",
         "react": "^19.1.0",
@@ -808,7 +809,7 @@
 
     "kicad-component-converter": ["kicad-component-converter@0.1.36", "https://registry.npmmirror.com/kicad-component-converter/-/kicad-component-converter-0.1.36.tgz", { "bin": { "kicad-mod-converter": "dist/cli.js", "kicad-component-converter": "dist/cli.js" } }, "sha512-LXTip3smGzijA2AEtZHSztquAErenN9nC8LkLeisSCi5CVVVMVB0QbY5cMYh6cAJbVDHZGezP9MtW6qtkPnabA=="],
 
-    "kicad-to-circuit-json": ["kicad-to-circuit-json@0.0.15", "https://registry.npmmirror.com/kicad-to-circuit-json/-/kicad-to-circuit-json-0.0.15.tgz", { "dependencies": { "schematic-symbols": "^0.0.202" }, "peerDependencies": { "typescript": "^5" } }, "sha512-HG9OVhHqitW08MHX1wFCSF6WPi1EFkywgJJt6qqTpMeZFe211qpctNQbyDpYvlS/u5YTn2h208aCqY8W8DBNHw=="],
+    "kicad-to-circuit-json": ["kicad-to-circuit-json@0.0.17", "https://registry.npmmirror.com/kicad-to-circuit-json/-/kicad-to-circuit-json-0.0.17.tgz", { "dependencies": { "schematic-symbols": "^0.0.202" }, "peerDependencies": { "typescript": "^5" } }, "sha512-zXEMnov7XJDJXqlq11uXSyplkya3jwBTfr/If0CqnPLeEEInkEw+F1LUpMsUT1iE69ATH8qZ9axRxjnis8RHNQ=="],
 
     "kicadts": ["kicadts@0.0.22", "https://registry.npmmirror.com/kicadts/-/kicadts-0.0.22.tgz", { "peerDependencies": { "typescript": "^5" } }, "sha512-lB1Zy3eP0itLcThqlAkfXpUac+18wZB0ruYHH0NilB5YqcvWNlomnoLmB+F5anGu9mlo0bN/REku+Palb78a2w=="],
 
@@ -1357,6 +1358,8 @@
     "tscircuit/circuit-json": ["circuit-json@0.0.325", "https://registry.npmmirror.com/circuit-json/-/circuit-json-0.0.325.tgz", {}, "sha512-6RBqf+G2HlyIb4Fi+w94QqTNT2L9LJA828V5T4039QEllFBhy2vORJ9GiyYB6VcfxTf/JSsLl3dfOnL3SLeYqg=="],
 
     "tscircuit/circuit-to-svg": ["circuit-to-svg@0.0.280", "https://registry.npmmirror.com/circuit-to-svg/-/circuit-to-svg-0.0.280.tgz", { "dependencies": { "@types/node": "^22.5.5", "bun-types": "^1.1.40", "calculate-elbow": "0.0.12", "svgson": "^5.3.1", "transformation-matrix": "^2.16.1" } }, "sha512-WnPBSLUF59v3Q2opx9JOGuI64FAUaqEsAPSQOVKAkDB27ilt6G4faM2zh5Ohb+Fn3/iv+ys8Vtgds53tK9memw=="],
+
+    "tscircuit/kicad-to-circuit-json": ["kicad-to-circuit-json@0.0.15", "https://registry.npmmirror.com/kicad-to-circuit-json/-/kicad-to-circuit-json-0.0.15.tgz", { "dependencies": { "schematic-symbols": "^0.0.202" }, "peerDependencies": { "typescript": "^5" } }, "sha512-HG9OVhHqitW08MHX1wFCSF6WPi1EFkywgJJt6qqTpMeZFe211qpctNQbyDpYvlS/u5YTn2h208aCqY8W8DBNHw=="],
 
     "tscircuit/transformation-matrix": ["transformation-matrix@2.16.1", "https://registry.npmmirror.com/transformation-matrix/-/transformation-matrix-2.16.1.tgz", {}, "sha512-tdtC3wxVEuzU7X/ydL131Q3JU5cPMEn37oqVLITjRDSDsnSHVFzW2JiCLfZLIQEgWzZHdSy3J6bZzvKEN24jGA=="],
 

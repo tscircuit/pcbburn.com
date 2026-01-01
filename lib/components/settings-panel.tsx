@@ -9,11 +9,11 @@ import type { ConvertCircuitJsonToLbrnOptions } from "circuit-json-to-lbrn"
 export function SettingsPanel() {
   const {
     circuitJson,
-    setCircuitJson,
     lbrnFileContent,
     lbrnOptions,
     setLbrnOptions,
     convertToLbrn,
+    processCircuitFile,
     isConverting,
     error,
   } = useWorkspace()
@@ -117,22 +117,7 @@ export function SettingsPanel() {
   ) => {
     const file = event.target.files?.[0]
     if (file) {
-      processFile(file)
-    }
-  }
-
-  const processFile = async (file: File) => {
-    if (!file.name.endsWith(".json")) {
-      alert("Please upload a JSON file")
-      return
-    }
-
-    try {
-      const text = await file.text()
-      const CircuitJson = JSON.parse(text)
-      setCircuitJson(CircuitJson)
-    } catch (err) {
-      alert("Invalid JSON file")
+      await processCircuitFile(file)
     }
   }
 
@@ -146,13 +131,13 @@ export function SettingsPanel() {
     setIsDragOver(false)
   }
 
-  const handleDrop = (e: React.DragEvent) => {
+  const handleDrop = async (e: React.DragEvent) => {
     e.preventDefault()
     setIsDragOver(false)
 
     const files = e.dataTransfer.files
     if (files.length > 0) {
-      processFile(files[0])
+      await processCircuitFile(files[0])
     }
   }
   // Helper function to create toggle buttons
@@ -289,7 +274,7 @@ export function SettingsPanel() {
           >
             <input
               type="file"
-              accept=".json"
+              accept=".json,.kicad_pcb"
               onChange={handleFileUpload}
               className="hidden"
               id="circuit-file"
@@ -300,11 +285,11 @@ export function SettingsPanel() {
                 <div>
                   <p className="text-sm font-medium">
                     {circuitJson
-                      ? "Change Circuit JSON"
-                      : "Upload Circuit JSON"}
+                      ? "Change Circuit File"
+                      : "Upload Circuit File"}
                   </p>
                   <p className="text-xs text-muted-foreground">
-                    Drag & drop or click to browse
+                    Supports .json and .kicad_pcb files
                   </p>
                 </div>
               </div>
