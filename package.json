@@ -18,7 +18,7 @@
   "dependencies": {
     "@tscircuit/plop": "^0.0.72",
     "circuit-json": "^0.0.342",
-    "circuit-json-to-lbrn": "^0.0.35",
+    "circuit-json-to-lbrn": "^0.0.38",
     "circuit-to-svg": "^0.0.301",
     "kicad-to-circuit-json": "^0.0.17",
     "lbrnts": "^0.0.11",
