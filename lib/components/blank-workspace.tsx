@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useState, useRef } from "react"
 import { Card } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Upload, FileUp, Zap, ArrowRight, CircuitBoard } from "lucide-react"
@@ -7,6 +7,7 @@ import { useWorkspace } from "./workspace-context"
 export function BlankWorkspace() {
   const { processCircuitFile, processCircuitDrop } = useWorkspace()
   const [isDragOver, setIsDragOver] = useState(false)
+  const fileInputRef = useRef<HTMLInputElement>(null)
 
   const handleFileUpload = async (
     event: React.ChangeEvent<HTMLInputElement>,
@@ -15,6 +16,10 @@ export function BlankWorkspace() {
     if (file) {
       await processCircuitFile(file)
     }
+  }
+
+  const openFileDialog = () => {
+    fileInputRef.current?.click()
   }
 
   const handleDragOver = (e: React.DragEvent) => {
@@ -54,54 +59,45 @@ export function BlankWorkspace() {
         </div>
 
         {/* Upload Area */}
-        <Card className="p-6 border-2 border-dashed border-border hover:border-primary/50 transition-colors">
-          <div
-            onDragOver={handleDragOver}
-            onDragLeave={handleDragLeave}
-            onDrop={handleDrop}
-            className={`relative rounded-lg transition-all duration-200 ${
-              isDragOver
-                ? "bg-primary/5 border-primary/50 scale-[1.02]"
-                : "bg-card"
-            }`}
-          >
-            <input
-              type="file"
-              accept=".json,.kicad_pcb"
-              onChange={handleFileUpload}
-              className="hidden"
-              id="blank-workspace-file"
-            />
-
-            <label
-              htmlFor="blank-workspace-file"
-              className="cursor-pointer block"
-            >
-              <div className="flex flex-col items-center justify-center py-4 px-2 space-y-2 md:py-8 md:px-4 md:space-y-4">
-                <div className="size-16 rounded-full bg-primary/10 flex items-center justify-center">
-                  <Upload className="size-8 text-primary" />
-                </div>
-
-                <div className="text-center space-y-2">
-                  <h3 className="text-lg font-semibold">
-                    {isDragOver
-                      ? "Drop your Circuit JSON or KiCad file here"
-                      : "Upload Circuit JSON or KiCad file"}
-                  </h3>
-                  <p className="text-muted-foreground">
-                    Drag & drop your file here, or click to browse
-                  </p>
-                  <p className="text-sm text-muted-foreground">
-                    Supports .json files from tscircuit or KiCad files
-                  </p>
-                </div>
-
-                <Button size="lg" className="gap-2">
-                  <FileUp className="size-4" />
-                  Choose File
-                </Button>
-              </div>
-            </label>
+        <Card
+          onDragOver={handleDragOver}
+          onDragLeave={handleDragLeave}
+          onDrop={handleDrop}
+          onClick={openFileDialog}
+          className={`p-6 border-2 border-dashed cursor-pointer transition-all duration-200 ${
+            isDragOver
+              ? "border-primary bg-primary/5 scale-[1.01]"
+              : "border-border hover:border-primary/50"
+          }`}
+        >
+          <input
+            ref={fileInputRef}
+            type="file"
+            accept=".json,.kicad_pcb"
+            onChange={handleFileUpload}
+            className="hidden"
+          />
+          <div className="flex flex-col items-center justify-center py-4 px-2 space-y-2 md:py-8 md:px-4 md:space-y-4">
+            <div className="size-16 rounded-full bg-primary/10 flex items-center justify-center">
+              <Upload className="size-8 text-primary" />
+            </div>
+            <div className="text-center space-y-2">
+              <h3 className="text-lg font-semibold">
+                {isDragOver
+                  ? "Drop your Circuit JSON or KiCad file here"
+                  : "Upload Circuit JSON or KiCad file"}
+              </h3>
+              <p className="text-muted-foreground">
+                Drag & drop your file here, or click to browse
+              </p>
+              <p className="text-sm text-muted-foreground">
+                Supports .json files from tscircuit or KiCad files
+              </p>
+            </div>
+            <Button size="lg" className="gap-2 pointer-events-none">
+              <FileUp className="size-4" />
+              Choose File
+            </Button>
           </div>
         </Card>
 
