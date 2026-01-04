@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useState, useRef } from "react"
 import { Card } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Upload, FileUp, Zap, ArrowRight, CircuitBoard } from "lucide-react"
@@ -7,6 +7,7 @@ import { useWorkspace } from "./workspace-context"
 export function BlankWorkspace() {
   const { processCircuitFile, processCircuitDrop } = useWorkspace()
   const [isDragOver, setIsDragOver] = useState(false)
+  const fileInputRef = useRef<HTMLInputElement>(null)
 
   const handleFileUpload = async (
     event: React.ChangeEvent<HTMLInputElement>,
@@ -15,6 +16,10 @@ export function BlankWorkspace() {
     if (file) {
       await processCircuitFile(file)
     }
+  }
+
+  const openFileDialog = () => {
+    fileInputRef.current?.click()
   }
 
   const handleDragOver = (e: React.DragEvent) => {
@@ -66,17 +71,14 @@ export function BlankWorkspace() {
             }`}
           >
             <input
+              ref={fileInputRef}
               type="file"
               accept=".json,.kicad_pcb"
               onChange={handleFileUpload}
               className="hidden"
-              id="blank-workspace-file"
             />
 
-            <label
-              htmlFor="blank-workspace-file"
-              className="cursor-pointer block"
-            >
+            <div onClick={openFileDialog} className="cursor-pointer">
               <div className="flex flex-col items-center justify-center py-4 px-2 space-y-2 md:py-8 md:px-4 md:space-y-4">
                 <div className="size-16 rounded-full bg-primary/10 flex items-center justify-center">
                   <Upload className="size-8 text-primary" />
@@ -101,7 +103,7 @@ export function BlankWorkspace() {
                   Choose File
                 </Button>
               </div>
-            </label>
+            </div>
           </div>
         </Card>
 
