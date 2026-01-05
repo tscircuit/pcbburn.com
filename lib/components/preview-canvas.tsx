@@ -95,7 +95,7 @@ export function PreviewCanvas() {
                 </div>
                 <Card
                   ref={lbrnRef}
-                  className="flex-1 border-0 shadow-none relative overflow-hidden"
+                  className="flex-1 border-0 shadow-none relative overflow-hidden cursor-grab"
                   style={{
                     backgroundColor: "white",
                   }}
@@ -140,7 +140,7 @@ export function PreviewCanvas() {
                 </div>
                 <Card
                   ref={pcbRef}
-                  className="flex-1 border-0 shadow-none relative overflow-hidden border-l"
+                  className="flex-1 border-0 shadow-none relative overflow-hidden border-l cursor-grab"
                   style={{
                     backgroundColor: "black",
                   }}
@@ -182,7 +182,7 @@ export function PreviewCanvas() {
         ) : (
           <Card
             ref={ref}
-            className="w-full h-full border-0 shadow-none relative overflow-hidden"
+            className="w-full h-full border-0 shadow-none relative overflow-hidden cursor-grab"
             style={{
               backgroundColor: viewMode === "pcb" ? "black" : "white",
             }}
