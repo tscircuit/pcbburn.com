@@ -330,6 +330,7 @@ export function SettingsPanel() {
                     : "outline"
                 }
                 size="sm"
+                className="w-16"
                 onClick={() =>
                   setDraftOptions((prev) => ({
                     ...prev,
@@ -354,6 +355,7 @@ export function SettingsPanel() {
                     : "outline"
                 }
                 size="sm"
+                className="w-16"
                 onClick={() =>
                   setDraftOptions((prev) => ({
                     ...prev,
