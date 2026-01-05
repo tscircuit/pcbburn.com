@@ -168,7 +168,6 @@ export function SettingsPanel() {
     value,
     onChange,
     label,
-    step = 1,
     min = 0,
     precision = 0,
     unit = "",
@@ -176,7 +175,6 @@ export function SettingsPanel() {
     value: number
     onChange: (value: number) => void
     label: string
-    step?: number
     min?: number
     precision?: number
     unit?: string
@@ -207,14 +205,6 @@ export function SettingsPanel() {
       <div className="flex items-center justify-between">
         <span className="text-sm">{label}</span>
         <div className="flex items-center gap-1">
-          <Button
-            variant="outline"
-            size="sm"
-            className="h-6 w-6 p-0"
-            onClick={() => onChange(Math.max(min, value - step))}
-          >
-            -
-          </Button>
           <input
             type="text"
             value={inputValue}
@@ -222,14 +212,6 @@ export function SettingsPanel() {
             onBlur={handleInputBlur}
             className="text-xs w-24 text-center border border-input bg-background rounded px-1 py-0.5 focus:outline-none focus:ring-1 focus:ring-ring"
           />
-          <Button
-            variant="outline"
-            size="sm"
-            className="h-6 w-6 p-0"
-            onClick={() => onChange(value + step)}
-          >
-            +
-          </Button>
           {unit && (
             <span className="text-xs text-muted-foreground w-6">{unit}</span>
           )}
@@ -410,7 +392,6 @@ export function SettingsPanel() {
               setDraftOptions((prev) => ({ ...prev, laserSpotSize: value }))
             }
             label="Laser Spot Size"
-            step={0.001}
             min={0.001}
             precision={3}
             unit="mm"
@@ -421,7 +402,6 @@ export function SettingsPanel() {
               setDraftOptions((prev) => ({ ...prev, traceMargin: value }))
             }
             label="Trace Margin"
-            step={0.1}
             min={0}
             precision={1}
             unit="mm"
@@ -435,7 +415,6 @@ export function SettingsPanel() {
               }))
             }
             label="Copper-Soldermask Clearance"
-            step={0.1}
             precision={1}
             unit="mm"
           />
@@ -454,7 +433,6 @@ export function SettingsPanel() {
                 }))
               }
               label="Origin X"
-              step={1}
               precision={0}
               unit="mm"
             />
@@ -467,7 +445,6 @@ export function SettingsPanel() {
                 }))
               }
               label="Origin Y"
-              step={1}
               precision={0}
               unit="mm"
             />
@@ -517,7 +494,6 @@ export function SettingsPanel() {
                 }))
               }
               label="Speed"
-              step={10}
               min={1}
               precision={0}
               unit="mm/s"
@@ -537,7 +513,6 @@ export function SettingsPanel() {
                 }))
               }
               label="Passes"
-              step={1}
               min={1}
               precision={0}
               unit=" "
@@ -557,7 +532,6 @@ export function SettingsPanel() {
                 }))
               }
               label="Frequency"
-              step={1000}
               min={1000}
               precision={0}
               unit="kHz"
@@ -577,7 +551,6 @@ export function SettingsPanel() {
                 }))
               }
               label="Pulse Width"
-              step={0.0000001}
               min={0.0000001}
               precision={7}
               unit="s"
@@ -603,7 +576,6 @@ export function SettingsPanel() {
                 }))
               }
               label="Speed"
-              step={5}
               min={1}
               precision={0}
               unit="mm/s"
@@ -620,7 +592,6 @@ export function SettingsPanel() {
                 }))
               }
               label="Passes"
-              step={1}
               min={1}
               precision={0}
               unit=" "
@@ -637,7 +608,6 @@ export function SettingsPanel() {
                 }))
               }
               label="Frequency"
-              step={1000}
               min={1000}
               precision={0}
               unit="kHz"
@@ -654,7 +624,6 @@ export function SettingsPanel() {
                 }))
               }
               label="Pulse Width"
-              step={0.0000001}
               min={0.0000001}
               precision={7}
               unit="s"
