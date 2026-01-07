@@ -5,7 +5,8 @@ import { Upload, FileUp, Zap, ArrowRight, CircuitBoard } from "lucide-react"
 import { useWorkspace } from "./workspace-context"
 
 export function BlankWorkspace() {
-  const { processCircuitFile, processCircuitDrop } = useWorkspace()
+  const { processCircuitFile, processCircuitDrop, setIsProcessingFile } =
+    useWorkspace()
   const [isDragOver, setIsDragOver] = useState(false)
   const fileInputRef = useRef<HTMLInputElement>(null)
 
@@ -14,7 +15,14 @@ export function BlankWorkspace() {
   ) => {
     const file = event.target.files?.[0]
     if (file) {
-      await processCircuitFile(file)
+      try {
+        setIsProcessingFile(true)
+        await processCircuitFile(file)
+      } catch (err) {
+        alert(err instanceof Error ? err.message : "Failed to process file")
+      } finally {
+        setIsProcessingFile(false)
+      }
     }
   }
 

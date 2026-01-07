@@ -8,7 +8,7 @@ import { useState, useRef } from "react"
 import { useSvgGeneration, useSvgTransform } from "../hooks/preview-hooks"
 import { cn } from "@/utils"
 export function PreviewCanvas() {
-  const { circuitJson, lbrnOptions } = useWorkspace()
+  const { circuitJson, lbrnOptions, isProcessingFile } = useWorkspace()
   const [viewMode, setViewMode] = useState<"lbrn" | "pcb" | "both">("lbrn")
   const { lbrnSvg, pcbSvg, isGenerating } = useSvgGeneration({
     circuitJson,
@@ -27,6 +27,29 @@ export function PreviewCanvas() {
 
   const handleRotate = () => {
     // TODO: implement rotation if needed
+  }
+
+  // Show loading screen when processing file but no circuit yet
+  if (!circuitJson && isProcessingFile) {
+    return (
+      <div className="h-full flex items-center justify-center">
+        <div className="text-center">
+          <div className="size-12 rounded-full border-2 border-primary/20 border-t-primary animate-spin mx-auto mb-4" />
+          <p className="text-muted-foreground mb-4">Loading circuit...</p>
+          <div className="w-64 mx-auto">
+            <div className="h-2 bg-muted rounded-full overflow-hidden">
+              <div
+                className="h-full bg-primary rounded-full animate-pulse"
+                style={{
+                  width: "100%",
+                  animation: "shimmer 1.5s ease-in-out infinite",
+                }}
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    )
   }
   return (
     <div className="h-full flex flex-col bg-muted/20">
