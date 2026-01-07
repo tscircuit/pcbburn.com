@@ -6,6 +6,7 @@ import { Layers, Move, RotateCcwSquare, RotateCwSquare } from "lucide-react"
 import { useWorkspace } from "./workspace-context"
 import { useState, useRef } from "react"
 import { useSvgGeneration, useSvgTransform } from "../hooks/preview-hooks"
+import { cn } from "@/utils"
 export function PreviewCanvas() {
   const { circuitJson, lbrnOptions } = useWorkspace()
   const [viewMode, setViewMode] = useState<"lbrn" | "pcb" | "both">("lbrn")
@@ -55,28 +56,42 @@ export function PreviewCanvas() {
             <RotateCwSquare className="size-3.5" />
           </Button>
         </div>
-        <div className="flex items-center gap-0 border border-border rounded-md p-1 bg-muted/20">
+        <div className="inline-flex items-center rounded-lg bg-muted p-1">
           <Button
-            variant={viewMode === "lbrn" ? "default" : "ghost"}
+            variant="ghost"
             size="sm"
-            className="rounded-r-none"
             onClick={() => setViewMode("lbrn")}
+            className={cn(
+              "rounded-md px-4 h-8 transition-all",
+              viewMode === "lbrn" &&
+                "bg-primary text-primary-foreground shadow-sm",
+            )}
           >
             LBRN
           </Button>
+
           <Button
-            variant={viewMode === "pcb" ? "default" : "ghost"}
+            variant="ghost"
             size="sm"
-            className="rounded-none border-x"
             onClick={() => setViewMode("pcb")}
+            className={cn(
+              "rounded-md px-4 h-8 transition-all",
+              viewMode === "pcb" &&
+                "bg-primary text-primary-foreground shadow-sm",
+            )}
           >
             PCB
           </Button>
+
           <Button
-            variant={viewMode === "both" ? "default" : "ghost"}
+            variant="ghost"
             size="sm"
-            className="rounded-l-none"
             onClick={() => setViewMode("both")}
+            className={cn(
+              "rounded-md px-4 h-8 transition-all",
+              viewMode === "both" &&
+                "bg-primary text-primary-foreground shadow-sm",
+            )}
           >
             Both
           </Button>
