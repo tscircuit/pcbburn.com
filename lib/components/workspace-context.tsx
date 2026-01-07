@@ -17,6 +17,7 @@ interface WorkspaceState {
   lbrnFileContent: LbrnFileContent | null
   lbrnOptions: ConvertCircuitJsonToLbrnOptions
   isConverting: boolean
+  isProcessingFile: boolean
   error: string | null
 }
 
@@ -25,6 +26,7 @@ interface WorkspaceContextType extends WorkspaceState {
   setLbrnFileContent: (data: LbrnFileContent | null) => void
   setLbrnOptions: (options: Partial<ConvertCircuitJsonToLbrnOptions>) => void
   setIsConverting: (converting: boolean) => void
+  setIsProcessingFile: (processing: boolean) => void
   setError: (error: string | null) => void
   convertToLbrn: (options?: any) => Promise<void>
   loadKicadPcbFile: (pcbContent: string) => Promise<void>
@@ -54,6 +56,7 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
       origin: { x: 0, y: 0 },
     })
   const [isConverting, setIsConverting] = useState(false)
+  const [isProcessingFile, setIsProcessingFile] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
   const setCircuitJson = (data: CircuitJson | null) => {
@@ -106,23 +109,15 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
 
     if (fileName.endsWith(".json")) {
       // Handle Circuit JSON files
-      try {
-        const text = await file.text()
-        const circuitJsonData = JSON.parse(text)
-        setCircuitJson(circuitJsonData)
-      } catch (err) {
-        alert("Invalid JSON file")
-      }
+      const text = await file.text()
+      const circuitJsonData = JSON.parse(text)
+      setCircuitJson(circuitJsonData)
     } else if (fileName.endsWith(".kicad_pcb")) {
       // Handle KiCad PCB files
-      try {
-        const text = await file.text()
-        await loadKicadPcbFile(text)
-      } catch (err) {
-        alert(`Failed to convert KiCad file: ${err}`)
-      }
+      const text = await file.text()
+      await loadKicadPcbFile(text)
     } else {
-      alert("Please upload a .json or .kicad_pcb file")
+      throw new Error("Please upload a .json or .kicad_pcb file")
     }
   }
 
@@ -159,30 +154,36 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
     const items = dataTransfer.items
     if (items.length === 0) return
 
-    // Check if it's a directory drop
-    for (let i = 0; i < items.length; i++) {
-      const item = items[i]
-      const entry = item.webkitGetAsEntry?.()
+    try {
+      setIsProcessingFile(true)
 
-      if (entry?.isDirectory) {
-        // Handle folder drop - look for .kicad_pcb file
-        const kicadFile = await findKicadPcbInDirectory(
-          entry as FileSystemDirectoryEntry,
-        )
-        if (kicadFile) {
-          await processCircuitFile(kicadFile)
-          return
-        } else {
-          alert("No .kicad_pcb file found in the dropped folder")
-          return
+      // Check if it's a directory drop
+      for (let i = 0; i < items.length; i++) {
+        const item = items[i]
+        const entry = item.webkitGetAsEntry?.()
+
+        if (entry?.isDirectory) {
+          // Handle folder drop - look for .kicad_pcb file
+          const kicadFile = await findKicadPcbInDirectory(
+            entry as FileSystemDirectoryEntry,
+          )
+          if (kicadFile) {
+            await processCircuitFile(kicadFile)
+            return
+          } else {
+            alert("No .kicad_pcb file found in the dropped folder")
+            return
+          }
         }
       }
-    }
 
-    // Handle file drops (existing behavior)
-    const files = dataTransfer.files
-    if (files.length > 0) {
-      await processCircuitFile(files[0])
+      // Handle file drops (existing behavior)
+      const files = dataTransfer.files
+      if (files.length > 0) {
+        await processCircuitFile(files[0])
+      }
+    } finally {
+      setIsProcessingFile(false)
     }
   }
 
@@ -218,11 +219,13 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
     lbrnFileContent,
     lbrnOptions,
     isConverting,
+    isProcessingFile,
     error,
     setCircuitJson,
     setLbrnFileContent,
     setLbrnOptions,
     setIsConverting,
+    setIsProcessingFile,
     setError,
     convertToLbrn,
     loadKicadPcbFile,
