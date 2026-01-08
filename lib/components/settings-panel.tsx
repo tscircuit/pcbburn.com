@@ -21,7 +21,7 @@ export function SettingsPanel() {
   const [draftOptions, setDraftOptions] =
     useState<ConvertCircuitJsonToLbrnOptions>(lbrnOptions)
 
-  const [panelWidth, setPanelWidth] = useState(320) // Default width in pixels
+  const [panelWidth, setPanelWidth] = useState(360) // Default width in pixels
   const [isResizing, setIsResizing] = useState(false)
   const panelRef = useRef<HTMLDivElement>(null)
 

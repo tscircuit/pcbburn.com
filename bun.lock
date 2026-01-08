@@ -8,7 +8,7 @@
         "@tscircuit/plop": "^0.0.72",
         "circuit-json": "^0.0.342",
         "circuit-json-to-lbrn": "^0.0.38",
-        "circuit-to-svg": "^0.0.301",
+        "circuit-to-svg": "^0.0.311",
         "kicad-to-circuit-json": "^0.0.17",
         "lbrnts": "^0.0.11",
         "lucide-react": "^0.562.0",
@@ -522,7 +522,7 @@
 
     "circuit-json-to-spice": ["circuit-json-to-spice@0.0.27", "https://registry.npmmirror.com/circuit-json-to-spice/-/circuit-json-to-spice-0.0.27.tgz", { "dependencies": { "circuit-json-to-connectivity-map": "^0.0.22" }, "peerDependencies": { "@tscircuit/circuit-json-util": "*", "circuit-json": "*", "typescript": "^5.0.0" } }, "sha512-eftfzVaBDNkzHeLlOHyD2it6AmJDjeGj1xg8lbTU+3tHcFzlEFK6vnVfHQjbjXQB9/0Zy6t+hd/2Cen+LrEcBw=="],
 
-    "circuit-to-svg": ["circuit-to-svg@0.0.301", "https://registry.npmmirror.com/circuit-to-svg/-/circuit-to-svg-0.0.301.tgz", { "dependencies": { "@types/node": "^22.5.5", "bun-types": "^1.1.40", "calculate-elbow": "0.0.12", "svgson": "^5.3.1", "transformation-matrix": "^2.16.1" }, "peerDependencies": { "@tscircuit/alphabet": "*" } }, "sha512-O1nqPY3Z+fPqeimMhz0aUgfI3BMSpMDKax3FpYh8pZnT5xNijLpto9tmIq/qtAz2X/z7Ihi82/h+tF7tvWEPDA=="],
+    "circuit-to-svg": ["circuit-to-svg@0.0.311", "https://registry.npmmirror.com/circuit-to-svg/-/circuit-to-svg-0.0.311.tgz", { "dependencies": { "@types/node": "^22.5.5", "bun-types": "^1.1.40", "calculate-elbow": "0.0.12", "svgson": "^5.3.1", "transformation-matrix": "^2.16.1" }, "peerDependencies": { "@tscircuit/alphabet": "*" } }, "sha512-CPGibGZO5Zbm0ItkohnhoD3rKnZEyrLLHRcig3f6rUxk/ztuhBHD5/HXtqDBSSjYcpmdddoYrwdPrTbtiKsBOQ=="],
 
     "cli-cursor": ["cli-cursor@5.0.0", "https://registry.npmmirror.com/cli-cursor/-/cli-cursor-5.0.0.tgz", { "dependencies": { "restore-cursor": "^5.0.0" } }, "sha512-aCj4O5wKyszjMmDT4tZj93kxyydN/K5zPWSCe6/0AV/AA1pqe5ZBIw0a2ZfPQV7lL5/yb5HsUreJ6UFAF1tEQw=="],
 
