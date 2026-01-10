@@ -411,7 +411,7 @@ export function SettingsPanel() {
                 globalCopperSoldermaskMarginAdjustment: value,
               })
             }
-            label="Copper-Soldermask Clearance"
+            label="Soldermask Margin"
             precision={1}
             unit="mm"
           />
