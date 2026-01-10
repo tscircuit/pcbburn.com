@@ -2,9 +2,8 @@ import React, { useState, useRef, useCallback } from "react"
 
 import { Button } from "@/components/ui/button"
 import { Separator } from "@/components/ui/separator"
-import { Settings, Zap, Upload, Check, Cpu, Layers, Target } from "lucide-react"
+import { Settings, Zap, Upload, Cpu, Layers, Target } from "lucide-react"
 import { useWorkspace } from "./workspace-context"
-import type { ConvertCircuitJsonToLbrnOptions } from "circuit-json-to-lbrn"
 
 export function SettingsPanel() {
   const {
@@ -18,8 +17,6 @@ export function SettingsPanel() {
     error,
   } = useWorkspace()
   const [isDragOver, setIsDragOver] = useState(false)
-  const [draftOptions, setDraftOptions] =
-    useState<ConvertCircuitJsonToLbrnOptions>(lbrnOptions)
 
   const [panelWidth, setPanelWidth] = useState(360) // Default width in pixels
   const [isResizing, setIsResizing] = useState(false)
@@ -96,21 +93,16 @@ export function SettingsPanel() {
   const loadLaserProfile = (profileName: string) => {
     const profile = laserProfiles[profileName as keyof typeof laserProfiles]
     if (profile) {
-      setDraftOptions((prev) => ({
-        ...prev,
+      setLbrnOptions({
+        ...lbrnOptions,
         laserProfile: {
           copper: { ...profile.copper },
           board: { ...profile.board },
         },
-      }))
+      })
       setSelectedProfile(profileName)
     }
   }
-
-  // Sync draft options when workspace options change
-  React.useEffect(() => {
-    setDraftOptions(lbrnOptions)
-  }, [lbrnOptions])
 
   const handleFileUpload = async (
     event: React.ChangeEvent<HTMLInputElement>,
@@ -304,16 +296,16 @@ export function SettingsPanel() {
         </div>
         <div className="space-y-3 pl-6">
           <ToggleButton
-            value={draftOptions.includeCopper ?? true}
+            value={lbrnOptions.includeCopper ?? true}
             onChange={(value) =>
-              setDraftOptions((prev) => ({ ...prev, includeCopper: value }))
+              setLbrnOptions({ ...lbrnOptions, includeCopper: value })
             }
             label="Include Copper"
           />
           <ToggleButton
-            value={draftOptions.includeSoldermask ?? false}
+            value={lbrnOptions.includeSoldermask ?? false}
             onChange={(value) =>
-              setDraftOptions((prev) => ({ ...prev, includeSoldermask: value }))
+              setLbrnOptions({ ...lbrnOptions, includeSoldermask: value })
             }
             label="Include Soldermask"
           />
@@ -323,7 +315,7 @@ export function SettingsPanel() {
             <div className="flex gap-1">
               <Button
                 variant={
-                  (draftOptions.includeLayers ?? ["top", "bottom"]).includes(
+                  (lbrnOptions.includeLayers ?? ["top", "bottom"]).includes(
                     "top",
                   )
                     ? "default"
@@ -332,23 +324,26 @@ export function SettingsPanel() {
                 size="sm"
                 className="w-16"
                 onClick={() =>
-                  setDraftOptions((prev) => ({
-                    ...prev,
+                  setLbrnOptions({
+                    ...lbrnOptions,
                     includeLayers: (
-                      prev.includeLayers ?? ["top", "bottom"]
+                      lbrnOptions.includeLayers ?? ["top", "bottom"]
                     ).includes("top")
-                      ? (prev.includeLayers ?? ["top", "bottom"]).filter(
+                      ? (lbrnOptions.includeLayers ?? ["top", "bottom"]).filter(
                           (l: "top" | "bottom") => l !== "top",
                         )
-                      : [...(prev.includeLayers ?? ["top", "bottom"]), "top"],
-                  }))
+                      : [
+                          ...(lbrnOptions.includeLayers ?? ["top", "bottom"]),
+                          "top",
+                        ],
+                  })
                 }
               >
                 Top
               </Button>
               <Button
                 variant={
-                  (draftOptions.includeLayers ?? ["top", "bottom"]).includes(
+                  (lbrnOptions.includeLayers ?? ["top", "bottom"]).includes(
                     "bottom",
                   )
                     ? "default"
@@ -357,19 +352,19 @@ export function SettingsPanel() {
                 size="sm"
                 className="w-16"
                 onClick={() =>
-                  setDraftOptions((prev) => ({
-                    ...prev,
+                  setLbrnOptions({
+                    ...lbrnOptions,
                     includeLayers: (
-                      prev.includeLayers ?? ["top", "bottom"]
+                      lbrnOptions.includeLayers ?? ["top", "bottom"]
                     ).includes("bottom")
-                      ? (prev.includeLayers ?? ["top", "bottom"]).filter(
+                      ? (lbrnOptions.includeLayers ?? ["top", "bottom"]).filter(
                           (l: "top" | "bottom") => l !== "bottom",
                         )
                       : [
-                          ...(prev.includeLayers ?? ["top", "bottom"]),
+                          ...(lbrnOptions.includeLayers ?? ["top", "bottom"]),
                           "bottom",
                         ],
-                  }))
+                  })
                 }
               >
                 Bottom
@@ -389,9 +384,9 @@ export function SettingsPanel() {
         </div>
         <div className="space-y-3 pl-6">
           <NumericControl
-            value={draftOptions.laserSpotSize ?? 0.005}
+            value={lbrnOptions.laserSpotSize ?? 0.005}
             onChange={(value) =>
-              setDraftOptions((prev) => ({ ...prev, laserSpotSize: value }))
+              setLbrnOptions({ ...lbrnOptions, laserSpotSize: value })
             }
             label="Laser Spot Size"
             min={0.001}
@@ -399,9 +394,9 @@ export function SettingsPanel() {
             unit="mm"
           />
           <NumericControl
-            value={draftOptions.traceMargin ?? 0}
+            value={lbrnOptions.traceMargin ?? 0}
             onChange={(value) =>
-              setDraftOptions((prev) => ({ ...prev, traceMargin: value }))
+              setLbrnOptions({ ...lbrnOptions, traceMargin: value })
             }
             label="Trace Margin"
             min={0}
@@ -409,12 +404,12 @@ export function SettingsPanel() {
             unit="mm"
           />
           <NumericControl
-            value={draftOptions.globalCopperSoldermaskMarginAdjustment ?? 0}
+            value={lbrnOptions.globalCopperSoldermaskMarginAdjustment ?? 0}
             onChange={(value) =>
-              setDraftOptions((prev) => ({
-                ...prev,
+              setLbrnOptions({
+                ...lbrnOptions,
                 globalCopperSoldermaskMarginAdjustment: value,
-              }))
+              })
             }
             label="Copper-Soldermask Clearance"
             precision={1}
@@ -427,24 +422,24 @@ export function SettingsPanel() {
               Origin Offset
             </div>
             <NumericControl
-              value={draftOptions.origin?.x ?? 0}
+              value={lbrnOptions.origin?.x ?? 0}
               onChange={(value) =>
-                setDraftOptions((prev) => ({
-                  ...prev,
-                  origin: { x: value, y: prev.origin?.y ?? 0 },
-                }))
+                setLbrnOptions({
+                  ...lbrnOptions,
+                  origin: { x: value, y: lbrnOptions.origin?.y ?? 0 },
+                })
               }
               label="Origin X"
               precision={0}
               unit="mm"
             />
             <NumericControl
-              value={draftOptions.origin?.y ?? 0}
+              value={lbrnOptions.origin?.y ?? 0}
               onChange={(value) =>
-                setDraftOptions((prev) => ({
-                  ...prev,
-                  origin: { x: prev.origin?.x ?? 0, y: value },
-                }))
+                setLbrnOptions({
+                  ...lbrnOptions,
+                  origin: { x: lbrnOptions.origin?.x ?? 0, y: value },
+                })
               }
               label="Origin Y"
               precision={0}
@@ -485,15 +480,18 @@ export function SettingsPanel() {
               Copper Cutting
             </div>
             <NumericControl
-              value={draftOptions.laserProfile?.copper?.speed ?? 300}
+              value={lbrnOptions.laserProfile?.copper?.speed ?? 300}
               onChange={(value) =>
-                setDraftOptions((prev) => ({
-                  ...prev,
+                setLbrnOptions({
+                  ...lbrnOptions,
                   laserProfile: {
-                    ...prev.laserProfile,
-                    copper: { ...prev.laserProfile?.copper, speed: value },
+                    ...lbrnOptions.laserProfile,
+                    copper: {
+                      ...lbrnOptions.laserProfile?.copper,
+                      speed: value,
+                    },
                   },
-                }))
+                })
               }
               label="Speed"
               min={1}
@@ -501,18 +499,18 @@ export function SettingsPanel() {
               unit="mm/s"
             />
             <NumericControl
-              value={draftOptions.laserProfile?.copper?.numPasses ?? 100}
+              value={lbrnOptions.laserProfile?.copper?.numPasses ?? 100}
               onChange={(value) =>
-                setDraftOptions((prev) => ({
-                  ...prev,
+                setLbrnOptions({
+                  ...lbrnOptions,
                   laserProfile: {
-                    ...prev.laserProfile,
+                    ...lbrnOptions.laserProfile,
                     copper: {
-                      ...prev.laserProfile?.copper,
+                      ...lbrnOptions.laserProfile?.copper,
                       numPasses: value,
                     },
                   },
-                }))
+                })
               }
               label="Passes"
               min={1}
@@ -520,18 +518,18 @@ export function SettingsPanel() {
               unit=" "
             />
             <NumericControl
-              value={draftOptions.laserProfile?.copper?.frequency ?? 20000}
+              value={lbrnOptions.laserProfile?.copper?.frequency ?? 20000}
               onChange={(value) =>
-                setDraftOptions((prev) => ({
-                  ...prev,
+                setLbrnOptions({
+                  ...lbrnOptions,
                   laserProfile: {
-                    ...prev.laserProfile,
+                    ...lbrnOptions.laserProfile,
                     copper: {
-                      ...prev.laserProfile?.copper,
+                      ...lbrnOptions.laserProfile?.copper,
                       frequency: value,
                     },
                   },
-                }))
+                })
               }
               label="Frequency"
               min={1000}
@@ -539,18 +537,18 @@ export function SettingsPanel() {
               unit="kHz"
             />
             <NumericControl
-              value={draftOptions.laserProfile?.copper?.pulseWidth ?? 0.000001}
+              value={lbrnOptions.laserProfile?.copper?.pulseWidth ?? 0.000001}
               onChange={(value) =>
-                setDraftOptions((prev) => ({
-                  ...prev,
+                setLbrnOptions({
+                  ...lbrnOptions,
                   laserProfile: {
-                    ...prev.laserProfile,
+                    ...lbrnOptions.laserProfile,
                     copper: {
-                      ...prev.laserProfile?.copper,
+                      ...lbrnOptions.laserProfile?.copper,
                       pulseWidth: value,
                     },
                   },
-                }))
+                })
               }
               label="Pulse Width"
               min={0.0000001}
@@ -567,15 +565,15 @@ export function SettingsPanel() {
               Board Cutting
             </div>
             <NumericControl
-              value={draftOptions.laserProfile?.board?.speed ?? 20}
+              value={lbrnOptions.laserProfile?.board?.speed ?? 20}
               onChange={(value) =>
-                setDraftOptions((prev) => ({
-                  ...prev,
+                setLbrnOptions({
+                  ...lbrnOptions,
                   laserProfile: {
-                    ...prev.laserProfile,
-                    board: { ...prev.laserProfile?.board, speed: value },
+                    ...lbrnOptions.laserProfile,
+                    board: { ...lbrnOptions.laserProfile?.board, speed: value },
                   },
-                }))
+                })
               }
               label="Speed"
               min={1}
@@ -583,15 +581,18 @@ export function SettingsPanel() {
               unit="mm/s"
             />
             <NumericControl
-              value={draftOptions.laserProfile?.board?.numPasses ?? 100}
+              value={lbrnOptions.laserProfile?.board?.numPasses ?? 100}
               onChange={(value) =>
-                setDraftOptions((prev) => ({
-                  ...prev,
+                setLbrnOptions({
+                  ...lbrnOptions,
                   laserProfile: {
-                    ...prev.laserProfile,
-                    board: { ...prev.laserProfile?.board, numPasses: value },
+                    ...lbrnOptions.laserProfile,
+                    board: {
+                      ...lbrnOptions.laserProfile?.board,
+                      numPasses: value,
+                    },
                   },
-                }))
+                })
               }
               label="Passes"
               min={1}
@@ -599,15 +600,18 @@ export function SettingsPanel() {
               unit=" "
             />
             <NumericControl
-              value={draftOptions.laserProfile?.board?.frequency ?? 20000}
+              value={lbrnOptions.laserProfile?.board?.frequency ?? 20000}
               onChange={(value) =>
-                setDraftOptions((prev) => ({
-                  ...prev,
+                setLbrnOptions({
+                  ...lbrnOptions,
                   laserProfile: {
-                    ...prev.laserProfile,
-                    board: { ...prev.laserProfile?.board, frequency: value },
+                    ...lbrnOptions.laserProfile,
+                    board: {
+                      ...lbrnOptions.laserProfile?.board,
+                      frequency: value,
+                    },
                   },
-                }))
+                })
               }
               label="Frequency"
               min={1000}
@@ -615,15 +619,18 @@ export function SettingsPanel() {
               unit="kHz"
             />
             <NumericControl
-              value={draftOptions.laserProfile?.board?.pulseWidth ?? 0.000001}
+              value={lbrnOptions.laserProfile?.board?.pulseWidth ?? 0.000001}
               onChange={(value) =>
-                setDraftOptions((prev) => ({
-                  ...prev,
+                setLbrnOptions({
+                  ...lbrnOptions,
                   laserProfile: {
-                    ...prev.laserProfile,
-                    board: { ...prev.laserProfile?.board, pulseWidth: value },
+                    ...lbrnOptions.laserProfile,
+                    board: {
+                      ...lbrnOptions.laserProfile?.board,
+                      pulseWidth: value,
+                    },
                   },
-                }))
+                })
               }
               label="Pulse Width"
               min={0.0000001}
@@ -632,25 +639,6 @@ export function SettingsPanel() {
             />
           </div>
         </div>
-      </div>
-
-      <Separator />
-
-      {/* Actions Section */}
-      <div className="space-y-3">
-        <Button
-          onClick={() => {
-            setLbrnOptions(draftOptions)
-            convertToLbrn()
-          }}
-          disabled={isConverting}
-          size="sm"
-          className="w-full gap-2"
-          variant="default"
-        >
-          <Check className="size-4" />
-          Apply Settings
-        </Button>
       </div>
     </div>
   )
