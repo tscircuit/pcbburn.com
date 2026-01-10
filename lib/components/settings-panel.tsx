@@ -161,21 +161,19 @@ export function SettingsPanel() {
     onChange,
     label,
     min = 0,
-    precision = 0,
     unit = "",
   }: {
     value: number
     onChange: (value: number) => void
     label: string
     min?: number
-    precision?: number
     unit?: string
   }) => {
-    const [inputValue, setInputValue] = useState(value.toFixed(precision))
+    const [inputValue, setInputValue] = useState(value.toString())
 
     React.useEffect(() => {
-      setInputValue(value.toFixed(precision))
-    }, [value, precision])
+      setInputValue(value.toString())
+    }, [value])
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
       const newValue = e.target.value
@@ -186,7 +184,7 @@ export function SettingsPanel() {
       const numericValue = parseFloat(inputValue)
       if (Number.isNaN(numericValue) || numericValue < min) {
         // Reset to original value if invalid
-        setInputValue(value.toFixed(precision))
+        setInputValue(value.toString())
       } else {
         // Commit the valid value
         onChange(Math.max(min, numericValue))
@@ -390,7 +388,6 @@ export function SettingsPanel() {
             }
             label="Laser Spot Size"
             min={0.001}
-            precision={3}
             unit="mm"
           />
           <NumericControl
@@ -400,7 +397,6 @@ export function SettingsPanel() {
             }
             label="Trace Margin"
             min={0}
-            precision={1}
             unit="mm"
           />
           <NumericControl
@@ -412,7 +408,7 @@ export function SettingsPanel() {
               })
             }
             label="Soldermask Margin"
-            precision={1}
+            min={-Infinity}
             unit="mm"
           />
 
@@ -430,7 +426,7 @@ export function SettingsPanel() {
                 })
               }
               label="Origin X"
-              precision={0}
+              min={-Infinity}
               unit="mm"
             />
             <NumericControl
@@ -442,7 +438,7 @@ export function SettingsPanel() {
                 })
               }
               label="Origin Y"
-              precision={0}
+              min={-Infinity}
               unit="mm"
             />
           </div>
@@ -495,7 +491,6 @@ export function SettingsPanel() {
               }
               label="Speed"
               min={1}
-              precision={0}
               unit="mm/s"
             />
             <NumericControl
@@ -514,7 +509,6 @@ export function SettingsPanel() {
               }
               label="Passes"
               min={1}
-              precision={0}
               unit=" "
             />
             <NumericControl
@@ -533,7 +527,6 @@ export function SettingsPanel() {
               }
               label="Frequency"
               min={1000}
-              precision={0}
               unit="kHz"
             />
             <NumericControl
@@ -552,7 +545,6 @@ export function SettingsPanel() {
               }
               label="Pulse Width"
               min={0.0000001}
-              precision={7}
               unit="s"
             />
           </div>
@@ -577,7 +569,6 @@ export function SettingsPanel() {
               }
               label="Speed"
               min={1}
-              precision={0}
               unit="mm/s"
             />
             <NumericControl
@@ -596,7 +587,6 @@ export function SettingsPanel() {
               }
               label="Passes"
               min={1}
-              precision={0}
               unit=" "
             />
             <NumericControl
@@ -615,7 +605,6 @@ export function SettingsPanel() {
               }
               label="Frequency"
               min={1000}
-              precision={0}
               unit="kHz"
             />
             <NumericControl
@@ -634,7 +623,6 @@ export function SettingsPanel() {
               }
               label="Pulse Width"
               min={0.0000001}
-              precision={7}
               unit="s"
             />
           </div>
