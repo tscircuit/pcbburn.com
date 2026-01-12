@@ -1,12 +1,12 @@
-import { Card } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
+import { Card } from "@/components/ui/card"
 import { Separator } from "@/components/ui/separator"
-import { Layers, Move, RotateCcwSquare, RotateCwSquare } from "lucide-react"
-import { useWorkspace } from "./workspace-context"
-import { useState, useRef } from "react"
-import { useSvgGeneration, useSvgTransform } from "../hooks/preview-hooks"
 import { cn } from "@/utils"
+import { Layers, Move, RotateCcwSquare, RotateCwSquare } from "lucide-react"
+import { useRef, useState } from "react"
+import { useSvgGeneration, useSvgTransform } from "../hooks/preview-hooks"
+import { useWorkspace } from "./workspace-context"
 export function PreviewCanvas() {
   const { circuitJson, lbrnOptions, isProcessingFile } = useWorkspace()
   const [viewMode, setViewMode] = useState<"lbrn" | "pcb" | "both">("lbrn")
@@ -17,11 +17,18 @@ export function PreviewCanvas() {
 
   const lbrnSvgDivRef = useRef<HTMLDivElement>(null)
   const pcbSvgDivRef = useRef<HTMLDivElement>(null)
+  // Container refs for computing fit-to-viewport transforms
+  const lbrnContainerRef = useRef<HTMLDivElement>(null)
+  const pcbContainerRef = useRef<HTMLDivElement>(null)
 
   const { ref, lbrnRef, pcbRef } = useSvgTransform({
     svgToPreview: viewMode === "both" ? "lbrn" : viewMode,
     lbrnSvgDivRef,
     pcbSvgDivRef,
+    lbrnContainerRef,
+    pcbContainerRef,
+    lbrnSvg,
+    pcbSvg,
     isSideBySide: viewMode === "both",
   })
 
@@ -132,7 +139,13 @@ export function PreviewCanvas() {
                   LBRN
                 </div>
                 <Card
-                  ref={lbrnRef}
+                  ref={(node) => {
+                    // Assign to both refs: mouse handler and container for fit calculation
+                    lbrnRef.current = node
+                    ;(
+                      lbrnContainerRef as React.MutableRefObject<HTMLDivElement | null>
+                    ).current = node
+                  }}
                   className="flex-1 border-0 shadow-none relative overflow-hidden cursor-grab"
                   style={{
                     backgroundColor: "white",
@@ -177,7 +190,12 @@ export function PreviewCanvas() {
                   PCB
                 </div>
                 <Card
-                  ref={pcbRef}
+                  ref={(node) => {
+                    pcbRef.current = node
+                    ;(
+                      pcbContainerRef as React.MutableRefObject<HTMLDivElement | null>
+                    ).current = node
+                  }}
                   className="flex-1 border-0 shadow-none relative overflow-hidden border-l cursor-grab"
                   style={{
                     backgroundColor: "black",
@@ -219,7 +237,19 @@ export function PreviewCanvas() {
           </div>
         ) : (
           <Card
-            ref={ref}
+            ref={(node) => {
+              // Assign to the active view's refs
+              ref.current = node
+              if (viewMode === "lbrn") {
+                ;(
+                  lbrnContainerRef as React.MutableRefObject<HTMLDivElement | null>
+                ).current = node
+              } else {
+                ;(
+                  pcbContainerRef as React.MutableRefObject<HTMLDivElement | null>
+                ).current = node
+              }
+            }}
             className="w-full h-full border-0 shadow-none relative overflow-hidden cursor-grab"
             style={{
               backgroundColor: viewMode === "pcb" ? "black" : "white",
