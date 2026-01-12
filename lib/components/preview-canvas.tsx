@@ -150,6 +150,7 @@ export function PreviewCanvas() {
                   style={{
                     backgroundColor: "white",
                   }}
+                  onContextMenu={(e) => e.preventDefault()}
                 >
                   <div
                     ref={lbrnSvgDivRef}
@@ -200,6 +201,7 @@ export function PreviewCanvas() {
                   style={{
                     backgroundColor: "black",
                   }}
+                  onContextMenu={(e) => e.preventDefault()}
                 >
                   <div
                     ref={pcbSvgDivRef}
@@ -254,6 +256,7 @@ export function PreviewCanvas() {
             style={{
               backgroundColor: viewMode === "pcb" ? "black" : "white",
             }}
+            onContextMenu={(e) => e.preventDefault()}
           >
             {/* PCB Preview Content */}
             <div
@@ -291,7 +294,10 @@ export function PreviewCanvas() {
         )}
 
         {/* Empty State Instructions */}
-        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 max-w-md text-center">
+        <div
+          className="absolute bottom-8 left-1/2 -translate-x-1/2 max-w-md text-center"
+          onContextMenu={(e) => e.preventDefault()}
+        >
           <p className="text-sm text-muted-foreground">
             Use scroll to zoom • Click and drag to pan • Toggle layers in the
             left panel
