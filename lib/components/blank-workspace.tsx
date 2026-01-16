@@ -3,6 +3,7 @@ import { Card } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Upload, FileUp, Zap, ArrowRight, CircuitBoard } from "lucide-react"
 import { useWorkspace } from "./workspace-context"
+import { Link } from "react-router-dom"
 
 export function BlankWorkspace() {
   const {
@@ -118,7 +119,7 @@ export function BlankWorkspace() {
               Choose File
             </Button>
             {error && (
-              <p className="absolute bottom-2 left-1/2 transform -translate-x-1/2 text-sm text-destructive bg-destructive/10 border border-destructive/20 rounded-lg px-2 py-1">
+              <p className="mt-2 text-sm text-center text-destructive bg-destructive/10 border border-destructive/20 rounded-lg px-3 py-2 max-w-full break-words z-10">
                 {error}
               </p>
             )}
@@ -209,14 +210,16 @@ export function BlankWorkspace() {
             </div>
 
             <div className="mt-6 pt-4 border-t border-border/50 flex items-center gap-2">
-              <Button
-                variant="ghost"
-                size="sm"
-                className="text-muted-foreground hover:text-foreground"
-              >
-                <FileUp className="size-4 mr-2" />
-                View Example Files
-              </Button>
+              <Link to="/demo">
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="text-muted-foreground hover:text-foreground"
+                >
+                  <FileUp className="size-4 mr-2" />
+                  View Example File
+                </Button>
+              </Link>
               <Button
                 variant="ghost"
                 size="sm"

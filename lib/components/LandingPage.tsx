@@ -110,7 +110,7 @@ export default function LandingPage() {
           </div>
           <div className="bg-card border border-border rounded-lg p-6 space-y-3 hover:border-accent/50 transition-colors">
             <div className="size-12 rounded-lg bg-accent/10 flex items-center justify-center">
-              <Eye className="size-6 text-accent" />
+              <Eye className="size-6 text-primary" />
             </div>
             <h3 className="text-xl font-semibold">Live Preview</h3>
             <p className="text-muted-foreground leading-relaxed">

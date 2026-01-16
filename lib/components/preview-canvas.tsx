@@ -61,8 +61,11 @@ export function PreviewCanvas() {
   return (
     <div className="h-full flex flex-col bg-muted/20">
       {/* Canvas Header */}
-      <div className="h-12 border-b border-border bg-card/80 backdrop-blur-sm flex items-center px-4 gap-3 shrink-0">
-        <Badge variant="outline" className="gap-1.5 bg-background">
+      <div className="h-12 border-b border-border bg-card/80 backdrop-blur-sm flex items-center px-2 md:px-4 gap-2 md:gap-3 shrink-0 overflow-x-hidden md:overflow-x-auto subtle-scrollbar">
+        <Badge
+          variant="outline"
+          className="gap-1.5 bg-background shrink-0 whitespace-nowrap"
+        >
           <Layers className="size-3" />2 Layers
         </Badge>
         <Separator orientation="vertical" className="h-6" />

@@ -213,7 +213,7 @@ export function SettingsPanel() {
   return (
     <div
       ref={panelRef}
-      className="p-4 space-y-6 overflow-auto border-r border-border relative"
+      className="px-4 pb-4 space-y-6 overflow-auto border-r border-border relative"
       style={{ width: `${panelWidth}px` }}
     >
       {/* Resize handle overlay */}
