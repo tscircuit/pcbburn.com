@@ -32,15 +32,21 @@ export function WorkspaceContent({
   return (
     <div className="h-screen flex flex-col bg-background">
       {/* Top Header */}
-      <header className="h-14 border-b border-border bg-card/50 backdrop-blur-sm flex items-center px-4 gap-3 shrink-0">
-        <Button
-          variant="ghost"
-          size="icon"
-          className="md:hidden"
-          onClick={() => setSidebarOpen(!sidebarOpen)}
-        >
-          {sidebarOpen ? <X className="size-4" /> : <Menu className="size-4" />}
-        </Button>
+      <header className="h-14 border-b border-border bg-card/50 backdrop-blur-sm flex items-center shrink-0">
+        {circuitJson && !isProcessingFile && !error && (
+          <Button
+            variant="ghost"
+            size="icon"
+            className="md:hidden ml-1"
+            onClick={() => setSidebarOpen(!sidebarOpen)}
+          >
+            {sidebarOpen ? (
+              <X className="size-4" />
+            ) : (
+              <Menu className="size-4" />
+            )}
+          </Button>
+        )}
         <Button
           variant="ghost"
           className="flex items-center gap-2 p-0 h-auto cursor-pointer hover:bg-transparent hover:text-inherit"
@@ -63,13 +69,22 @@ export function WorkspaceContent({
       <div className="flex-1 flex overflow-hidden">
         {/* Left Settings Panel - Only show when circuit is loaded and not processing and no error */}
         {circuitJson && !isProcessingFile && !error && (
-          <aside
-            className={`${
-              sidebarOpen ? "translate-x-0" : "-translate-x-full"
-            } fixed md:relative z-40 w-fit min-w-72 max-w-lg h-[calc(100vh-3.5rem)] bg-card border-r border-border overflow-y-auto transition-transform md:translate-x-0`}
-          >
-            <SettingsPanel />
-          </aside>
+          <>
+            {/* Mobile Backdrop */}
+            {sidebarOpen && (
+              <div
+                className="fixed inset-0 z-30 md:hidden"
+                onClick={() => setSidebarOpen(false)}
+              />
+            )}
+            <aside
+              className={`${
+                sidebarOpen ? "translate-x-0 shadow-xl" : "-translate-x-full"
+              } fixed subtle-scrollbar overflow-x-hidden md:relative z-40 w-fit md:w-fit md:min-w-72 md:max-w-lg h-[calc(100vh-3.5rem)] bg-card border-r border-border overflow-y-auto transition-transform duration-300 ease-in-out md:translate-x-0 md:shadow-none`}
+            >
+              <SettingsPanel />
+            </aside>
+          </>
         )}
 
         {/* Canvas Preview Area */}

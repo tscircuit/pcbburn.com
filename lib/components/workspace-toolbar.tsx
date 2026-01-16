@@ -45,7 +45,7 @@ export function WorkspaceToolbar() {
       <Button
         variant="outline"
         size="sm"
-        className="gap-2 bg-transparent"
+        className="gap-2 bg-transparent mr-2"
         onClick={handleExport}
         disabled={!lbrnFileContent}
       >
