@@ -33,14 +33,20 @@ export function WorkspaceContent({
     <div className="h-screen flex flex-col bg-background">
       {/* Top Header */}
       <header className="h-14 border-b border-border bg-card/50 backdrop-blur-sm flex items-center shrink-0">
-        <Button
-          variant="ghost"
-          size="icon"
-          className="md:hidden"
-          onClick={() => setSidebarOpen(!sidebarOpen)}
-        >
-          {sidebarOpen ? <X className="size-4" /> : <Menu className="size-4" />}
-        </Button>
+        {circuitJson && !isProcessingFile && !error && (
+          <Button
+            variant="ghost"
+            size="icon"
+            className="md:hidden ml-1"
+            onClick={() => setSidebarOpen(!sidebarOpen)}
+          >
+            {sidebarOpen ? (
+              <X className="size-4" />
+            ) : (
+              <Menu className="size-4" />
+            )}
+          </Button>
+        )}
         <Button
           variant="ghost"
           className="flex items-center gap-2 p-0 h-auto cursor-pointer hover:bg-transparent hover:text-inherit"
