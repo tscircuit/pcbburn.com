@@ -160,6 +160,7 @@ export function PreviewCanvas() {
                     ref={lbrnSvgDivRef}
                     style={{
                       transformOrigin: "0 0",
+                      userSelect: "none",
                     }}
                     className="absolute inset-0"
                   >
@@ -177,7 +178,10 @@ export function PreviewCanvas() {
                     )}
                   </div>
                   {/* Overlay Info */}
-                  <div className="absolute bottom-4 text-muted-foreground right-4 flex items-center">
+                  <div
+                    className="absolute bottom-4 text-muted-foreground right-4 flex items-center"
+                    style={{ userSelect: "none" }}
+                  >
                     <Badge
                       variant="outline"
                       className="bg-background/50 text-muted-foreground backdrop-blur-sm gap-1.5"
@@ -211,6 +215,7 @@ export function PreviewCanvas() {
                     ref={pcbSvgDivRef}
                     style={{
                       transformOrigin: "0 0",
+                      userSelect: "none",
                     }}
                     className="absolute inset-0"
                   >
@@ -228,7 +233,10 @@ export function PreviewCanvas() {
                     )}
                   </div>
                   {/* Overlay Info */}
-                  <div className="absolute bottom-4 text-muted-foreground right-4 flex items-center">
+                  <div
+                    className="absolute bottom-4 text-muted-foreground right-4 flex items-center"
+                    style={{ userSelect: "none" }}
+                  >
                     <Badge
                       variant="outline"
                       className="bg-background/50 text-muted-foreground backdrop-blur-sm gap-1.5"
@@ -267,6 +275,7 @@ export function PreviewCanvas() {
               ref={viewMode === "lbrn" ? lbrnSvgDivRef : pcbSvgDivRef}
               style={{
                 transformOrigin: "0 0",
+                userSelect: "none",
               }}
               className="absolute inset-0"
             >
@@ -285,7 +294,10 @@ export function PreviewCanvas() {
             </div>
 
             {/* Overlay Info */}
-            <div className="absolute bottom-4 text-muted-foreground right-4 flex items-center">
+            <div
+              className="absolute bottom-4 text-muted-foreground right-4 flex items-center"
+              style={{ userSelect: "none" }}
+            >
               <Badge
                 variant="outline"
                 className="bg-background/50 text-muted-foreground backdrop-blur-sm gap-1.5"
@@ -300,6 +312,7 @@ export function PreviewCanvas() {
         {/* Empty State Instructions */}
         <div
           className="absolute bottom-8 left-1/2 -translate-x-1/2 max-w-md text-center"
+          style={{ userSelect: "none" }}
           onContextMenu={(e) => e.preventDefault()}
         >
           <p className="text-sm text-muted-foreground">
