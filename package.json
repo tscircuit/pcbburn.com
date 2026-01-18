@@ -18,7 +18,7 @@
   "dependencies": {
     "@radix-ui/react-dialog": "^1.1.15",
     "@tscircuit/plop": "^0.0.72",
-    "circuit-json": "^0.0.342",
+    "circuit-json": "^0.0.356",
     "circuit-json-to-lbrn": "^0.0.42",
     "circuit-to-svg": "^0.0.313",
     "kicad-to-circuit-json": "^0.0.17",

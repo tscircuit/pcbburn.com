@@ -6,7 +6,7 @@
       "dependencies": {
         "@radix-ui/react-dialog": "^1.1.15",
         "@tscircuit/plop": "^0.0.72",
-        "circuit-json": "^0.0.342",
+        "circuit-json": "^0.0.356",
         "circuit-json-to-lbrn": "^0.0.42",
         "circuit-to-svg": "^0.0.313",
         "kicad-to-circuit-json": "^0.0.17",
@@ -508,7 +508,7 @@
 
     "ci-info": ["ci-info@3.9.0", "https://registry.npmmirror.com/ci-info/-/ci-info-3.9.0.tgz", {}, "sha512-NIxF55hv4nSqQswkAeiOi1r83xy8JldOFDTWiug55KBu9Jnblncd2U6ViHmYgHf01TPZS77NJBhBMKdWj9HQMQ=="],
 
-    "circuit-json": ["circuit-json@0.0.342", "https://registry.npmmirror.com/circuit-json/-/circuit-json-0.0.342.tgz", {}, "sha512-gll9fCF2F/W5/RydkyRifNl73lJyeeMpFGNHftKOW0Z67iU1todO+twjakm+QgGfySgR0HRo6cjEaRQac54Nzg=="],
+    "circuit-json": ["circuit-json@0.0.356", "https://registry.npmmirror.com/circuit-json/-/circuit-json-0.0.356.tgz", {}, "sha512-Jutbw2KmHx9rlAe4mCjPkVng1I07yu7JC7nMTqI8tyTGuovtdVKz8VyWw3W/HenwRQNywp5fDBObo/+WZkIGjA=="],
 
     "circuit-json-to-bpc": ["circuit-json-to-bpc@0.0.13", "https://registry.npmmirror.com/circuit-json-to-bpc/-/circuit-json-to-bpc-0.0.13.tgz", { "peerDependencies": { "bpc-graph": "*", "circuit-json": "*", "typescript": "^5" } }, "sha512-3wSMtPa6tJkiBQN4tsm7f0Mb7Wp90X2c8dNbULoDVE4mGGoFqP1DXqBlyvvZZl+4SjqznzQQ0EioLe2SCQTOcg=="],
 
