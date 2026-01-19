@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import { Separator } from "@/components/ui/separator"
 import { cn } from "@/utils"
-import { Layers, Move, RotateCcwSquare, RotateCwSquare } from "lucide-react"
+import { Layers, Maximize, Move, ZoomIn, ZoomOut } from "lucide-react"
 import { useRef, useState } from "react"
 import { useSvgGeneration, useSvgTransform } from "../hooks/preview-hooks"
 import { useWorkspace } from "./workspace-context"
@@ -22,21 +22,19 @@ export function PreviewCanvas() {
   const lbrnContainerRef = useRef<HTMLDivElement>(null)
   const pcbContainerRef = useRef<HTMLDivElement>(null)
 
-  const { ref, lbrnRef, pcbRef } = useSvgTransform({
-    svgToPreview: viewMode === "both" ? "lbrn" : viewMode,
-    lbrnSvgDivRef,
-    pcbSvgDivRef,
-    lbrnContainerRef,
-    pcbContainerRef,
-    lbrnSvg,
-    pcbSvg,
-    circuitJson,
-    isSideBySide: viewMode === "both",
-  })
-
-  const handleRotate = () => {
-    // TODO: implement rotation if needed
-  }
+  const { ref, lbrnRef, pcbRef, zoomIn, zoomOut, fitToScreen } =
+    useSvgTransform({
+      svgToPreview: viewMode === "both" ? "lbrn" : viewMode,
+      viewMode,
+      lbrnSvgDivRef,
+      pcbSvgDivRef,
+      lbrnContainerRef,
+      pcbContainerRef,
+      lbrnSvg,
+      pcbSvg,
+      circuitJson,
+      isSideBySide: viewMode === "both",
+    })
 
   // Show loading screen when processing file but no circuit yet
   if (!circuitJson && isProcessingFile) {
@@ -76,19 +74,31 @@ export function PreviewCanvas() {
             variant="ghost"
             size="icon"
             className="size-7"
-            aria-label="Rotate Left"
-            onClick={handleRotate}
+            aria-label="Zoom Out"
+            onClick={zoomOut}
+            disabled={!circuitJson || isGenerating}
           >
-            <RotateCcwSquare className="size-3.5" />
+            <ZoomOut className="size-3.5" />
           </Button>
           <Button
             variant="ghost"
             size="icon"
             className="size-7"
-            aria-label="Rotate Right"
-            onClick={handleRotate}
+            aria-label="Zoom In"
+            onClick={zoomIn}
+            disabled={!circuitJson || isGenerating}
           >
-            <RotateCwSquare className="size-3.5" />
+            <ZoomIn className="size-3.5" />
+          </Button>
+          <Button
+            variant="ghost"
+            size="icon"
+            className="size-7"
+            aria-label="Fit to Screen"
+            onClick={fitToScreen}
+            disabled={!circuitJson || isGenerating}
+          >
+            <Maximize className="size-3.5" />
           </Button>
         </div>
         <div className="inline-flex items-center rounded-lg bg-muted p-1">

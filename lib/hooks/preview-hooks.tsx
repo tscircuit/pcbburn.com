@@ -5,6 +5,7 @@ import { convertCircuitJsonToPcbSvg } from "circuit-to-svg"
 import { generateLightBurnSvg } from "lbrnts"
 import {
   type RefObject,
+  useCallback,
   useEffect,
   useLayoutEffect,
   useRef,
@@ -12,7 +13,10 @@ import {
 } from "react"
 import {
   type Matrix,
+  compose,
+  scale,
   toString as transformToString,
+  translate,
 } from "transformation-matrix"
 import { useMouseMatrixTransform } from "use-mouse-matrix-transform"
 import { IDENTITY_MATRIX, computeFitTransform } from "../helpers/svg-transform"
@@ -150,6 +154,7 @@ export function useSvgGeneration({
 
 export function useSvgTransform({
   svgToPreview,
+  viewMode,
   lbrnSvgDivRef,
   pcbSvgDivRef,
   lbrnContainerRef,
@@ -160,6 +165,7 @@ export function useSvgTransform({
   isSideBySide = false,
 }: {
   svgToPreview: "lbrn" | "pcb"
+  viewMode: "lbrn" | "pcb" | "both"
   lbrnSvgDivRef: RefObject<HTMLDivElement | null>
   pcbSvgDivRef: RefObject<HTMLDivElement | null>
   lbrnContainerRef: RefObject<HTMLElement | null>
@@ -298,9 +304,189 @@ export function useSvgTransform({
     pcbSvgDivRef,
   ])
 
+  const scaleMatrix = useCallback(
+    (matrix: Matrix, factor: number, centerX: number, centerY: number) => {
+      return compose(
+        compose(
+          translate(centerX, centerY),
+          compose(scale(factor, factor), translate(-centerX, -centerY)),
+        ),
+        matrix,
+      )
+    },
+    [],
+  )
+
+  const zoomIn = useCallback(() => {
+    const factor = 1.2
+    if (viewMode === "both") {
+      const lbrnRect = lbrnContainerRef.current?.getBoundingClientRect()
+      if (lbrnRect) {
+        const centerX = lbrnRect.width / 2
+        const centerY = lbrnRect.height / 2
+        const newLbrn = scaleMatrix(
+          lbrnHookResult.transform,
+          factor,
+          centerX,
+          centerY,
+        )
+        lbrnHookResult.setTransform(newLbrn)
+      }
+      const pcbRect = pcbContainerRef.current?.getBoundingClientRect()
+      if (pcbRect) {
+        const centerX = pcbRect.width / 2
+        const centerY = pcbRect.height / 2
+        const newPcb = scaleMatrix(
+          pcbHookResult.transform,
+          factor,
+          centerX,
+          centerY,
+        )
+        pcbHookResult.setTransform(newPcb)
+      }
+    } else if (svgToPreview === "lbrn") {
+      const rect = lbrnContainerRef.current?.getBoundingClientRect()
+      if (rect) {
+        const centerX = rect.width / 2
+        const centerY = rect.height / 2
+        const newTransform = scaleMatrix(
+          lbrnHookResult.transform,
+          factor,
+          centerX,
+          centerY,
+        )
+        lbrnHookResult.setTransform(newTransform)
+      }
+    } else {
+      const rect = pcbContainerRef.current?.getBoundingClientRect()
+      if (rect) {
+        const centerX = rect.width / 2
+        const centerY = rect.height / 2
+        const newTransform = scaleMatrix(
+          pcbHookResult.transform,
+          factor,
+          centerX,
+          centerY,
+        )
+        pcbHookResult.setTransform(newTransform)
+      }
+    }
+  }, [
+    viewMode,
+    svgToPreview,
+    lbrnHookResult,
+    pcbHookResult,
+    scaleMatrix,
+    lbrnContainerRef,
+    pcbContainerRef,
+  ])
+
+  const zoomOut = useCallback(() => {
+    const factor = 1 / 1.2
+    if (viewMode === "both") {
+      const lbrnRect = lbrnContainerRef.current?.getBoundingClientRect()
+      if (lbrnRect) {
+        const centerX = lbrnRect.width / 2
+        const centerY = lbrnRect.height / 2
+        const newLbrn = scaleMatrix(
+          lbrnHookResult.transform,
+          factor,
+          centerX,
+          centerY,
+        )
+        lbrnHookResult.setTransform(newLbrn)
+      }
+      const pcbRect = pcbContainerRef.current?.getBoundingClientRect()
+      if (pcbRect) {
+        const centerX = pcbRect.width / 2
+        const centerY = pcbRect.height / 2
+        const newPcb = scaleMatrix(
+          pcbHookResult.transform,
+          factor,
+          centerX,
+          centerY,
+        )
+        pcbHookResult.setTransform(newPcb)
+      }
+    } else if (svgToPreview === "lbrn") {
+      const rect = lbrnContainerRef.current?.getBoundingClientRect()
+      if (rect) {
+        const centerX = rect.width / 2
+        const centerY = rect.height / 2
+        const newTransform = scaleMatrix(
+          lbrnHookResult.transform,
+          factor,
+          centerX,
+          centerY,
+        )
+        lbrnHookResult.setTransform(newTransform)
+      }
+    } else {
+      const rect = pcbContainerRef.current?.getBoundingClientRect()
+      if (rect) {
+        const centerX = rect.width / 2
+        const centerY = rect.height / 2
+        const newTransform = scaleMatrix(
+          pcbHookResult.transform,
+          factor,
+          centerX,
+          centerY,
+        )
+        pcbHookResult.setTransform(newTransform)
+      }
+    }
+  }, [
+    viewMode,
+    svgToPreview,
+    lbrnHookResult,
+    pcbHookResult,
+    scaleMatrix,
+    lbrnContainerRef,
+    pcbContainerRef,
+  ])
+
+  const fitToScreen = useCallback(() => {
+    if (viewMode === "both" || svgToPreview === "lbrn") {
+      const svgDiv = lbrnSvgDivRef.current
+      const container = lbrnContainerRef.current
+      if (svgDiv && container) {
+        const svgElement = svgDiv.querySelector("svg")
+        if (svgElement) {
+          const fitTransform = computeFitTransform(svgElement, container)
+          lbrnHookResult.setTransform(fitTransform)
+          setLbrnInitialTransform(fitTransform)
+        }
+      }
+    }
+    if (viewMode === "both" || svgToPreview === "pcb") {
+      const svgDiv = pcbSvgDivRef.current
+      const container = pcbContainerRef.current
+      if (svgDiv && container) {
+        const svgElement = svgDiv.querySelector("svg")
+        if (svgElement) {
+          const fitTransform = computeFitTransform(svgElement, container)
+          pcbHookResult.setTransform(fitTransform)
+          setPcbInitialTransform(fitTransform)
+        }
+      }
+    }
+  }, [
+    viewMode,
+    svgToPreview,
+    lbrnSvgDivRef,
+    lbrnContainerRef,
+    pcbSvgDivRef,
+    pcbContainerRef,
+    lbrnHookResult,
+    pcbHookResult,
+  ])
+
   return {
     ref: svgToPreview === "lbrn" ? lbrnHookResult.ref : pcbHookResult.ref,
     lbrnRef: lbrnHookResult.ref,
     pcbRef: pcbHookResult.ref,
+    zoomIn,
+    zoomOut,
+    fitToScreen,
   }
 }
