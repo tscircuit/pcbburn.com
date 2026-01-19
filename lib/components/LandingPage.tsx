@@ -1,12 +1,12 @@
+import { ArrowRight, Code, Eye, FileUp, Flame, Zap } from "lucide-react"
 import { Link } from "react-router-dom"
 import { Button } from "./ui/button"
-import { ArrowRight, Zap, FileUp, Eye } from "lucide-react"
 
 export default function LandingPage() {
   return (
     <div className="min-h-screen bg-background">
       {/* Header */}
-      <header className="border-b border-border bg-card/50 backdrop-blur-sm sticky top-0 z-50">
+      <header className="border-b border-border bg-white sticky top-0 z-50">
         <div className="container mx-auto px-4 h-16 flex items-center justify-between">
           <div className="flex items-center gap-2">
             <div className="size-8 rounded-md bg-primary flex items-center justify-center">
@@ -58,9 +58,9 @@ export default function LandingPage() {
       </header>
 
       {/* Hero Section */}
-      <section className="container mx-auto px-4 py-20 md:py-32">
+      <section className="min-h-screen flex flex-col items-center justify-center px-4 py-20 md:py-32 bg-background">
         <div className="max-w-3xl mx-auto text-center space-y-8">
-          <div className="inline-flex items-center gap-2 px-3 py-1 bg-blue-100 rounded-full bg-primary/10 border border-primary text-sm text-primary">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 border border-primary text-sm text-primary">
             <Zap className="size-3.5" />
             <span className="font-medium">tscircuit PCB Laser Cutting</span>
           </div>
@@ -91,6 +91,70 @@ export default function LandingPage() {
             >
               <Link to="/demo">View Demo</Link>
             </Button>
+          </div>
+        </div>
+      </section>
+
+      {/* Demo Video Section */}
+      <section className="container mx-auto px-4 py-16 md:py-24">
+        <div className="max-w-4xl mx-auto text-center space-y-8">
+          <h2 className="text-3xl md:text-4xl mb-6 font-bold text-balance">
+            From Design to Laser-Cut PCB
+          </h2>
+          <div className="relative mx-auto max-w-4xl aspect-video rounded-xl overflow-hidden shadow-2xl">
+            <video
+              className="w-full h-full object-cover pointer-events-none"
+              muted
+              loop
+              autoPlay
+              playsInline
+              preload="metadata"
+              aria-label="Laser machining demonstration video"
+            >
+              <source src="/assets/laserVid.MP4" type="video/mp4" />
+              Oops! Your browser doesn't support video playback. Try updating or
+              using a modern browser
+            </video>
+          </div>
+        </div>
+      </section>
+
+      {/* PCB board Section */}
+      <section className="container mx-auto px-4 py-16 md:py-24">
+        <div className="max-w-4xl mx-auto text-center space-y-8">
+          <h2 className="text-3xl md:text-4xl mb-6 font-bold text-balance">
+            PCB Board Example
+          </h2>
+          <div className="flex flex-col items-center gap-4 md:flex-row md:justify-center md:gap-8 md:w-full text-sm md:text-lg text-muted-foreground">
+            <div className="flex items-center gap-2">
+              <Code className="size-4" />
+              <span>Designed in tscircuit</span>
+            </div>
+            <ArrowRight className="size-4 text-primary md:rotate-0 rotate-90" />
+            <div className="flex items-center gap-2">
+              <Zap className="size-4" />
+              <span>Converted with PCBBurn</span>
+            </div>
+            <ArrowRight className="size-4 text-primary md:rotate-0 rotate-90" />
+            <div className="flex items-center gap-2">
+              <Flame className="size-4" />
+              <span>Laser-cut perfection</span>
+            </div>
+          </div>
+          <p className="text-sm text-muted-foreground">
+            This board is designed in tscircuit and routed as a single-layer PCB
+            using tscircuit’s autorouter. The design was converted into LBRN
+            format using PCBBurn, then laser-cut directly into copper with
+            tolerances approaching 0.1 mm trace widths. Finally, kapton tape was
+            applied as a mask layer, and the laser was used to ablate that tape
+            to define a soldermask pattern for assembly.{" "}
+          </p>
+          <div className="relative mx-auto max-w-xl">
+            <img
+              src="/assets/board.jpeg"
+              alt="Completed PCB board laser-cut using converted LBRN files from tscircuit design"
+              className="w-full h-auto rounded-lg shadow-lg"
+            />
           </div>
         </div>
       </section>
