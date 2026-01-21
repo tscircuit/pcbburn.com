@@ -232,7 +232,7 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
 
       const finalOptions = { ...lbrnOptions, ...options }
 
-      const xml = convertCircuitJsonToLbrn(circuitJson, finalOptions)
+      const xml = await convertCircuitJsonToLbrn(circuitJson, finalOptions)
 
       setLbrnFileContent({
         xml,

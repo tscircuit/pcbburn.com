@@ -70,10 +70,11 @@ export function useSvgGeneration({
     const generateLbrnSvg = async () => {
       setIsGeneratingLbrn(true)
       try {
-        const lbrnProject = convertCircuitJsonToLbrn(
+        const lbrnProject = await convertCircuitJsonToLbrn(
           circuitJson as CircuitJson,
           lbrnOptions,
         )
+
         const lbrnSvgResult = generateLightBurnSvg(lbrnProject)
         if (!cancelled) {
           setLbrnSvg(String(lbrnSvgResult))
@@ -97,7 +98,7 @@ export function useSvgGeneration({
     return () => {
       cancelled = true
     }
-  }, [circuitJson, lbrnOptions, viewMode, lbrnSvg])
+  }, [circuitJson, lbrnOptions, viewMode])
 
   useEffect(() => {
     if (!circuitJson) {
