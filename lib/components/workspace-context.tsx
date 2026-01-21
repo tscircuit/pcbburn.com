@@ -1,12 +1,12 @@
+import type { CircuitJson } from "circuit-json"
+import type { ConvertCircuitJsonToLbrnOptions } from "circuit-json-to-lbrn"
+import { KicadToCircuitJsonConverter } from "kicad-to-circuit-json"
 import React, {
   createContext,
   useContext,
   useState,
   type ReactNode,
 } from "react"
-import type { CircuitJson } from "circuit-json"
-import type { ConvertCircuitJsonToLbrnOptions } from "circuit-json-to-lbrn"
-import { KicadToCircuitJsonConverter } from "kicad-to-circuit-json"
 
 const isValidCircuitJson = (data: unknown): data is CircuitJson => {
   if (!Array.isArray(data) || data.length === 0) {
@@ -63,9 +63,11 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
       includeCopper: true,
       includeSoldermask: false,
       includeSilkscreen: false,
+      includeCopperCutFill: false,
       includeLayers: ["top", "bottom"],
       laserSpotSize: 0.005,
       traceMargin: 0,
+      copperCutFillMargin: 0,
       globalCopperSoldermaskMarginAdjustment: 0,
       solderMaskMarginPercent: 0,
       origin: { x: 0, y: 0 },
