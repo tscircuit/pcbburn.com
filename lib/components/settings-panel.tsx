@@ -2,7 +2,7 @@ import React, { useState, useRef, useCallback } from "react"
 
 import { Button } from "@/components/ui/button"
 import { Separator } from "@/components/ui/separator"
-import { Settings, Zap, Upload, Cpu, Layers, Target } from "lucide-react"
+import { Cpu, Layers, Settings, Target, Upload, Zap } from "lucide-react"
 import { useWorkspace } from "./workspace-context"
 
 export function SettingsPanel() {
@@ -307,6 +307,13 @@ export function SettingsPanel() {
             }
             label="Include Soldermask"
           />
+          <ToggleButton
+            value={lbrnOptions.includeCopperCutFill ?? false}
+            onChange={(value) =>
+              setLbrnOptions({ ...lbrnOptions, includeCopperCutFill: value })
+            }
+            label="Include Copper Cut Fill"
+          />
           {/* Layer Selection */}
           <div className="flex items-center justify-between">
             <span className="text-sm">Layers</span>
@@ -396,6 +403,15 @@ export function SettingsPanel() {
               setLbrnOptions({ ...lbrnOptions, traceMargin: value })
             }
             label="Trace Margin"
+            min={0}
+            unit="mm"
+          />
+          <NumericControl
+            value={lbrnOptions.copperCutFillMargin ?? 0}
+            onChange={(value) =>
+              setLbrnOptions({ ...lbrnOptions, copperCutFillMargin: value })
+            }
+            label="Copper Fill Margin"
             min={0}
             unit="mm"
           />
