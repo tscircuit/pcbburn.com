@@ -80,6 +80,7 @@ export function useSvgGeneration({
           setLbrnSvg(String(lbrnSvgResult))
           lastLbrnInputs.current = { circuitJson, lbrnOptions }
         }
+        console.log("Lbrn generated")
       } catch (err) {
         console.error("Failed to generate LBRN SVG:", err)
         if (!cancelled) {
