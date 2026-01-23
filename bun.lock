@@ -7,10 +7,10 @@
         "@radix-ui/react-dialog": "^1.1.15",
         "@tscircuit/plop": "^0.0.72",
         "circuit-json": "^0.0.356",
-        "circuit-json-to-lbrn": "^0.0.48",
+        "circuit-json-to-lbrn": "^0.0.50",
         "circuit-to-svg": "^0.0.313",
         "kicad-to-circuit-json": "^0.0.17",
-        "lbrnts": "^0.0.14",
+        "lbrnts": "^0.0.16",
         "lucide-react": "^0.562.0",
         "react": "^19.1.0",
         "react-cosmos": "^7.1.0",
@@ -578,7 +578,7 @@
 
     "circuit-json-to-gltf": ["circuit-json-to-gltf@0.0.31", "https://registry.npmmirror.com/circuit-json-to-gltf/-/circuit-json-to-gltf-0.0.31.tgz", { "dependencies": { "@jscad/modeling": "^2.12.6", "jscad-electronics": "^0.0.53", "jscad-to-gltf": "^0.0.5" }, "peerDependencies": { "@resvg/resvg-js": "2", "@resvg/resvg-wasm": "2", "@tscircuit/circuit-json-util": "*", "circuit-json": "*", "circuit-to-svg": "*", "typescript": "^5" }, "optionalPeers": ["@resvg/resvg-js", "@resvg/resvg-wasm"] }, "sha512-TJ2yT7Ph//UyCt5u5W6PdyvAxil3Opy25hzzwRheqTw+UMo2WhcY6oug6svjPmaGyjjN6fhl0eMeoUgcfgq3sQ=="],
 
-    "circuit-json-to-lbrn": ["circuit-json-to-lbrn@0.0.48", "https://registry.npmmirror.com/circuit-json-to-lbrn/-/circuit-json-to-lbrn-0.0.48.tgz", { "dependencies": { "lbrnts": "^0.0.14", "manifold-3d": "^3.3.2" }, "peerDependencies": { "typescript": "^5" } }, "sha512-wj4C23vBd7Yjuf38OXkmSeSLfOFcrpbRyQgX6LRAaxHvSaLqDNO5rJBz+XfeTaH7VhFQ4ZGzQU4OAoEXKOfl4Q=="],
+    "circuit-json-to-lbrn": ["circuit-json-to-lbrn@0.0.50", "https://registry.npmmirror.com/circuit-json-to-lbrn/-/circuit-json-to-lbrn-0.0.50.tgz", { "dependencies": { "lbrnts": "^0.0.16", "manifold-3d": "^3.3.2" }, "peerDependencies": { "typescript": "^5" } }, "sha512-MSrAywBnCfDiraSYugtyhJcbkLD/HMiyEWoCJ62A+kvIuZAoC+TsOmcInyF/E3r/BEr1D5H8E+Sg1CFAE409Xg=="],
 
     "circuit-json-to-simple-3d": ["circuit-json-to-simple-3d@0.0.9", "https://registry.npmmirror.com/circuit-json-to-simple-3d/-/circuit-json-to-simple-3d-0.0.9.tgz", { "peerDependencies": { "typescript": "^5" } }, "sha512-thpCtDb9LpAQfGO+Z0hae19sxVAmJAMYM/It9UTMCtyXC3zoUHwRcp/oqtMO/ZIW+JDBhiR8AHmmtKScL2kW7Q=="],
 
@@ -934,7 +934,7 @@
 
     "ktx-parse": ["ktx-parse@1.1.0", "https://registry.npmmirror.com/ktx-parse/-/ktx-parse-1.1.0.tgz", {}, "sha512-mKp3y+FaYgR7mXWAbyyzpa/r1zDWeaunH+INJO4fou3hb45XuNSwar+7llrRyvpMWafxSIi99RNFJ05MHedaJQ=="],
 
-    "lbrnts": ["lbrnts@0.0.14", "https://registry.npmmirror.com/lbrnts/-/lbrnts-0.0.14.tgz", { "dependencies": { "fast-xml-parser": "^5.3.2" }, "peerDependencies": { "typescript": "^5" } }, "sha512-+NN8s/tPP2Dcs40awpTBZRhVsHQd93suF5WgQ/pekpiOtQiqS3mnQvHGYW5nDZgijYf5S3SNl2/M0uUBuO0BVA=="],
+    "lbrnts": ["lbrnts@0.0.16", "https://registry.npmmirror.com/lbrnts/-/lbrnts-0.0.16.tgz", { "dependencies": { "fast-xml-parser": "^5.3.2" }, "peerDependencies": { "typescript": "^5" } }, "sha512-I5Q9vHhHLtNYrMQRF2mqJizeo0Nr8kDcavOGE9SzKXRckG1SNHkySH7g5iNKNd7puZ5Hv1eQPO6LJpcPuY15gw=="],
 
     "lilconfig": ["lilconfig@3.1.3", "https://registry.npmmirror.com/lilconfig/-/lilconfig-3.1.3.tgz", {}, "sha512-/vlFKAoH5Cgt3Ie+JLhRbwOsCQePABiU3tJ1egGvyQ+33R/vcwM2Zl2QR/LzjsBeItPt3oSVXapn+m4nQDvpzw=="],
 
