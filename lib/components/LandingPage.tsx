@@ -26,12 +26,6 @@ export default function LandingPage() {
               tscircuit
             </Link>
             <Link
-              to="/features"
-              className="text-sm text-muted-foreground hover:text-foreground transition-colors"
-            >
-              Features
-            </Link>
-            <Link
               to="https://docs.tscircuit.com/category/intro"
               className="text-sm text-muted-foreground hover:text-foreground transition-colors"
             >

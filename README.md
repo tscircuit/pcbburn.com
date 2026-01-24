@@ -1,73 +1,77 @@
-# React + TypeScript + Vite
+# PCBBurn
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+PCBBurn is a web workspace for converting PCB designs into LightBurn-ready LBRN files. It accepts tscircuit Circuit JSON or KiCad `.kicad_pcb` files, previews the resulting geometry, lets you tune laser settings, and exports a downloadable `.lbrn` project for laser PCB ablation.
 
-Currently, two official plugins are available:
+## What It Does
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- Converts Circuit JSON or KiCad PCB files to LBRN via `circuit-json-to-lbrn`.
+- Generates live SVG previews for both LBRN output and PCB geometry.
+- Lets you adjust laser parameters, layer inclusion, margins, and origin offsets.
+- Exports a LightBurn project you can load directly into LightBurn.
 
-## React Compiler
+## How It Works
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+1. Upload a `.json` Circuit JSON file or a `.kicad_pcb` file in the workspace.
+2. KiCad files are converted to Circuit JSON using `kicad-to-circuit-json`.
+3. Circuit JSON is converted to LBRN XML using `circuit-json-to-lbrn`.
+4. LBRN XML is parsed/rendered to SVG with `lbrnts` for preview.
+5. Export the `.lbrn` file for LightBurn.
 
-## Expanding the ESLint configuration
+## Related tscircuit Repos
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+- `circuit-json-to-lbrn`: Converts Circuit JSON into LBRN XML with copper/soldermask options and laser settings.
+- `lbrnts`: Type-safe library for parsing and generating LightBurn projects + SVG previews.
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+## Local Development
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+bun install
+bun run dev
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+Then open `http://localhost:5173`.
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+## Scripts
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+- `bun run dev` - start Vite dev server
+- `bun run build` - typecheck and build
+- `bun run preview` - preview production build
+- `bun run lint` - run Biome lint
+- `bun run format` - format with Biome
+
+## Settings Panel + LBRN Options
+
+The workspace settings panel controls the options passed into `convertCircuitJsonToLbrn` and the laser profile metadata embedded in the exported `.lbrn` file.
+
+**Core LBRN options**
+
+- `includeCopper`: include copper traces/pads in the output.
+- `includeSoldermask`: include soldermask openings for Kapton tape cutting.
+- `includeCopperCutFill`: include a copper fill region for large-area ablation.
+- `includeLayers`: choose `top`, `bottom`, or both layers.
+- `laserSpotSize`: spot size used for raster/crosshatch spacing.
+- `traceMargin`: clearance margin around traces (mm).
+- `copperCutFillMargin`: extra margin for copper fill (mm).
+- `globalCopperSoldermaskMarginAdjustment`: global offset for soldermask openings.
+- `solderMaskMarginPercent`: percent-based adjustment for soldermask openings.
+- `origin`: `{ x, y }` offsets to move the output origin.
+
+**Laser profile settings**
+
+Laser profiles map directly to LightBurn cut settings for copper and board passes. The panel exposes speed, passes, frequency, and pulse width for each pass type, and presets are defined in `lib/components/settings-panel.tsx`.
+
+## Project Structure
+
+- `src/main.tsx`: App entry wiring for Vite.
+- `lib/components`: UI views (Landing, Workspace, Demo, etc.).
+- `lib/components/workspace-context.tsx`: File ingestion + conversion state machine.
+- `lib/components/settings-panel.tsx`: Laser defaults, upload UX, and LBRN option controls.
+- `lib/hooks/preview-hooks.tsx`: LBRN + PCB SVG generation and view transforms.
+- `examples/`: Demo circuit JSON used in the demo route.
+
+## Notes
+
+- The workspace auto-converts to LBRN when a valid circuit is loaded.
+- LBRN previews are generated client-side; no server is required.
+- Laser defaults live in `lib/components/settings-panel.tsx`.
+
