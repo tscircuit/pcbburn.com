@@ -40,7 +40,7 @@ const VideoWithLoader = React.forwardRef<
     }
 
     return (
-      <div className="relative">
+      <div className="relative w-full h-full">
         {isLoading && !hasError && (
           <div className="absolute inset-0 flex items-center justify-center bg-muted rounded-xl z-10">
             <div className="text-center">
@@ -52,7 +52,7 @@ const VideoWithLoader = React.forwardRef<
         <video
           ref={ref}
           className={cn(
-            "transition-opacity duration-300",
+            "block w-full h-full transition-opacity duration-300",
             isLoading ? "opacity-0" : "opacity-100",
             className,
           )}
