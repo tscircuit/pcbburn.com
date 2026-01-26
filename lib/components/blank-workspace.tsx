@@ -62,7 +62,7 @@ export function BlankWorkspace() {
     <div className="h-full bg-muted/10 flex flex-col overflow-y-auto">
       <div className="max-w-sm md:max-w-4xl w-full space-y-2 mx-auto p-2 md:p-4">
         {/* Header */}
-        <div className="text-center space-y-2 md:space-y-4">
+        <div className="text-center mt-4 space-y-2 md:space-y-4">
           <h1 className="text-2xl md:text-4xl font-bold tracking-tight">
             Convert Your Circuit
             <span className="block text-primary">to Laser-Ready Files</span>
