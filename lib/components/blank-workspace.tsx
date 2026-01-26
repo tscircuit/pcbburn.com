@@ -216,14 +216,19 @@ export function BlankWorkspace() {
                   View Example File
                 </Button>
               </Link>
-              <Button
-                variant="ghost"
-                size="sm"
-                className="text-muted-foreground hover:text-foreground"
+              <Link
+                to="https://docs.tscircuit.com/category/intro"
+                target="_blank"
               >
-                <ArrowRight className="size-4 mr-2" />
-                Documentation
-              </Button>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="text-muted-foreground hover:text-foreground"
+                >
+                  <ArrowRight className="size-4 mr-2" />
+                  Documentation
+                </Button>
+              </Link>
             </div>
           </div>
         </Card>
