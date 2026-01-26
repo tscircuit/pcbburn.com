@@ -63,10 +63,6 @@ export function BlankWorkspace() {
       <div className="max-w-sm md:max-w-4xl w-full space-y-2 mx-auto p-2 md:p-4">
         {/* Header */}
         <div className="text-center space-y-2 md:space-y-4">
-          <div className="inline-flex items-center gap-2 px-3 py-1 bg-blue-100 rounded-full bg-primary/10 border border-primary text-sm text-primary">
-            <Zap className="size-3.5" />
-            <span className="font-medium">Circuit to LBRN Converter</span>
-          </div>
           <h1 className="text-2xl md:text-4xl font-bold tracking-tight">
             Convert Your Circuit
             <span className="block text-primary">to Laser-Ready Files</span>
