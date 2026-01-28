@@ -14,7 +14,7 @@ import { Input } from "@/components/ui/input"
 export function WorkspaceToolbar() {
   const { lbrnFileContent } = useWorkspace()
   const [open, setOpen] = useState(false)
-  const [filename, setFilename] = useState("circuit.lbrn")
+  const [filename, setFilename] = useState("circuit.lbrn2")
 
   const handleExport = () => {
     if (!lbrnFileContent) return
@@ -24,9 +24,9 @@ export function WorkspaceToolbar() {
   const handleConfirmExport = () => {
     if (!lbrnFileContent) return
 
-    const finalFilename = filename.endsWith(".lbrn")
+    const finalFilename = filename.endsWith(".lbrn2")
       ? filename
-      : `${filename}.lbrn`
+      : `${filename}.lbrn2`
 
     const blob = new Blob([lbrnFileContent.xml], { type: "application/xml" })
     const url = URL.createObjectURL(blob)

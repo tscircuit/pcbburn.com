@@ -234,7 +234,8 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
 
       const finalOptions = { ...lbrnOptions, ...options }
 
-      const xml = await convertCircuitJsonToLbrn(circuitJson, finalOptions)
+      const rawXml = await convertCircuitJsonToLbrn(circuitJson, finalOptions)
+      const xml = formatLbrnXml(rawXml)
 
       setLbrnFileContent({
         xml,
@@ -273,6 +274,44 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
       {children}
     </WorkspaceContext.Provider>
   )
+}
+
+const formatLbrnXml = (value: unknown): string => {
+  if (typeof value === "string") {
+    return value
+  }
+
+  if (value && typeof value === "object") {
+    const candidate = value as { xml?: unknown; outerHTML?: unknown }
+    if (typeof candidate.xml === "string") {
+      return candidate.xml
+    }
+    if (typeof candidate.outerHTML === "string") {
+      return candidate.outerHTML
+    }
+  }
+
+  if (typeof window !== "undefined" && value instanceof XMLDocument) {
+    return new XMLSerializer().serializeToString(value)
+  }
+
+  if (typeof window !== "undefined" && value instanceof Element) {
+    return new XMLSerializer().serializeToString(value)
+  }
+
+  if (Array.isArray(value)) {
+    return value.map(formatLbrnXml).join("")
+  }
+
+  const fallback = String(value)
+  if (fallback.startsWith("[object ") && fallback.endsWith("]")) {
+    const inner = fallback.slice(8, -1)
+    if (inner.trim().startsWith("<?xml")) {
+      return inner
+    }
+  }
+
+  return fallback
 }
 
 export function useWorkspace() {
