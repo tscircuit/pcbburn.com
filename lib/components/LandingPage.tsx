@@ -31,6 +31,14 @@ export default function LandingPage() {
             >
               Documentation
             </Link>
+            <a
+              href="https://discord.com/channels/1233487248129921135/1436467687734902917"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+            >
+              Discord
+            </a>
             <Link
               to="https://github.com/tscircuit/pcbburn.com"
               target="_blank"
