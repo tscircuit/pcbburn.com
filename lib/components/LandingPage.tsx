@@ -19,33 +19,37 @@ export default function LandingPage() {
             </span>
           </div>
           <nav className="hidden md:flex items-center gap-6">
-            <Link
-              to="https://tscircuit.com"
+            <a
+              href="https://tscircuit.com"
               className="text-sm text-muted-foreground hover:text-foreground transition-colors"
             >
               tscircuit
-            </Link>
-            <Link
-              to="https://docs.tscircuit.com/category/intro"
+            </a>
+
+            <a
+              href="https://docs.tscircuit.com/category/intro"
               className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+              target="_blank"
+              rel="noopener noreferrer"
             >
               Documentation
-            </Link>
+            </a>
             <a
               href="https://discord.com/channels/1233487248129921135/1436467687734902917"
+              className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Discord
+            </a>
+            <a
+              href="https://github.com/tscircuit/pcbburn.com"
               target="_blank"
               rel="noopener noreferrer"
               className="text-sm text-muted-foreground hover:text-foreground transition-colors"
             >
-              Discord
-            </a>
-            <Link
-              to="https://github.com/tscircuit/pcbburn.com"
-              target="_blank"
-              className="text-sm text-muted-foreground hover:text-foreground transition-colors"
-            >
               Github
-            </Link>
+            </a>
           </nav>
           <div className="flex items-center gap-3">
             <Button
