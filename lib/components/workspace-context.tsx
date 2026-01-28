@@ -61,9 +61,9 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
   const [lbrnOptions, setLbrnOptionsState] =
     useState<ConvertCircuitJsonToLbrnOptions>({
       includeCopper: true,
-      includeSoldermask: false,
-      includeSilkscreen: false,
-      includeCopperCutFill: false,
+      includeSoldermask: true,
+      includeSilkscreen: true,
+      includeCopperCutFill: true,
       includeLayers: ["top", "bottom"],
       laserSpotSize: 0.005,
       traceMargin: 0,
@@ -84,7 +84,15 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
   const setLbrnOptions = (
     options: Partial<ConvertCircuitJsonToLbrnOptions>,
   ) => {
-    setLbrnOptionsState((prev) => ({ ...prev, ...options }))
+    setLbrnOptionsState((prev) => ({
+      ...prev,
+      ...options,
+      includeCopper: true,
+      includeSoldermask: true,
+      includeSilkscreen: true,
+      includeCopperCutFill: true,
+      includeLayers: ["top", "bottom"],
+    }))
   }
 
   // Auto-convert to LBRN when circuit is loaded

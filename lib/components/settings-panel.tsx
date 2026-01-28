@@ -2,7 +2,7 @@ import React, { useState, useRef, useCallback } from "react"
 
 import { Button } from "@/components/ui/button"
 import { Separator } from "@/components/ui/separator"
-import { Cpu, Layers, Settings, Target, Upload, Zap } from "lucide-react"
+import { Cpu, Layers, Settings, Upload, Zap } from "lucide-react"
 import { useWorkspace } from "./workspace-context"
 
 export function SettingsPanel() {
@@ -132,29 +132,6 @@ export function SettingsPanel() {
       await processCircuitFile(files[0])
     }
   }
-  // Helper function to create toggle buttons
-  const ToggleButton = ({
-    value,
-    onChange,
-    label,
-  }: {
-    value: boolean
-    onChange: (value: boolean) => void
-    label: string
-  }) => (
-    <div className="flex items-center justify-between min-w-0">
-      <span className="text-sm truncate">{label}</span>
-      <Button
-        variant={value ? "default" : "outline"}
-        size="sm"
-        onClick={() => onChange(!value)}
-        className="w-16"
-      >
-        {value ? "On" : "Off"}
-      </Button>
-    </div>
-  )
-
   // Helper function for numeric controls
   const NumericControl = ({
     value,
@@ -284,107 +261,10 @@ export function SettingsPanel() {
         </div>
       </div>
 
-      <Separator />
-
-      {/* Basic Settings Section */}
-      <div className="space-y-3">
-        <div className="flex items-center gap-2">
-          <Layers className="size-4" />
-          <h4 className="text-sm font-medium">Basic Settings</h4>
-        </div>
-        <div className="space-y-3 pl-6">
-          <ToggleButton
-            value={lbrnOptions.includeCopper ?? true}
-            onChange={(value) =>
-              setLbrnOptions({ ...lbrnOptions, includeCopper: value })
-            }
-            label="Include Copper"
-          />
-          <ToggleButton
-            value={lbrnOptions.includeSoldermask ?? false}
-            onChange={(value) =>
-              setLbrnOptions({ ...lbrnOptions, includeSoldermask: value })
-            }
-            label="Include Soldermask"
-          />
-          <ToggleButton
-            value={lbrnOptions.includeCopperCutFill ?? false}
-            onChange={(value) =>
-              setLbrnOptions({ ...lbrnOptions, includeCopperCutFill: value })
-            }
-            label="Include Copper Cut Fill"
-          />
-          {/* Layer Selection */}
-          <div className="flex items-center justify-between">
-            <span className="text-sm">Layers</span>
-            <div className="flex gap-1">
-              <Button
-                variant={
-                  (lbrnOptions.includeLayers ?? ["top", "bottom"]).includes(
-                    "top",
-                  )
-                    ? "default"
-                    : "outline"
-                }
-                size="sm"
-                className="w-16"
-                onClick={() =>
-                  setLbrnOptions({
-                    ...lbrnOptions,
-                    includeLayers: (
-                      lbrnOptions.includeLayers ?? ["top", "bottom"]
-                    ).includes("top")
-                      ? (lbrnOptions.includeLayers ?? ["top", "bottom"]).filter(
-                          (l: "top" | "bottom") => l !== "top",
-                        )
-                      : [
-                          ...(lbrnOptions.includeLayers ?? ["top", "bottom"]),
-                          "top",
-                        ],
-                  })
-                }
-              >
-                Top
-              </Button>
-              <Button
-                variant={
-                  (lbrnOptions.includeLayers ?? ["top", "bottom"]).includes(
-                    "bottom",
-                  )
-                    ? "default"
-                    : "outline"
-                }
-                size="sm"
-                className="w-16"
-                onClick={() =>
-                  setLbrnOptions({
-                    ...lbrnOptions,
-                    includeLayers: (
-                      lbrnOptions.includeLayers ?? ["top", "bottom"]
-                    ).includes("bottom")
-                      ? (lbrnOptions.includeLayers ?? ["top", "bottom"]).filter(
-                          (l: "top" | "bottom") => l !== "bottom",
-                        )
-                      : [
-                          ...(lbrnOptions.includeLayers ?? ["top", "bottom"]),
-                          "bottom",
-                        ],
-                  })
-                }
-              >
-                Bottom
-              </Button>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <Separator />
-
       {/* Advanced Settings Section */}
       <div className="space-y-3">
         <div className="flex items-center gap-2">
-          <Target className="size-4" />
+          <Layers className="size-4" />
           <h4 className="text-sm font-medium">Advanced Settings</h4>
         </div>
         <div className="space-y-3 pl-6">
