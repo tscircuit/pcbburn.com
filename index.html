@@ -4,17 +4,64 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>PCBBurn - Convert Your Circuit to Laser-Ready Files</title>
-  <meta name="description"
-    content="PCBBurn is a web workspace for converting PCB designs into LightBurn-ready LBRN files. Preview geometry, tune laser settings, and export for PCB ablation." />
-  <link rel="icon" href="/favicon.ico" type="image/x-icon" sizes="16x16">
+
+  <!-- Primary SEO -->
+  <title>PCBBurn – Convert tscircuit & KiCad PCB Designs to LBRN for LightBurn</title>
+  <meta
+    name="description"
+    content="PCBBurn converts KiCad and tscircuit PCB designs into LightBurn-ready LBRN files. Upload, preview layers, tune laser settings, and export precision PCB burn files in seconds."
+  />
+  <link rel="canonical" href="https://pcbburn.com/" />
+
+  <!-- Favicon -->
+  <link rel="icon" href="/favicon.ico" type="image/x-icon" sizes="16x16" />
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="PCBBurn – Convert tscircuit & KiCad PCB Designs to LBRN for LightBurn" />
+  <meta
+    property="og:description"
+    content="Convert tscircuit and KiCad PCB layouts into LightBurn-ready LBRN files. Preview, tune, and export precision laser PCB burn files for fabrication."
+  />
+  <meta property="og:url" content="https://pcbburn.com/" />
+  <meta property="og:image" content="https://pcbburn.com/assets/board.jpeg" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="PCBBurn – Convert tscircuit & KiCad PCB Designs to LBRN for LightBurn" />
+  <meta
+    name="twitter:description"
+    content="Convert tscircuit and KiCad PCB designs into LBRN files for LightBurn. Preview layers, adjust laser parameters, and export fabrication-ready PCB burn files."
+  />
+  <meta name="twitter:image" content="https://pcbburn.com/assets/board.jpeg" />
+
+  <!-- JSON-LD structured data -->
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "PCBBurn",
+      "url": "https://pcbburn.com/",
+      "description": "Convert tscircuit and KiCad PCB designs into LightBurn-ready LBRN files for precision laser PCB fabrication.",
+      "applicationCategory": "DeveloperApplication",
+      "operatingSystem": "Any",
+      "creator": {
+        "@type": "Organization",
+        "name": "tscircuit"
+      }
+    }
+  </script>
 </head>
 
 <body>
   <noscript>
-  <h1>PCBBurn - Convert Your Circuit to Laser-Ready Files</h1>
-</noscript>
+    <h1>PCBBurn – Convert tscircuit &amp; KiCad PCB Designs to LBRN for LightBurn</h1>
+  </noscript>
+
   <div id="root"></div>
   <script type="module" src="/src/main.tsx"></script>
 </body>
+
 </html>
