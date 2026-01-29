@@ -65,6 +65,7 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
       includeSilkscreen: true,
       includeCopperCutFill: true,
       includeOxidationCleaningLayer: true,
+      includeSoldermaskCure: true,
       includeLayers: ["top"],
       laserSpotSize: 0.005,
       traceMargin: 0,
@@ -93,6 +94,7 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
       includeSilkscreen: true,
       includeCopperCutFill: true,
       includeOxidationCleaningLayer: true,
+      includeSoldermaskCure: true,
       includeLayers: ["top"],
     }))
   }
