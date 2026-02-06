@@ -1,6 +1,14 @@
 import React, { useState, useRef, useCallback } from "react"
 
 import { Button } from "@/components/ui/button"
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog"
 import { Separator } from "@/components/ui/separator"
 import {
   ChevronDown,
@@ -64,6 +72,9 @@ export function SettingsPanel() {
   const [profilesLoaded, setProfilesLoaded] = useState(false)
   const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false)
   const profileMenuRef = useRef<HTMLDivElement>(null)
+  const [profilePendingDelete, setProfilePendingDelete] = useState<
+    string | null
+  >(null)
 
   const laserProfiles = React.useMemo(
     () => ({ ...builtInLaserProfiles, ...customProfiles }),
@@ -489,7 +500,8 @@ export function SettingsPanel() {
                                 type="button"
                                 onClick={(event) => {
                                   event.stopPropagation()
-                                  handleDeleteProfile(profileName)
+                                  setProfilePendingDelete(profileName)
+                                  setIsProfileMenuOpen(false)
                                 }}
                                 className="shrink-0 p-1 text-muted-foreground hover:text-foreground hover:bg-muted/60"
                                 aria-label={`Delete ${profileName}`}
@@ -673,6 +685,44 @@ export function SettingsPanel() {
           </div>
         </div>
       </div>
+
+      <Dialog
+        open={profilePendingDelete !== null}
+        onOpenChange={(open) => {
+          if (!open) setProfilePendingDelete(null)
+        }}
+      >
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Delete laser profile?</DialogTitle>
+            <DialogDescription>
+              This will permanently remove “{profilePendingDelete}”. This action
+              cannot be undone.
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter>
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() => setProfilePendingDelete(null)}
+            >
+              Cancel
+            </Button>
+            <Button
+              type="button"
+              className="bg-red-500 text-destructive-foreground hover:bg-red-800"
+              onClick={() => {
+                if (!profilePendingDelete) return
+                handleDeleteProfile(profilePendingDelete)
+                setProfilePendingDelete(null)
+                setIsProfileMenuOpen(false)
+              }}
+            >
+              Delete
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
 
       <LaserProfileDialog
         open={isProfileDialogOpen}
