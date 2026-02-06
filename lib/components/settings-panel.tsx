@@ -2,7 +2,16 @@ import React, { useState, useRef, useCallback } from "react"
 
 import { Button } from "@/components/ui/button"
 import { Separator } from "@/components/ui/separator"
-import { Cpu, Layers, Settings, Upload, Zap } from "lucide-react"
+import {
+  ChevronDown,
+  Cpu,
+  Layers,
+  Plus,
+  Settings,
+  Trash2,
+  Upload,
+  Zap,
+} from "lucide-react"
 import { type LaserProfile, LaserProfileDialog } from "./laser-profile-dialog"
 import { NumericControl } from "./numeric-control"
 import { useWorkspace } from "./workspace-context"
@@ -53,6 +62,8 @@ export function SettingsPanel() {
   >({})
   const [isProfileDialogOpen, setIsProfileDialogOpen] = useState(false)
   const [profilesLoaded, setProfilesLoaded] = useState(false)
+  const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false)
+  const profileMenuRef = useRef<HTMLDivElement>(null)
 
   const laserProfiles = React.useMemo(
     () => ({ ...builtInLaserProfiles, ...customProfiles }),
@@ -141,6 +152,27 @@ export function SettingsPanel() {
     setSelectedProfile("Default")
   }, [laserProfiles, selectedProfile])
 
+  React.useEffect(() => {
+    if (!isProfileMenuOpen) return
+    const handleOutsideClick = (event: MouseEvent) => {
+      if (!profileMenuRef.current) return
+      if (!profileMenuRef.current.contains(event.target as Node)) {
+        setIsProfileMenuOpen(false)
+      }
+    }
+    const handleEscape = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setIsProfileMenuOpen(false)
+      }
+    }
+    document.addEventListener("mousedown", handleOutsideClick)
+    document.addEventListener("keydown", handleEscape)
+    return () => {
+      document.removeEventListener("mousedown", handleOutsideClick)
+      document.removeEventListener("keydown", handleEscape)
+    }
+  }, [isProfileMenuOpen])
+
   const handleSaveProfile = (name: string, profile: LaserProfile) => {
     setCustomProfiles((prev) => ({
       ...prev,
@@ -154,6 +186,24 @@ export function SettingsPanel() {
       },
     })
     setSelectedProfile(name)
+  }
+
+  const handleDeleteProfile = (profileName: string) => {
+    setCustomProfiles((prev) => {
+      const { [profileName]: _, ...rest } = prev
+      return rest
+    })
+    if (selectedProfile === profileName) {
+      const fallbackProfile = builtInLaserProfiles.Default
+      setLbrnOptions({
+        ...lbrnOptions,
+        laserProfile: {
+          copper: { ...fallbackProfile.copper },
+          board: { ...fallbackProfile.board },
+        },
+      })
+      setSelectedProfile("Default")
+    }
   }
 
   const initialProfile = React.useMemo(
@@ -395,25 +445,75 @@ export function SettingsPanel() {
           {/* Profile Selection */}
           <div className="flex items-center justify-between min-w-0">
             <span className="text-sm truncate">Laser Profile</span>
-            <select
-              value={selectedProfile}
-              onChange={(e) => loadLaserProfile(e.target.value)}
-              className="px-2 py-1 text-sm border mr-5 border-input bg-background rounded-md focus:outline-none focus:ring-2 focus:ring-ring min-w-16 max-w-44"
-            >
-              {Object.keys(laserProfiles).map((profileName) => (
-                <option key={profileName} value={profileName}>
-                  {profileName}
-                </option>
-              ))}
-            </select>
+            <div className="flex justify-end gap-1.5  " ref={profileMenuRef}>
+              <div className="relative">
+                <button
+                  type="button"
+                  onClick={() => setIsProfileMenuOpen((open) => !open)}
+                  className="flex items-center justify-between gap-2 px-2 py-1 text-sm border border-input bg-background rounded-md focus:outline-none focus:ring-2 focus:ring-ring min-w-16 max-w-44 w-44"
+                  aria-haspopup="menu"
+                  aria-expanded={isProfileMenuOpen}
+                >
+                  <span className="truncate">{selectedProfile}</span>
+                  <ChevronDown className="size-4 text-muted-foreground" />
+                </button>
+                {isProfileMenuOpen && (
+                  <div className="absolute right-0 mt-1 z-20 w-64 max-h-60 overflow-auto rounded-md border border-border bg-background shadow-md">
+                    <div className="py-1">
+                      {Object.keys(laserProfiles).map((profileName) => {
+                        const isSelected = profileName === selectedProfile
+                        const isProtectedProfile =
+                          Object.prototype.hasOwnProperty.call(
+                            builtInLaserProfiles,
+                            profileName,
+                          )
+                        return (
+                          <div
+                            key={profileName}
+                            className="flex items-center hover:bg-muted gap-2"
+                          >
+                            <button
+                              type="button"
+                              onClick={() => {
+                                loadLaserProfile(profileName)
+                                setIsProfileMenuOpen(false)
+                              }}
+                              className={`flex-1 text-left py-1.5 text-sm px-2 focus:outline-none ${
+                                isSelected ? "font-medium underline" : ""
+                              }`}
+                            >
+                              <span className="truncate">{profileName}</span>
+                            </button>
+                            {!isProtectedProfile && (
+                              <button
+                                type="button"
+                                onClick={(event) => {
+                                  event.stopPropagation()
+                                  handleDeleteProfile(profileName)
+                                }}
+                                className="shrink-0 p-1 text-muted-foreground hover:text-foreground hover:bg-muted/60"
+                                aria-label={`Delete ${profileName}`}
+                              >
+                                <Trash2 className="size-4 text-red-500 hover:text-red-700 hover:scale-105 transition-all mr-2" />
+                              </button>
+                            )}
+                          </div>
+                        )
+                      })}
+                    </div>
+                  </div>
+                )}
+              </div>
+              <button
+                type="button"
+                onClick={() => setIsProfileDialogOpen(true)}
+                className="inline-flex size-7 items-center justify-center rounded-md border border-input bg-background text-muted-foreground transition-colors hover:text-foreground hover:border-foreground/30 focus:outline-none focus:ring-2 focus:ring-ring"
+                aria-label="Add new laser profile"
+              >
+                <Plus className="size-4" />
+              </button>
+            </div>
           </div>
-          <button
-            type="button"
-            className="text-sm text-blue-600 underline hover:text-blue-700"
-            onClick={() => setIsProfileDialogOpen(true)}
-          >
-            Add new laser profile
-          </button>
 
           {/* Copper Settings */}
           <div className="space-y-2">
