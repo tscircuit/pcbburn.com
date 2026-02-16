@@ -18,7 +18,6 @@ import {
   Settings,
   Trash2,
   Upload,
-  Zap,
 } from "lucide-react"
 import { type LaserProfile, LaserProfileDialog } from "./laser-profile-dialog"
 import { NumericControl } from "./numeric-control"
@@ -53,7 +52,6 @@ export function SettingsPanel() {
     lbrnFileContent,
     lbrnOptions,
     setLbrnOptions,
-    convertToLbrn,
     processCircuitFile,
     isConverting,
     error,
@@ -335,20 +333,30 @@ export function SettingsPanel() {
               </div>
             </label>
           </div>
-          <Button
-            onClick={() => convertToLbrn()}
-            disabled={!circuitJson || isConverting || !!lbrnFileContent}
-            size="sm"
-            className="w-full gap-2"
-          >
-            <Zap className="size-4" />
-            {isConverting
-              ? "Converting..."
-              : lbrnFileContent
-                ? "LBRN Generated"
-                : "Generate LBRN"}
-          </Button>
-          {error && <div className="text-sm text-destructive">{error}</div>}
+          {/* Conversion Status */}
+          <div className="w-full bg-muted/30 px-3 text-xs justify-center flex">
+            {!circuitJson && (
+              <div className="text-muted-foreground">
+                Upload a circuit file to start LBRN generation.
+              </div>
+            )}
+
+            {circuitJson && isConverting && (
+              <div className="flex items-center gap-2 text-foreground">
+                <span className="size-2 rounded-full bg-primary animate-pulse" />
+                Converting to LBRN...
+              </div>
+            )}
+
+            {circuitJson && !isConverting && lbrnFileContent && !error && (
+              <div className="flex items-center gap-2 text-primary">
+                <span className="size-2 rounded-full bg-primary" />
+                LBRN file generated successfully.
+              </div>
+            )}
+
+            {error && <div className="text-destructive">{error}</div>}
+          </div>
         </div>
       </div>
 
