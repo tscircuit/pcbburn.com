@@ -233,20 +233,10 @@ export default function LandingPage() {
               <h4 className="font-semibold mb-3">Product</h4>
               <ul className="space-y-2 text-sm text-muted-foreground">
                 <li>
-                  <Link
-                    to="/features"
-                    className="hover:text-foreground transition-colors"
-                  >
-                    Features
-                  </Link>
+                  <span>Features</span>
                 </li>
                 <li>
-                  <Link
-                    to="/changelog"
-                    className="hover:text-foreground transition-colors"
-                  >
-                    Changelog
-                  </Link>
+                  <span>Changelog</span>
                 </li>
               </ul>
             </div>
@@ -254,28 +244,13 @@ export default function LandingPage() {
               <h4 className="font-semibold mb-3">Resources</h4>
               <ul className="space-y-2 text-sm text-muted-foreground">
                 <li>
-                  <Link
-                    to="/docs"
-                    className="hover:text-foreground transition-colors"
-                  >
-                    Documentation
-                  </Link>
+                  <span>Documentation</span>
                 </li>
                 <li>
-                  <Link
-                    to="/guides"
-                    className="hover:text-foreground transition-colors"
-                  >
-                    Guides
-                  </Link>
+                  <span>Guides</span>
                 </li>
                 <li>
-                  <Link
-                    to="/support"
-                    className="hover:text-foreground transition-colors"
-                  >
-                    Support
-                  </Link>
+                  <span>Support</span>
                 </li>
               </ul>
             </div>
@@ -283,28 +258,13 @@ export default function LandingPage() {
               <h4 className="font-semibold mb-3">Company</h4>
               <ul className="space-y-2 text-sm text-muted-foreground">
                 <li>
-                  <Link
-                    to="/about"
-                    className="hover:text-foreground transition-colors"
-                  >
-                    About
-                  </Link>
+                  <span>About</span>
                 </li>
                 <li>
-                  <Link
-                    to="/blog"
-                    className="hover:text-foreground transition-colors"
-                  >
-                    Blog
-                  </Link>
+                  <span>Blog</span>
                 </li>
                 <li>
-                  <Link
-                    to="/contact"
-                    className="hover:text-foreground transition-colors"
-                  >
-                    Contact
-                  </Link>
+                  <span>Contact</span>
                 </li>
               </ul>
             </div>
