@@ -29,6 +29,7 @@
     "react-dom": "^19.1.0",
     "react-router-dom": "^6.28.0",
     "react-supergrid": "^1.0.10",
+    "stack-svgs": "^0.0.1",
     "transformation-matrix": "^3.1.0",
     "use-mouse-matrix-transform": "^1.3.5"
   },
