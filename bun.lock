@@ -9,7 +9,7 @@
         "@tscircuit/plop": "^0.0.72",
         "circuit-json": "^0.0.356",
         "circuit-json-to-lbrn": "^0.0.58",
-        "circuit-to-svg": "^0.0.316",
+        "circuit-to-svg": "^0.0.328",
         "kicad-to-circuit-json": "^0.0.17",
         "lbrnts": "^0.0.17",
         "lucide-react": "^0.562.0",
@@ -381,6 +381,8 @@
 
     "@skidding/launch-editor": ["@skidding/launch-editor@2.2.3", "https://registry.npmmirror.com/@skidding/launch-editor/-/launch-editor-2.2.3.tgz", { "dependencies": { "chalk": "^2.3.0", "shell-quote": "^1.6.1" } }, "sha512-0SuGEsWdulnbryUJ6humogFuuDMWMb4VJyhOc3FGVkibxVdECYDDkGx8VjS/NePZSegNONDIVhCEVZLTv4ycTQ=="],
 
+    "@thednp/dommatrix": ["@thednp/dommatrix@2.0.12", "", {}, "sha512-eOshhlSShBXLfrMQqqhA450TppJXhKriaQdN43mmniOCMn9sD60QKF1Axsj7bKl339WH058LuGFS6H84njYH5w=="],
+
     "@ts-morph/common": ["@ts-morph/common@0.22.0", "https://registry.npmmirror.com/@ts-morph/common/-/common-0.22.0.tgz", { "dependencies": { "fast-glob": "^3.3.2", "minimatch": "^9.0.3", "mkdirp": "^3.0.1", "path-browserify": "^1.0.1" } }, "sha512-HqNBuV/oIlMKdkLshXd1zKBqNQCsuPEsgQOkfFQ/eUKjRlwndXW1AjN9LVkBEIukm00gGXSRmfkl0Wv5VXLnlw=="],
 
     "@tscircuit/alphabet": ["@tscircuit/alphabet@0.0.17", "https://registry.npmmirror.com/@tscircuit/alphabet/-/alphabet-0.0.17.tgz", { "peerDependencies": { "typescript": "^5.0.0" } }, "sha512-cuXgG7GSalJhwZmPZhWkkK4IU6vdz22Y1irC+wCGEtluwnkVTzcdzr1KCuN1ec4nYlpS293eHklUwxH9RbAB2g=="],
@@ -585,7 +587,7 @@
 
     "circuit-json-to-spice": ["circuit-json-to-spice@0.0.27", "https://registry.npmmirror.com/circuit-json-to-spice/-/circuit-json-to-spice-0.0.27.tgz", { "dependencies": { "circuit-json-to-connectivity-map": "^0.0.22" }, "peerDependencies": { "@tscircuit/circuit-json-util": "*", "circuit-json": "*", "typescript": "^5.0.0" } }, "sha512-eftfzVaBDNkzHeLlOHyD2it6AmJDjeGj1xg8lbTU+3tHcFzlEFK6vnVfHQjbjXQB9/0Zy6t+hd/2Cen+LrEcBw=="],
 
-    "circuit-to-svg": ["circuit-to-svg@0.0.316", "", { "dependencies": { "@types/node": "^22.5.5", "bun-types": "^1.1.40", "calculate-elbow": "0.0.12", "svgson": "^5.3.1", "transformation-matrix": "^2.16.1" }, "peerDependencies": { "@tscircuit/alphabet": "*" } }, "sha512-kwuZG777H+U1GQqW4YYV1rVTtijEMf2z/GSQlzdNehoIEvsL6ZTs42i2iPjUaT8yNlZdbAelKjTFz5ky12xxqA=="],
+    "circuit-to-svg": ["circuit-to-svg@0.0.328", "", { "dependencies": { "@types/node": "^22.5.5", "bun-types": "^1.1.40", "calculate-elbow": "0.0.12", "debug": "^4.4.3", "svg-path-commander": "^2.1.11", "svgson": "^5.3.1", "transformation-matrix": "^2.16.1" }, "peerDependencies": { "@tscircuit/alphabet": "*" } }, "sha512-slMPAhd0/jOUQQnA0LRXDHEXNqdaiJeqLkfGsbuLj4Y4/hfKN2vbOO4Azo53H6yYBKBYVRph3Z9igY6yeQa+Yg=="],
 
     "cli-cursor": ["cli-cursor@5.0.0", "https://registry.npmmirror.com/cli-cursor/-/cli-cursor-5.0.0.tgz", { "dependencies": { "restore-cursor": "^5.0.0" } }, "sha512-aCj4O5wKyszjMmDT4tZj93kxyydN/K5zPWSCe6/0AV/AA1pqe5ZBIw0a2ZfPQV7lL5/yb5HsUreJ6UFAF1tEQw=="],
 
@@ -1286,6 +1288,8 @@
     "supports-color": ["supports-color@7.2.0", "https://registry.npmmirror.com/supports-color/-/supports-color-7.2.0.tgz", { "dependencies": { "has-flag": "^4.0.0" } }, "sha512-qpCAvRl9stuOHveKsn7HncJRvv501qIacKzQlO/+Lwxc9+0q2wLyv4Dfvt80/DPn2pqOBsJdDiogXGR9+OvwRw=="],
 
     "supports-preserve-symlinks-flag": ["supports-preserve-symlinks-flag@1.0.0", "https://registry.npmmirror.com/supports-preserve-symlinks-flag/-/supports-preserve-symlinks-flag-1.0.0.tgz", {}, "sha512-ot0WnXS9fgdkgIcePe6RHNk1WA8+muPa6cSjeR3V8K27q9BB1rTE3R1p7Hv0z1ZyAc8s6Vvv8DIyWf681MAt0w=="],
+
+    "svg-path-commander": ["svg-path-commander@2.1.11", "", { "dependencies": { "@thednp/dommatrix": "^2.0.12" } }, "sha512-wmQ6QA3Od+HOcpIzLjPlbv59+x3yd3V5W6xitUOvAHmqZpP7wVrRM2CHqEm5viHUbZu6PjzFsjbTEFtIeUxaNA=="],
 
     "svgson": ["svgson@5.3.1", "https://registry.npmmirror.com/svgson/-/svgson-5.3.1.tgz", { "dependencies": { "deep-rename-keys": "^0.2.1", "xml-reader": "2.4.3" } }, "sha512-qdPgvUNWb40gWktBJnbJRelWcPzkLed/ShhnRsjbayXz8OtdPOzbil9jtiZdrYvSDumAz/VNQr6JaNfPx/gvPA=="],
 
