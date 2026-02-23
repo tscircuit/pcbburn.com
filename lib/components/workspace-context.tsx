@@ -4,6 +4,7 @@ import { KicadToCircuitJsonConverter } from "kicad-to-circuit-json"
 import React, {
   createContext,
   useContext,
+  useRef,
   useState,
   type ReactNode,
 } from "react"
@@ -99,12 +100,20 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
     }))
   }
 
-  // Auto-convert to LBRN when circuit is loaded
+  const lastLbrnOptions = useRef<ConvertCircuitJsonToLbrnOptions | null>(null)
+
+  // Auto-convert to LBRN when circuit/options change
   React.useEffect(() => {
-    if (circuitJson && !lbrnFileContent && !isConverting) {
+    if (!circuitJson || isConverting) return
+
+    const optionsChanged = lastLbrnOptions.current !== lbrnOptions
+    const needsInitialConversion = !lbrnFileContent
+
+    if (needsInitialConversion || optionsChanged) {
+      lastLbrnOptions.current = lbrnOptions
       convertToLbrn()
     }
-  }, [circuitJson, lbrnFileContent, isConverting])
+  }, [circuitJson, lbrnFileContent, isConverting, lbrnOptions])
 
   const loadKicadPcbFile = async (pcbContent: string) => {
     setIsConverting(true)
