@@ -9,7 +9,7 @@ import { CircuitJson } from "circuit-json"
 test("renders basic pcb vias with copper and hole", async () => {
   const pcbSvg = await convertCircuitJsonToPcbSvg(circuitJson as CircuitJson)
 
-  const project = await convertCircuitJsonToLbrn(circuitJson)
+  const project = await convertCircuitJsonToLbrn(circuitJson as CircuitJson)
 
   const lbrnSvg = generateLightBurnSvg(project)
 
