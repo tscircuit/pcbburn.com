@@ -22,7 +22,7 @@
     "circuit-json-to-lbrn": "^0.0.60",
     "circuit-to-svg": "^0.0.328",
     "kicad-to-circuit-json": "^0.0.17",
-    "lbrnts": "^0.0.17",
+    "lbrnts": "^0.0.18",
     "lucide-react": "^0.562.0",
     "react": "^19.1.0",
     "react-cosmos": "^7.1.0",
