@@ -3,13 +3,23 @@ import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import { Separator } from "@/components/ui/separator"
 import { cn } from "@/utils"
-import { Layers, Maximize, Move, ZoomIn, ZoomOut } from "lucide-react"
-import { useRef, useState } from "react"
+import {
+  ChevronDown,
+  Layers,
+  Maximize,
+  Move,
+  ZoomIn,
+  ZoomOut,
+} from "lucide-react"
+import { useEffect, useLayoutEffect, useRef, useState } from "react"
+import { createPortal } from "react-dom"
 import { useSvgGeneration, useSvgTransform } from "../hooks/preview-hooks"
 import { useWorkspace } from "./workspace-context"
 export function PreviewCanvas() {
-  const { circuitJson, lbrnOptions, isProcessingFile } = useWorkspace()
+  const { circuitJson, lbrnOptions, isProcessingFile, setLbrnOptions } =
+    useWorkspace()
   const [viewMode, setViewMode] = useState<"lbrn" | "pcb" | "both">("lbrn")
+  const [isLayerMenuOpen, setIsLayerMenuOpen] = useState(false)
   const { lbrnSvg, pcbSvg, isGenerating } = useSvgGeneration({
     circuitJson,
     lbrnOptions,
@@ -18,6 +28,12 @@ export function PreviewCanvas() {
 
   const lbrnSvgDivRef = useRef<HTMLDivElement>(null)
   const pcbSvgDivRef = useRef<HTMLDivElement>(null)
+  const layerMenuRef = useRef<HTMLDivElement>(null)
+  const layerButtonRef = useRef<HTMLButtonElement>(null)
+  const [layerMenuPosition, setLayerMenuPosition] = useState({
+    top: 0,
+    left: 0,
+  })
   // Container refs for computing fit-to-viewport transforms
   const lbrnContainerRef = useRef<HTMLDivElement>(null)
   const pcbContainerRef = useRef<HTMLDivElement>(null)
@@ -35,6 +51,70 @@ export function PreviewCanvas() {
       circuitJson,
       isSideBySide: viewMode === "both",
     })
+
+  useEffect(() => {
+    if (!isLayerMenuOpen) return
+
+    const handlePointerDown = (event: MouseEvent) => {
+      const target = event.target as Node
+      const clickedMenu = layerMenuRef.current?.contains(target)
+      const clickedButton = layerButtonRef.current?.contains(target)
+      if (!clickedMenu && !clickedButton) {
+        setIsLayerMenuOpen(false)
+      }
+    }
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setIsLayerMenuOpen(false)
+      }
+    }
+
+    document.addEventListener("mousedown", handlePointerDown)
+    document.addEventListener("keydown", handleKeyDown)
+
+    return () => {
+      document.removeEventListener("mousedown", handlePointerDown)
+      document.removeEventListener("keydown", handleKeyDown)
+    }
+  }, [isLayerMenuOpen])
+
+  useLayoutEffect(() => {
+    if (!isLayerMenuOpen || !layerButtonRef.current) return
+
+    const updatePosition = () => {
+      if (!layerButtonRef.current) return
+      const rect = layerButtonRef.current.getBoundingClientRect()
+      setLayerMenuPosition({
+        top: rect.bottom + 8,
+        left: rect.left,
+      })
+    }
+
+    updatePosition()
+
+    window.addEventListener("resize", updatePosition)
+    window.addEventListener("scroll", updatePosition, true)
+
+    return () => {
+      window.removeEventListener("resize", updatePosition)
+      window.removeEventListener("scroll", updatePosition, true)
+    }
+  }, [isLayerMenuOpen])
+
+  const includeLayers = lbrnOptions.includeLayers ?? []
+  const layerCount = includeLayers.length
+
+  const toggleLayer = (layer: "top" | "bottom") => {
+    const isSelected = includeLayers.includes(layer)
+    if (isSelected && includeLayers.length === 1) return
+
+    const nextLayers = isSelected
+      ? includeLayers.filter((item) => item !== layer)
+      : [...includeLayers, layer]
+
+    setLbrnOptions({ includeLayers: nextLayers })
+  }
 
   // Show loading screen when processing file but no circuit yet
   if (!circuitJson && isProcessingFile) {
@@ -61,13 +141,73 @@ export function PreviewCanvas() {
   return (
     <div className="h-full flex flex-col bg-muted/20">
       {/* Canvas Header */}
-      <div className="h-12 border-b border-border bg-card/80 backdrop-blur-sm flex items-center px-2 md:px-4 gap-2 md:gap-3 shrink-0 overflow-x-hidden md:overflow-x-auto subtle-scrollbar">
-        <Badge
-          variant="outline"
-          className="gap-1.5 bg-background shrink-0 whitespace-nowrap"
-        >
-          <Layers className="size-3" />2 Layers
-        </Badge>
+      <div className="h-12 border-b border-border bg-card/80 backdrop-blur-sm flex items-center px-2 md:px-4 gap-2 md:gap-3 shrink-0 overflow-x-hidden md:overflow-x-auto subtle-scrollbar relative  overflow-visible">
+        <div className="relative">
+          <button
+            type="button"
+            onClick={() => setIsLayerMenuOpen((open) => !open)}
+            className="inline-flex items-center gap-1.5 rounded-full border border-border bg-background px-2.5 py-1 text-xs font-medium text-foreground hover:bg-muted/60 transition-colors shrink-0 whitespace-nowrap"
+            aria-haspopup="menu"
+            aria-expanded={isLayerMenuOpen}
+            ref={layerButtonRef}
+          >
+            <Layers className="size-3" />
+            {layerCount} {layerCount === 1 ? "Layer" : "Layers"}
+            <ChevronDown
+              className={cn(
+                "size-3 text-muted-foreground transition-transform",
+                isLayerMenuOpen && "rotate-180",
+              )}
+            />
+          </button>
+          {isLayerMenuOpen &&
+            createPortal(
+              <div
+                ref={layerMenuRef}
+                className="fixed z-10 w-48 rounded-md border border-border bg-background shadow-md p-2"
+                style={{
+                  top: layerMenuPosition.top,
+                  left: layerMenuPosition.left,
+                }}
+              >
+                <div className="px-2 pb-1 text-xs font-medium text-muted-foreground">
+                  Include Layers
+                </div>
+                <label className="flex items-center justify-between gap-2 rounded-md px-2 py-1.5 hover:bg-muted cursor-pointer">
+                  <span className="text-sm">Top</span>
+                  <input
+                    type="checkbox"
+                    className="size-4 accent-primary"
+                    checked={includeLayers.includes("top")}
+                    onChange={() => toggleLayer("top")}
+                    disabled={
+                      includeLayers.length === 1 &&
+                      includeLayers.includes("top")
+                    }
+                    aria-label="Toggle top layer"
+                  />
+                </label>
+                <label className="flex items-center justify-between gap-2 rounded-md px-2 py-1.5 hover:bg-muted cursor-pointer">
+                  <span className="text-sm">Bottom</span>
+                  <input
+                    type="checkbox"
+                    className="size-4 accent-primary"
+                    checked={includeLayers.includes("bottom")}
+                    onChange={() => toggleLayer("bottom")}
+                    disabled={
+                      includeLayers.length === 1 &&
+                      includeLayers.includes("bottom")
+                    }
+                    aria-label="Toggle bottom layer"
+                  />
+                </label>
+                <div className="px-2 pt-1 text-[11px] text-muted-foreground">
+                  At least one layer must stay enabled.
+                </div>
+              </div>,
+              document.body,
+            )}
+        </div>
         <Separator orientation="vertical" className="h-6" />
         <div className="flex items-center gap-1">
           <Button
