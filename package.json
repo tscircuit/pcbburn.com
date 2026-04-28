@@ -31,7 +31,7 @@
     "react-supergrid": "^1.0.10",
     "stack-svgs": "^0.0.1",
     "transformation-matrix": "^3.1.0",
-    "use-mouse-matrix-transform": "^1.3.5"
+    "use-mouse-matrix-transform": "^1.3.0"
   },
   "devDependencies": {
     "@biomejs/biome": "^1.9.4",
