@@ -19,7 +19,7 @@
     "@radix-ui/react-dialog": "^1.1.15",
     "@tscircuit/plop": "^0.0.72",
     "circuit-json": "^0.0.403",
-    "circuit-json-to-lbrn": "^0.0.75",
+    "circuit-json-to-lbrn": "^0.0.76",
     "circuit-to-svg": "^0.0.344",
     "kicad-to-circuit-json": "^0.0.43",
     "lbrnts": "^0.0.18",

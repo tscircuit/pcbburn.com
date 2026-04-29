@@ -65,7 +65,7 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
       includeSoldermask: true,
       includeSilkscreen: true,
       includeCopperCutFill: true,
-      includeOxidationCleaningLayer: false,
+      includeOxidationCleaningLayer: true,
       includeSoldermaskCure: true,
       mirrorBottomLayer: true,
       includeLayers: ["top", "bottom"],
@@ -95,7 +95,10 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
       includeSoldermask: true,
       includeSilkscreen: true,
       includeCopperCutFill: true,
-      includeOxidationCleaningLayer: false,
+      includeOxidationCleaningLayer:
+        options.includeOxidationCleaningLayer ??
+        prev.includeOxidationCleaningLayer ??
+        true,
       includeSoldermaskCure: true,
       includeLayers: options.includeLayers ?? prev.includeLayers,
     }))
