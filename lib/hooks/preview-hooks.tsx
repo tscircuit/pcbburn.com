@@ -21,6 +21,22 @@ import {
 import { useMouseMatrixTransform } from "use-mouse-matrix-transform"
 import { IDENTITY_MATRIX, computeFitTransform } from "../helpers/svg-transform"
 
+
+const hideOxidationCleaningPreviewLayer = (svg: string) => {
+  return svg.replace(
+    /<g([^>]*\bid=["'][^"']*oxidation[^"']*["'][^>]*)>/gi,
+    (_match, attrs: string) => {
+      if (/\bstyle=["'][^"']*display\s*:\s*none/.test(attrs)) {
+        return `<g${attrs}>`
+      }
+      if (/\bstyle=["']/.test(attrs)) {
+        return `<g${attrs.replace(/\bstyle=["']([^"']*)["']/, 'style="$1;display:none"')}>`
+      }
+      return `<g${attrs} style="display:none">`
+    },
+  )
+}
+
 export function useSvgGeneration({
   circuitJson,
   lbrnOptions,
@@ -77,7 +93,7 @@ export function useSvgGeneration({
 
         const lbrnSvgResult = generateLightBurnSvg(lbrnProject)
         if (!cancelled) {
-          setLbrnSvg(String(lbrnSvgResult))
+          setLbrnSvg(hideOxidationCleaningPreviewLayer(String(lbrnSvgResult)))
           lastLbrnInputs.current = { circuitJson, lbrnOptions }
         }
       } catch (err) {
