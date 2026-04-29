@@ -4,10 +4,18 @@ import { KicadToCircuitJsonConverter } from "kicad-to-circuit-json"
 import React, {
   createContext,
   useContext,
+  useMemo,
   useRef,
   useState,
   type ReactNode,
 } from "react"
+import conductivityPadsTemplateRaw from "../../assets/connectivity-test-pads.json?raw"
+import fiducialsTemplateRaw from "../../assets/fiducials.json?raw"
+
+export type FiducialConductivityOption =
+  | "none"
+  | "fiducials"
+  | "conductivityPads"
 
 const isValidCircuitJson = (data: unknown): data is CircuitJson => {
   if (!Array.isArray(data) || data.length === 0) {
@@ -21,6 +29,73 @@ const isValidCircuitJson = (data: unknown): data is CircuitJson => {
       typeof item.type === "string",
   )
 }
+
+const parseCircuitJsonTemplate = (
+  rawTemplate: string,
+  templateName: string,
+): CircuitJson => {
+  const parsedTemplate = JSON.parse(rawTemplate)
+  if (!isValidCircuitJson(parsedTemplate)) {
+    throw new Error(`Invalid ${templateName} circuit JSON template`)
+  }
+  return parsedTemplate
+}
+
+const circuitJsonTemplates: Record<
+  Exclude<FiducialConductivityOption, "none">,
+  CircuitJson
+> = {
+  fiducials: parseCircuitJsonTemplate(fiducialsTemplateRaw, "fiducials"),
+  conductivityPads: parseCircuitJsonTemplate(
+    conductivityPadsTemplateRaw,
+    "conductivity pads",
+  ),
+}
+
+const templatePrefixByOption: Record<
+  Exclude<FiducialConductivityOption, "none">,
+  string
+> = {
+  fiducials: "pcbburn_fiducials",
+  conductivityPads: "pcbburn_conductivity_pads",
+}
+
+const cloneWithPrefixedIds = (value: unknown, idPrefix: string): unknown => {
+  if (Array.isArray(value)) {
+    return value.map((item) => cloneWithPrefixedIds(item, idPrefix))
+  }
+  if (!value || typeof value !== "object") {
+    return value
+  }
+
+  return Object.fromEntries(
+    Object.entries(value).map(([key, entry]) => {
+      const clonedEntry = cloneWithPrefixedIds(entry, idPrefix)
+      if (key.endsWith("_id") && typeof clonedEntry === "string") {
+        return [key, `${idPrefix}_${clonedEntry}`]
+      }
+      return [key, clonedEntry]
+    }),
+  )
+}
+
+const getCircuitJsonWithTemplate = (
+  sourceCircuitJson: CircuitJson | null,
+  fiducialConductivityOption: FiducialConductivityOption,
+): CircuitJson | null => {
+  if (!sourceCircuitJson || fiducialConductivityOption === "none") {
+    return sourceCircuitJson
+  }
+
+  const template = circuitJsonTemplates[fiducialConductivityOption]
+  const idPrefix = templatePrefixByOption[fiducialConductivityOption]
+  const templateElements = template.map((element) =>
+    cloneWithPrefixedIds(element, idPrefix),
+  )
+
+  return [...sourceCircuitJson, ...templateElements] as CircuitJson
+}
+
 interface LbrnFileContent {
   xml: string | any
   options: any
@@ -28,6 +103,7 @@ interface LbrnFileContent {
 
 interface WorkspaceState {
   circuitJson: CircuitJson | null
+  fiducialConductivityOption: FiducialConductivityOption
   lbrnFileContent: LbrnFileContent | null
   lbrnOptions: ConvertCircuitJsonToLbrnOptions
   isConverting: boolean
@@ -37,6 +113,7 @@ interface WorkspaceState {
 
 interface WorkspaceContextType extends WorkspaceState {
   setCircuitJson: (data: CircuitJson | null) => void
+  setFiducialConductivityOption: (option: FiducialConductivityOption) => void
   setLbrnFileContent: (data: LbrnFileContent | null) => void
   setLbrnOptions: (options: Partial<ConvertCircuitJsonToLbrnOptions>) => void
   setIsConverting: (converting: boolean) => void
@@ -56,7 +133,10 @@ const WorkspaceContext = createContext<WorkspaceContextType | undefined>(
 )
 
 export function WorkspaceProvider({ children }: { children: ReactNode }) {
-  const [circuitJson, setCircuitJsonState] = useState<CircuitJson | null>(null)
+  const [sourceCircuitJson, setSourceCircuitJson] =
+    useState<CircuitJson | null>(null)
+  const [fiducialConductivityOption, setFiducialConductivityOptionState] =
+    useState<FiducialConductivityOption>("none")
   const [lbrnFileContent, setLbrnFileContent] =
     useState<LbrnFileContent | null>(null)
   const [lbrnOptions, setLbrnOptionsState] =
@@ -80,8 +160,21 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
   const [isProcessingFile, setIsProcessingFile] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
+  const circuitJson = useMemo(
+    () =>
+      getCircuitJsonWithTemplate(sourceCircuitJson, fiducialConductivityOption),
+    [sourceCircuitJson, fiducialConductivityOption],
+  )
+
   const setCircuitJson = (data: CircuitJson | null) => {
-    setCircuitJsonState(data)
+    setSourceCircuitJson(data)
+    setLbrnFileContent(null) // Reset LBRN content when new circuit is loaded
+  }
+
+  const setFiducialConductivityOption = (
+    option: FiducialConductivityOption,
+  ) => {
+    setFiducialConductivityOptionState(option)
     setLbrnFileContent(null) // Reset LBRN content when new circuit is loaded
   }
 
@@ -276,12 +369,14 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
 
   const value: WorkspaceContextType = {
     circuitJson,
+    fiducialConductivityOption,
     lbrnFileContent,
     lbrnOptions,
     isConverting,
     isProcessingFile,
     error,
     setCircuitJson,
+    setFiducialConductivityOption,
     setLbrnFileContent,
     setLbrnOptions,
     setIsConverting,

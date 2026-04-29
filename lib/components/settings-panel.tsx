@@ -21,7 +21,10 @@ import {
 } from "lucide-react"
 import { type LaserProfile, LaserProfileDialog } from "./laser-profile-dialog"
 import { NumericControl } from "./numeric-control"
-import { useWorkspace } from "./workspace-context"
+import {
+  type FiducialConductivityOption,
+  useWorkspace,
+} from "./workspace-context"
 
 const LASER_PROFILES_STORAGE_KEY = "pcb-burn:laser-profiles"
 
@@ -49,8 +52,10 @@ const builtInLaserProfiles: Record<string, LaserProfile> = {
 export function SettingsPanel() {
   const {
     circuitJson,
+    fiducialConductivityOption,
     lbrnFileContent,
     lbrnOptions,
+    setFiducialConductivityOption,
     setLbrnOptions,
     processCircuitFile,
     isConverting,
@@ -448,6 +453,29 @@ export function SettingsPanel() {
               min={-Infinity}
               unit="mm"
             />
+          </div>
+
+          <div className="flex items-center justify-between gap-3 min-w-0">
+            <label
+              htmlFor="fiducial-conductivity-setting"
+              className="text-sm leading-tight"
+            >
+              Fiducial and Conductivity test
+            </label>
+            <select
+              id="fiducial-conductivity-setting"
+              value={fiducialConductivityOption}
+              onChange={(event) =>
+                setFiducialConductivityOption(
+                  event.target.value as FiducialConductivityOption,
+                )
+              }
+              className="h-8 max-w-44 rounded-md border border-input bg-background px-2 text-sm focus:outline-none focus:ring-2 focus:ring-ring"
+            >
+              <option value="none">None</option>
+              <option value="fiducials">Add fiducials</option>
+              <option value="conductivityPads">Add Conductivity pads</option>
+            </select>
           </div>
         </div>
       </div>
