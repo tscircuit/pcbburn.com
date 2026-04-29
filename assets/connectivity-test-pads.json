@@ -1,0 +1,102 @@
+[
+  {
+    "type": "pcb_smtpad",
+    "pcb_smtpad_id": "pcb_smtpad_0",
+    "pcb_component_id": null,
+    "layer": "top",
+    "shape": "circle",
+    "radius": 2.5,
+    "port_hints": [],
+    "is_covered_with_solder_mask": false,
+    "x": 0,
+    "y": 31,
+    "subcircuit_id": "subcircuit_source_group_0"
+  },
+  {
+    "type": "pcb_solder_paste",
+    "pcb_solder_paste_id": "pcb_solder_paste_0",
+    "layer": "top",
+    "shape": "circle",
+    "radius": 1.75,
+    "x": 0,
+    "y": 31,
+    "pcb_component_id": null,
+    "pcb_smtpad_id": "pcb_smtpad_0",
+    "subcircuit_id": "subcircuit_source_group_0"
+  },
+  {
+    "type": "pcb_smtpad",
+    "pcb_smtpad_id": "pcb_smtpad_1",
+    "pcb_component_id": null,
+    "layer": "top",
+    "shape": "circle",
+    "radius": 2.5,
+    "port_hints": [],
+    "is_covered_with_solder_mask": false,
+    "x": 46,
+    "y": 0,
+    "subcircuit_id": "subcircuit_source_group_0"
+  },
+  {
+    "type": "pcb_solder_paste",
+    "pcb_solder_paste_id": "pcb_solder_paste_1",
+    "layer": "top",
+    "shape": "circle",
+    "radius": 1.75,
+    "x": 46,
+    "y": 0,
+    "pcb_component_id": null,
+    "pcb_smtpad_id": "pcb_smtpad_1",
+    "subcircuit_id": "subcircuit_source_group_0"
+  },
+  {
+    "type": "pcb_smtpad",
+    "pcb_smtpad_id": "pcb_smtpad_2",
+    "pcb_component_id": null,
+    "layer": "top",
+    "shape": "circle",
+    "radius": 2.5,
+    "port_hints": [],
+    "is_covered_with_solder_mask": false,
+    "x": 0,
+    "y": -31,
+    "subcircuit_id": "subcircuit_source_group_0"
+  },
+  {
+    "type": "pcb_solder_paste",
+    "pcb_solder_paste_id": "pcb_solder_paste_2",
+    "layer": "top",
+    "shape": "circle",
+    "radius": 1.75,
+    "x": 0,
+    "y": -31,
+    "pcb_component_id": null,
+    "pcb_smtpad_id": "pcb_smtpad_2",
+    "subcircuit_id": "subcircuit_source_group_0"
+  },
+  {
+    "type": "pcb_smtpad",
+    "pcb_smtpad_id": "pcb_smtpad_3",
+    "pcb_component_id": null,
+    "layer": "top",
+    "shape": "circle",
+    "radius": 2.5,
+    "port_hints": [],
+    "is_covered_with_solder_mask": false,
+    "x": -46,
+    "y": 0,
+    "subcircuit_id": "subcircuit_source_group_0"
+  },
+  {
+    "type": "pcb_solder_paste",
+    "pcb_solder_paste_id": "pcb_solder_paste_3",
+    "layer": "top",
+    "shape": "circle",
+    "radius": 1.75,
+    "x": -46,
+    "y": 0,
+    "pcb_component_id": null,
+    "pcb_smtpad_id": "pcb_smtpad_3",
+    "subcircuit_id": "subcircuit_source_group_0"
+  }
+]

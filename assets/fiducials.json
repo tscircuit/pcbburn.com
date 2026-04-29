@@ -1,0 +1,90 @@
+[
+  {
+    "type": "pcb_hole",
+    "pcb_hole_id": "pcb_hole_0",
+    "pcb_component_id": null,
+    "hole_shape": "circle",
+    "hole_diameter": 2,
+    "x": -48,
+    "y": -33,
+    "is_covered_with_solder_mask": false,
+    "subcircuit_id": "subcircuit_source_group_0"
+  },
+  {
+    "type": "pcb_hole",
+    "pcb_hole_id": "pcb_hole_1",
+    "pcb_component_id": null,
+    "hole_shape": "circle",
+    "hole_diameter": 2,
+    "x": -48,
+    "y": 33,
+    "is_covered_with_solder_mask": false,
+    "subcircuit_id": "subcircuit_source_group_0"
+  },
+  {
+    "type": "pcb_hole",
+    "pcb_hole_id": "pcb_hole_2",
+    "pcb_component_id": null,
+    "hole_shape": "circle",
+    "hole_diameter": 2,
+    "x": 48,
+    "y": -33,
+    "is_covered_with_solder_mask": false,
+    "subcircuit_id": "subcircuit_source_group_0"
+  },
+  {
+    "type": "pcb_hole",
+    "pcb_hole_id": "pcb_hole_3",
+    "pcb_component_id": null,
+    "hole_shape": "circle",
+    "hole_diameter": 2,
+    "x": 48,
+    "y": 33,
+    "is_covered_with_solder_mask": false,
+    "subcircuit_id": "subcircuit_source_group_0"
+  },
+  {
+    "type": "pcb_hole",
+    "pcb_hole_id": "pcb_hole_4",
+    "pcb_component_id": null,
+    "hole_shape": "circle",
+    "hole_diameter": 2.5,
+    "x": 0,
+    "y": 31,
+    "is_covered_with_solder_mask": false,
+    "subcircuit_id": "subcircuit_source_group_0"
+  },
+  {
+    "type": "pcb_hole",
+    "pcb_hole_id": "pcb_hole_5",
+    "pcb_component_id": null,
+    "hole_shape": "circle",
+    "hole_diameter": 2.5,
+    "x": 46,
+    "y": 0,
+    "is_covered_with_solder_mask": false,
+    "subcircuit_id": "subcircuit_source_group_0"
+  },
+  {
+    "type": "pcb_hole",
+    "pcb_hole_id": "pcb_hole_6",
+    "pcb_component_id": null,
+    "hole_shape": "circle",
+    "hole_diameter": 2.5,
+    "x": 0,
+    "y": -31,
+    "is_covered_with_solder_mask": false,
+    "subcircuit_id": "subcircuit_source_group_0"
+  },
+  {
+    "type": "pcb_hole",
+    "pcb_hole_id": "pcb_hole_7",
+    "pcb_component_id": null,
+    "hole_shape": "circle",
+    "hole_diameter": 2.5,
+    "x": -46,
+    "y": 0,
+    "is_covered_with_solder_mask": false,
+    "subcircuit_id": "subcircuit_source_group_0"
+  }
+]
