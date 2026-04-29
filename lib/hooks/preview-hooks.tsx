@@ -22,7 +22,10 @@ import { useMouseMatrixTransform } from "use-mouse-matrix-transform"
 import { IDENTITY_MATRIX, computeFitTransform } from "../helpers/svg-transform"
 
 const hideOxidationCleaningPreviewLayer = (svg: string) => {
-  if (typeof DOMParser === "undefined" || typeof XMLSerializer === "undefined") {
+  if (
+    typeof DOMParser === "undefined" ||
+    typeof XMLSerializer === "undefined"
+  ) {
     return svg
   }
 
