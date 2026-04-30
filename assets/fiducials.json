@@ -5,8 +5,8 @@
     "pcb_component_id": null,
     "hole_shape": "circle",
     "hole_diameter": 2,
-    "x": -48,
-    "y": -33,
+    "x": -46,
+    "y": -31,
     "is_covered_with_solder_mask": false,
     "subcircuit_id": "subcircuit_source_group_0"
   },
@@ -16,8 +16,8 @@
     "pcb_component_id": null,
     "hole_shape": "circle",
     "hole_diameter": 2,
-    "x": -48,
-    "y": 33,
+    "x": -46,
+    "y": 31,
     "is_covered_with_solder_mask": false,
     "subcircuit_id": "subcircuit_source_group_0"
   },
@@ -27,8 +27,8 @@
     "pcb_component_id": null,
     "hole_shape": "circle",
     "hole_diameter": 2,
-    "x": 48,
-    "y": -33,
+    "x": 46,
+    "y": -31,
     "is_covered_with_solder_mask": false,
     "subcircuit_id": "subcircuit_source_group_0"
   },
@@ -38,8 +38,8 @@
     "pcb_component_id": null,
     "hole_shape": "circle",
     "hole_diameter": 2,
-    "x": 48,
-    "y": 33,
+    "x": 46,
+    "y": 31,
     "is_covered_with_solder_mask": false,
     "subcircuit_id": "subcircuit_source_group_0"
   },
