@@ -413,7 +413,7 @@ export function PreviewCanvas() {
                   }}
                   className="flex-1 border-0 shadow-none relative overflow-hidden border-l cursor-grab"
                   style={{
-                    backgroundColor: "black",
+                    backgroundColor: "#f8fafc",
                   }}
                   onContextMenu={(e) => e.preventDefault()}
                 >
@@ -472,7 +472,7 @@ export function PreviewCanvas() {
             }}
             className="w-full h-full border-0 shadow-none relative overflow-hidden cursor-grab"
             style={{
-              backgroundColor: viewMode === "pcb" ? "black" : "white",
+              backgroundColor: viewMode === "pcb" ? "#f8fafc" : "white",
             }}
             onContextMenu={(e) => e.preventDefault()}
           >
