@@ -10,13 +10,17 @@ import {
 type CuttingLayersVisibilityMenuProps = {
   cutSettings: ExistingCutSetting[]
   hiddenCutIndexes: number[]
-  onToggleCutIndex: (cutIndex: number) => void
+  onHideAll: () => void
+  onSelectCutIndex: (cutIndex: number) => void
+  onShowAll: () => void
 }
 
 export function CuttingLayersVisibilityMenu({
   cutSettings,
   hiddenCutIndexes,
-  onToggleCutIndex,
+  onHideAll,
+  onSelectCutIndex,
+  onShowAll,
 }: CuttingLayersVisibilityMenuProps) {
   const [isOpen, setIsOpen] = useState(false)
   const menuRef = useRef<HTMLDivElement>(null)
@@ -107,6 +111,24 @@ export function CuttingLayersVisibilityMenu({
             <div className="px-2 pb-1 text-xs font-medium text-muted-foreground">
               Visualize Cutting Layers
             </div>
+            <div className="grid grid-cols-2 gap-1 pb-1">
+              <button
+                type="button"
+                onClick={onShowAll}
+                className="inline-flex items-center justify-center gap-1.5 rounded-md px-2 py-1 text-xs font-medium hover:bg-muted focus:outline-none focus:ring-2 focus:ring-ring"
+              >
+                <Eye className="size-3.5" />
+                Show All
+              </button>
+              <button
+                type="button"
+                onClick={onHideAll}
+                className="inline-flex items-center justify-center gap-1.5 rounded-md px-2 py-1 text-xs font-medium hover:bg-muted focus:outline-none focus:ring-2 focus:ring-ring"
+              >
+                <EyeOff className="size-3.5" />
+                Hide All
+              </button>
+            </div>
             <div className="max-h-72 overflow-auto">
               {cutSettings.map((cutSetting) => {
                 const isVisible = !hiddenCutIndexes.includes(cutSetting.index)
@@ -116,20 +138,20 @@ export function CuttingLayersVisibilityMenu({
                   <button
                     key={cutSetting.index}
                     type="button"
-                    onClick={() => onToggleCutIndex(cutSetting.index)}
-                    className="flex w-full items-center gap-2 rounded-md px-2 py-1.5 text-left hover:bg-muted focus:outline-none focus:ring-2 focus:ring-ring"
+                    onClick={() => onSelectCutIndex(cutSetting.index)}
+                    className="flex w-full items-center gap-1.5 rounded-md px-2 py-1 text-left hover:bg-muted focus:outline-none focus:ring-2 focus:ring-ring"
                     aria-pressed={isVisible}
                   >
                     <span
-                      className={`flex size-5 shrink-0 items-center justify-center rounded ${
+                      className={`flex size-4 shrink-0 items-center justify-center rounded ${
                         isVisible ? "text-foreground" : "text-muted-foreground"
                       }`}
                       aria-hidden="true"
                     >
                       {isVisible ? (
-                        <Eye className="size-4" />
+                        <Eye className="size-3.5" />
                       ) : (
-                        <EyeOff className="size-4" />
+                        <EyeOff className="size-3.5" />
                       )}
                     </span>
                     <span
@@ -137,14 +159,8 @@ export function CuttingLayersVisibilityMenu({
                       style={{ backgroundColor: color }}
                       aria-hidden="true"
                     />
-                    <span className="min-w-0 flex-1">
-                      <span className="block truncate text-sm font-medium">
-                        {cutSetting.name}
-                      </span>
-                      <span className="block text-[11px] text-muted-foreground">
-                        C{String(cutSetting.index).padStart(2, "0")} ·{" "}
-                        {cutSetting.type} · {color}
-                      </span>
+                    <span className="min-w-0 flex-1 truncate text-sm font-medium">
+                      {cutSetting.name}
                     </span>
                   </button>
                 )

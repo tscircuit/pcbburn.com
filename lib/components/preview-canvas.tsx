@@ -146,11 +146,21 @@ export function PreviewCanvas() {
     setLbrnOptions({ includeLayers: nextLayers })
   }
 
-  const toggleCutSettingVisibility = (cutIndex: number) => {
-    setHiddenCutIndexes((current) =>
-      current.includes(cutIndex)
-        ? current.filter((index) => index !== cutIndex)
-        : [...current, cutIndex],
+  const hideAllCutSettings = () => {
+    setHiddenCutIndexes(
+      existingCutSettings.map((cutSetting) => cutSetting.index),
+    )
+  }
+
+  const showAllCutSettings = () => {
+    setHiddenCutIndexes([])
+  }
+
+  const selectCutSettingVisibility = (cutIndex: number) => {
+    setHiddenCutIndexes(
+      existingCutSettings
+        .map((cutSetting) => cutSetting.index)
+        .filter((index) => index !== cutIndex),
     )
   }
 
@@ -249,7 +259,9 @@ export function PreviewCanvas() {
         <CuttingLayersVisibilityMenu
           cutSettings={existingCutSettings}
           hiddenCutIndexes={hiddenCutIndexes}
-          onToggleCutIndex={toggleCutSettingVisibility}
+          onHideAll={hideAllCutSettings}
+          onSelectCutIndex={selectCutSettingVisibility}
+          onShowAll={showAllCutSettings}
         />
         <Separator orientation="vertical" className="h-6" />
         <div className="flex items-center gap-1">
