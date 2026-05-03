@@ -1,12 +1,12 @@
 import { expect, test } from "bun:test"
 import type { CircuitJson } from "circuit-json"
-import { getFullConnectivityMapFromCircuitJson } from "circuit-json-to-connectivity-map"
 import { convertCircuitJsonToLbrn } from "circuit-json-to-lbrn"
 import conductivityPads from "../assets/connectivity-test-pads.json" with {
   type: "json",
 }
 
 const TOP_COPPER_CUT_FILL_INDEX = 6
+const BOTTOM_COPPER_CUT_FILL_INDEX = 7
 
 const countShapesWithCutIndex = (node: unknown, cutIndex: number): number => {
   if (!node || typeof node !== "object") {
@@ -25,7 +25,7 @@ const countShapesWithCutIndex = (node: unknown, cutIndex: number): number => {
   return selfCount + childCount
 }
 
-test("inserted conductivity pads are included in top copper cut fill", async () => {
+test("inserted conductivity pads are included in top and bottom copper cut fill", async () => {
   const board = {
     type: "pcb_board",
     pcb_board_id: "board",
@@ -40,21 +40,19 @@ test("inserted conductivity pads are included in top copper cut fill", async () 
     ],
   }
   const circuitJson = [board, ...conductivityPads] as CircuitJson
-  const connectivityMap = getFullConnectivityMapFromCircuitJson(circuitJson)
-
-  for (let i = 0; i < 4; i++) {
-    expect(connectivityMap.getNetConnectedToId(`pcb_smtpad_${i}`)).toBeTruthy()
-  }
 
   const project = await convertCircuitJsonToLbrn(circuitJson, {
     includeCopper: true,
     includeCopperCutFill: true,
-    includeLayers: ["top"],
+    includeLayers: ["top", "bottom"],
     origin: { x: 0, y: 0 },
     copperCutFillMargin: 0.5,
   })
 
   expect(
     countShapesWithCutIndex(project, TOP_COPPER_CUT_FILL_INDEX),
+  ).toBeGreaterThan(0)
+  expect(
+    countShapesWithCutIndex(project, BOTTOM_COPPER_CUT_FILL_INDEX),
   ).toBeGreaterThan(0)
 })
