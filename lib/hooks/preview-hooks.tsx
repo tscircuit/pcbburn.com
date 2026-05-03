@@ -23,9 +23,9 @@ import { useMouseMatrixTransform } from "use-mouse-matrix-transform"
 import { IDENTITY_MATRIX, computeFitTransform } from "../helpers/svg-transform"
 
 const pcbPreviewSvgOptions: PcbSvgOptions = {
-  backgroundColor: "#f8fafc",
+  backgroundColor: "black",
   colorOverrides: {
-    boardOutline: "rgba(15, 23, 42, 0.45)",
+    boardOutline: "rgba(255, 255, 255, 0.5)",
   },
 }
 
