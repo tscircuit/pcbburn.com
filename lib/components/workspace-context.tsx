@@ -116,6 +116,7 @@ interface WorkspaceContextType extends WorkspaceState {
   setFiducialConductivityOption: (option: FiducialConductivityOption) => void
   setLbrnFileContent: (data: LbrnFileContent | null) => void
   setLbrnOptions: (options: Partial<ConvertCircuitJsonToLbrnOptions>) => void
+  resetSavedLbrnOptions: () => void
   setIsConverting: (converting: boolean) => void
   setIsProcessingFile: (processing: boolean) => void
   setError: (error: string | null) => void
@@ -132,6 +133,85 @@ const WorkspaceContext = createContext<WorkspaceContextType | undefined>(
   undefined,
 )
 
+const LBRN_OPTIONS_STORAGE_KEY = "pcb-burn:lbrn-options"
+
+const defaultLbrnOptions: ConvertCircuitJsonToLbrnOptions = {
+  includeCopper: true,
+  includeSoldermask: true,
+  includeSilkscreen: true,
+  includeCopperCutFill: true,
+  includeOxidationCleaningLayer: true,
+  includeSoldermaskCure: true,
+  mirrorBottomLayer: true,
+  includeLayers: ["top", "bottom"],
+  laserSpotSize: 0.005,
+  traceMargin: 0.5,
+  copperCutFillMargin: 0.5,
+  globalCopperSoldermaskMarginAdjustment: 0,
+  solderMaskMarginPercent: 0,
+  origin: { x: 0, y: 0 },
+}
+
+const savedLbrnOptionKeys = [
+  "laserSpotSize",
+  "traceMargin",
+  "copperCutFillMargin",
+  "globalCopperSoldermaskMarginAdjustment",
+  "solderMaskMarginPercent",
+  "origin",
+] as const satisfies readonly (keyof ConvertCircuitJsonToLbrnOptions)[]
+
+type SavedLbrnOptionKey = (typeof savedLbrnOptionKeys)[number]
+type PersistentLbrnOptions = Pick<
+  ConvertCircuitJsonToLbrnOptions,
+  SavedLbrnOptionKey
+>
+
+const getSavedLbrnOptions = (): Partial<ConvertCircuitJsonToLbrnOptions> => {
+  if (typeof window === "undefined") return {}
+
+  try {
+    const storedOptions = window.localStorage.getItem(LBRN_OPTIONS_STORAGE_KEY)
+    if (!storedOptions) return {}
+
+    const parsedOptions = JSON.parse(storedOptions) as Record<string, unknown>
+    if (!parsedOptions || typeof parsedOptions !== "object") return {}
+
+    const savedOptions: Partial<ConvertCircuitJsonToLbrnOptions> = {}
+    for (const key of savedLbrnOptionKeys) {
+      if (!(key in parsedOptions)) continue
+
+      if (key === "origin") {
+        const origin = parsedOptions.origin
+        if (!origin || typeof origin !== "object") continue
+
+        const x = (origin as { x?: unknown }).x
+        const y = (origin as { y?: unknown }).y
+        if (typeof x === "number" && typeof y === "number") {
+          savedOptions.origin = { x, y }
+        }
+        continue
+      }
+
+      const value = parsedOptions[key]
+      if (typeof value === "number") {
+        Object.assign(savedOptions, { [key]: value })
+      }
+    }
+
+    return savedOptions
+  } catch (err) {
+    console.warn("Failed to load LBRN options", err)
+    return {}
+  }
+}
+
+const getPersistentLbrnOptions = (options: ConvertCircuitJsonToLbrnOptions) => {
+  return Object.fromEntries(
+    savedLbrnOptionKeys.map((key) => [key, options[key]]),
+  ) as PersistentLbrnOptions
+}
+
 export function WorkspaceProvider({ children }: { children: ReactNode }) {
   const [sourceCircuitJson, setSourceCircuitJson] =
     useState<CircuitJson | null>(null)
@@ -140,22 +220,10 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
   const [lbrnFileContent, setLbrnFileContent] =
     useState<LbrnFileContent | null>(null)
   const [lbrnOptions, setLbrnOptionsState] =
-    useState<ConvertCircuitJsonToLbrnOptions>({
-      includeCopper: true,
-      includeSoldermask: true,
-      includeSilkscreen: true,
-      includeCopperCutFill: true,
-      includeOxidationCleaningLayer: true,
-      includeSoldermaskCure: true,
-      mirrorBottomLayer: true,
-      includeLayers: ["top", "bottom"],
-      laserSpotSize: 0.005,
-      traceMargin: 0.5,
-      copperCutFillMargin: 0.5,
-      globalCopperSoldermaskMarginAdjustment: 0,
-      solderMaskMarginPercent: 0,
-      origin: { x: 0, y: 0 },
-    })
+    useState<ConvertCircuitJsonToLbrnOptions>(() => ({
+      ...defaultLbrnOptions,
+      ...getSavedLbrnOptions(),
+    }))
   const [isConverting, setIsConverting] = useState(false)
   const [isProcessingFile, setIsProcessingFile] = useState(false)
   const [error, setError] = useState<string | null>(null)
@@ -197,7 +265,42 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
     }))
   }
 
+  const resetSavedLbrnOptions = () => {
+    setLbrnOptionsState((prev) => ({
+      ...prev,
+      laserSpotSize: defaultLbrnOptions.laserSpotSize,
+      traceMargin: defaultLbrnOptions.traceMargin,
+      copperCutFillMargin: defaultLbrnOptions.copperCutFillMargin,
+      globalCopperSoldermaskMarginAdjustment:
+        defaultLbrnOptions.globalCopperSoldermaskMarginAdjustment,
+      solderMaskMarginPercent: defaultLbrnOptions.solderMaskMarginPercent,
+      origin: {
+        x: defaultLbrnOptions.origin?.x ?? 0,
+        y: defaultLbrnOptions.origin?.y ?? 0,
+      },
+    }))
+
+    if (typeof window === "undefined") return
+    try {
+      window.localStorage.removeItem(LBRN_OPTIONS_STORAGE_KEY)
+    } catch (err) {
+      console.warn("Failed to reset LBRN options", err)
+    }
+  }
+
   const lastLbrnOptions = useRef<ConvertCircuitJsonToLbrnOptions | null>(null)
+
+  React.useEffect(() => {
+    if (typeof window === "undefined") return
+    try {
+      window.localStorage.setItem(
+        LBRN_OPTIONS_STORAGE_KEY,
+        JSON.stringify(getPersistentLbrnOptions(lbrnOptions)),
+      )
+    } catch (err) {
+      console.warn("Failed to save LBRN options", err)
+    }
+  }, [lbrnOptions])
 
   // Auto-convert to LBRN when circuit/options change
   React.useEffect(() => {
@@ -379,6 +482,7 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
     setFiducialConductivityOption,
     setLbrnFileContent,
     setLbrnOptions,
+    resetSavedLbrnOptions,
     setIsConverting,
     setIsProcessingFile,
     setError,

@@ -15,6 +15,7 @@ import {
   Cpu,
   Layers,
   Plus,
+  RotateCcw,
   Settings,
   Trash2,
   Upload,
@@ -57,6 +58,7 @@ export function SettingsPanel() {
     lbrnOptions,
     setFiducialConductivityOption,
     setLbrnOptions,
+    resetSavedLbrnOptions,
     processCircuitFile,
     isConverting,
     error,
@@ -367,9 +369,20 @@ export function SettingsPanel() {
 
       {/* Advanced Settings Section */}
       <div className="space-y-3">
-        <div className="flex items-center gap-2">
-          <Layers className="size-4" />
-          <h4 className="text-sm font-medium">Advanced Settings</h4>
+        <div className="flex items-center justify-between gap-3">
+          <div className="flex items-center gap-2">
+            <Layers className="size-4" />
+            <h4 className="text-sm font-medium">Advanced Settings</h4>
+          </div>
+          <button
+            type="button"
+            onClick={resetSavedLbrnOptions}
+            className="inline-flex size-7 items-center justify-center rounded-md border border-input bg-background text-muted-foreground transition-colors hover:text-foreground hover:border-foreground/30 focus:outline-none focus:ring-2 focus:ring-ring"
+            aria-label="Reset advanced settings"
+            title="Reset advanced settings"
+          >
+            <RotateCcw className="size-4" />
+          </button>
         </div>
         <div className="space-y-3 pl-6">
           <NumericControl
