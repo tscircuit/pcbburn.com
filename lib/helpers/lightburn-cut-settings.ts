@@ -24,6 +24,7 @@ export const LIGHTBURN_COLORS: Record<number, string> = {
   22: "#FF8040",
   23: "#FFC0FF",
   24: "#FF80C0",
+  30: "#F36926",
 }
 
 export type ExistingCutSetting = {

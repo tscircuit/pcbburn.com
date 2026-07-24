@@ -1,9 +1,9 @@
 import { expect, test } from "bun:test"
 import type { CircuitJson } from "circuit-json"
-import { convertCircuitJsonToLbrn } from "circuit-json-to-lbrn"
 import conductivityPads from "../assets/connectivity-test-pads.json" with {
   type: "json",
 }
+import { convertCircuitJsonToLbrn } from "../lib/helpers/convert-circuit-json-to-lbrn"
 
 const TOP_COPPER_CUT_FILL_INDEX = 6
 const BOTTOM_COPPER_CUT_FILL_INDEX = 7
@@ -45,6 +45,7 @@ test("inserted conductivity pads are included in top and bottom copper cut fill"
     includeCopper: true,
     includeCopperCutFill: true,
     includeLayers: ["top", "bottom"],
+    toolingLayerIncludeRefs: ["test_short_*"],
     origin: { x: 0, y: 0 },
     copperCutFillMargin: 0.5,
   })
