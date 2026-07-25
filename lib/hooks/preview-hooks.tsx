@@ -1,5 +1,8 @@
 import { distance, type CircuitJson } from "circuit-json"
-import type { ConvertCircuitJsonToLbrnOptions } from "circuit-json-to-lbrn"
+import {
+  convertCircuitJsonToLbrn,
+  type ConvertCircuitJsonToLbrnOptions,
+} from "circuit-json-to-lbrn"
 import { convertCircuitJsonToPcbSvg } from "circuit-to-svg"
 import type { PcbSvgOptions } from "circuit-to-svg"
 import {
@@ -18,7 +21,6 @@ import {
   translate,
 } from "transformation-matrix"
 import { useMouseMatrixTransform } from "use-mouse-matrix-transform"
-import { convertCircuitJsonToLbrn } from "../helpers/convert-circuit-json-to-lbrn"
 import { generateLightBurnSvgForPreview } from "../helpers/generate-lightburn-svg-for-preview"
 import { IDENTITY_MATRIX, computeFitTransform } from "../helpers/svg-transform"
 

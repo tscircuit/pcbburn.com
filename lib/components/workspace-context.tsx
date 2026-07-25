@@ -1,5 +1,8 @@
 import type { CircuitJson } from "circuit-json"
-import type { ConvertCircuitJsonToLbrnOptions } from "circuit-json-to-lbrn"
+import {
+  convertCircuitJsonToLbrn,
+  type ConvertCircuitJsonToLbrnOptions,
+} from "circuit-json-to-lbrn"
 import { KicadToCircuitJsonConverter } from "kicad-to-circuit-json"
 import React, {
   createContext,
@@ -9,7 +12,6 @@ import React, {
   useState,
   type ReactNode,
 } from "react"
-import { convertCircuitJsonToLbrn } from "../helpers/convert-circuit-json-to-lbrn"
 import conductivityPadsTemplateRaw from "../../assets/connectivity-test-pads.json?raw"
 import fiducialsTemplateRaw from "../../assets/fiducials.json?raw"
 
@@ -145,7 +147,12 @@ const defaultLbrnOptions: ConvertCircuitJsonToLbrnOptions = {
   includeSoldermaskCure: true,
   mirrorBottomLayer: true,
   includeLayers: ["top", "bottom"],
-  toolingLayerIncludeRefs: ["test_short_*"],
+  toolingLayerIncludeRefs: [
+    "test_short_top_left_top_trace",
+    "test_short_top_right_top_trace",
+    "test_short_bottom_right_top_trace",
+    "test_short_bottom_left_top_trace",
+  ],
   laserSpotSize: 0.005,
   traceMargin: 0.5,
   copperCutFillMargin: 0.5,
