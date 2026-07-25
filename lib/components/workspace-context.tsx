@@ -1,5 +1,8 @@
 import type { CircuitJson } from "circuit-json"
-import type { ConvertCircuitJsonToLbrnOptions } from "circuit-json-to-lbrn"
+import {
+  convertCircuitJsonToLbrn,
+  type ConvertCircuitJsonToLbrnOptions,
+} from "circuit-json-to-lbrn"
 import { KicadToCircuitJsonConverter } from "kicad-to-circuit-json"
 import React, {
   createContext,
@@ -144,6 +147,12 @@ const defaultLbrnOptions: ConvertCircuitJsonToLbrnOptions = {
   includeSoldermaskCure: true,
   mirrorBottomLayer: true,
   includeLayers: ["top", "bottom"],
+  toolingLayerIncludeRefs: [
+    "test_short_top_left_top_trace",
+    "test_short_top_right_top_trace",
+    "test_short_bottom_right_top_trace",
+    "test_short_bottom_left_top_trace",
+  ],
   laserSpotSize: 0.005,
   traceMargin: 0.5,
   copperCutFillMargin: 0.5,
@@ -451,12 +460,10 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
     setError(null)
 
     try {
-      const { convertCircuitJsonToLbrn } = await import("circuit-json-to-lbrn")
-
       const finalOptions = { ...lbrnOptions, ...options }
 
-      const rawXml = await convertCircuitJsonToLbrn(circuitJson, finalOptions)
-      const xml = formatLbrnXml(rawXml)
+      const project = await convertCircuitJsonToLbrn(circuitJson, finalOptions)
+      const xml = project.getString()
 
       setLbrnFileContent({
         xml,
@@ -498,44 +505,6 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
       {children}
     </WorkspaceContext.Provider>
   )
-}
-
-const formatLbrnXml = (value: unknown): string => {
-  if (typeof value === "string") {
-    return value
-  }
-
-  if (value && typeof value === "object") {
-    const candidate = value as { xml?: unknown; outerHTML?: unknown }
-    if (typeof candidate.xml === "string") {
-      return candidate.xml
-    }
-    if (typeof candidate.outerHTML === "string") {
-      return candidate.outerHTML
-    }
-  }
-
-  if (typeof window !== "undefined" && value instanceof XMLDocument) {
-    return new XMLSerializer().serializeToString(value)
-  }
-
-  if (typeof window !== "undefined" && value instanceof Element) {
-    return new XMLSerializer().serializeToString(value)
-  }
-
-  if (Array.isArray(value)) {
-    return value.map(formatLbrnXml).join("")
-  }
-
-  const fallback = String(value)
-  if (fallback.startsWith("[object ") && fallback.endsWith("]")) {
-    const inner = fallback.slice(8, -1)
-    if (inner.trim().startsWith("<?xml")) {
-      return inner
-    }
-  }
-
-  return fallback
 }
 
 export function useWorkspace() {

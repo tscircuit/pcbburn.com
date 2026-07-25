@@ -45,6 +45,12 @@ test("inserted conductivity pads are included in top and bottom copper cut fill"
     includeCopper: true,
     includeCopperCutFill: true,
     includeLayers: ["top", "bottom"],
+    toolingLayerIncludeRefs: [
+      "test_short_top_left_top_trace",
+      "test_short_top_right_top_trace",
+      "test_short_bottom_right_top_trace",
+      "test_short_bottom_left_top_trace",
+    ],
     origin: { x: 0, y: 0 },
     copperCutFillMargin: 0.5,
   })

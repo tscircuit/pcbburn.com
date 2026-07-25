@@ -1,9 +1,10 @@
 import { distance, type CircuitJson } from "circuit-json"
-import { convertCircuitJsonToLbrn } from "circuit-json-to-lbrn"
-import type { ConvertCircuitJsonToLbrnOptions } from "circuit-json-to-lbrn"
+import {
+  convertCircuitJsonToLbrn,
+  type ConvertCircuitJsonToLbrnOptions,
+} from "circuit-json-to-lbrn"
 import { convertCircuitJsonToPcbSvg } from "circuit-to-svg"
 import type { PcbSvgOptions } from "circuit-to-svg"
-import { generateLightBurnSvg } from "lbrnts"
 import {
   type RefObject,
   useCallback,
@@ -20,6 +21,7 @@ import {
   translate,
 } from "transformation-matrix"
 import { useMouseMatrixTransform } from "use-mouse-matrix-transform"
+import { generateLightBurnSvgForPreview } from "../helpers/generate-lightburn-svg-for-preview"
 import { IDENTITY_MATRIX, computeFitTransform } from "../helpers/svg-transform"
 
 const pcbPreviewSvgOptions: PcbSvgOptions = {
@@ -189,7 +191,7 @@ export function useSvgGeneration({
           lbrnOptions,
         )
 
-        const lbrnSvgResult = generateLightBurnSvg(lbrnProject)
+        const lbrnSvgResult = generateLightBurnSvgForPreview(lbrnProject)
         if (!cancelled) {
           setLbrnSvg(String(lbrnSvgResult))
           lastLbrnInputs.current = { circuitJson, lbrnOptions }
