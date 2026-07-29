@@ -14,6 +14,7 @@ import React, {
 } from "react"
 import conductivityPadsTemplateRaw from "../../assets/connectivity-test-pads.json?raw"
 import fiducialsTemplateRaw from "../../assets/fiducials.json?raw"
+import { configureTopSoldermaskRemovalLayer } from "../helpers/configure-top-soldermask-removal-layer"
 
 export type FiducialConductivityOption =
   | "none"
@@ -143,6 +144,8 @@ const defaultLbrnOptions: ConvertCircuitJsonToLbrnOptions = {
   includeSoldermask: true,
   includeSilkscreen: true,
   includeCopperCutFill: true,
+  includeSoldermaskAblation: true,
+  soldermaskAblationClearance: 0.5,
   includeOxidationCleaningLayer: true,
   includeSoldermaskCure: true,
   mirrorBottomLayer: true,
@@ -258,20 +261,29 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
   const setLbrnOptions = (
     options: Partial<ConvertCircuitJsonToLbrnOptions>,
   ) => {
-    setLbrnOptionsState((prev) => ({
-      ...prev,
-      ...options,
-      includeCopper: true,
-      includeSoldermask: true,
-      includeSilkscreen: true,
-      includeCopperCutFill: true,
-      includeOxidationCleaningLayer:
-        options.includeOxidationCleaningLayer ??
-        prev.includeOxidationCleaningLayer ??
-        true,
-      includeSoldermaskCure: true,
-      includeLayers: options.includeLayers ?? prev.includeLayers,
-    }))
+    setLbrnOptionsState((prev) => {
+      const copperCutFillMargin =
+        options.copperCutFillMargin ??
+        prev.copperCutFillMargin ??
+        defaultLbrnOptions.copperCutFillMargin
+
+      return {
+        ...prev,
+        ...options,
+        includeCopper: true,
+        includeSoldermask: true,
+        includeSilkscreen: true,
+        includeCopperCutFill: true,
+        includeSoldermaskAblation: true,
+        soldermaskAblationClearance: copperCutFillMargin,
+        includeOxidationCleaningLayer:
+          options.includeOxidationCleaningLayer ??
+          prev.includeOxidationCleaningLayer ??
+          true,
+        includeSoldermaskCure: true,
+        includeLayers: options.includeLayers ?? prev.includeLayers,
+      }
+    })
   }
 
   const resetSavedLbrnOptions = () => {
@@ -280,6 +292,8 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
       laserSpotSize: defaultLbrnOptions.laserSpotSize,
       traceMargin: defaultLbrnOptions.traceMargin,
       copperCutFillMargin: defaultLbrnOptions.copperCutFillMargin,
+      soldermaskAblationClearance:
+        defaultLbrnOptions.soldermaskAblationClearance,
       globalCopperSoldermaskMarginAdjustment:
         defaultLbrnOptions.globalCopperSoldermaskMarginAdjustment,
       solderMaskMarginPercent: defaultLbrnOptions.solderMaskMarginPercent,
@@ -460,9 +474,19 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
     setError(null)
 
     try {
-      const finalOptions = { ...lbrnOptions, ...options }
+      const copperCutFillMargin =
+        options?.copperCutFillMargin ??
+        lbrnOptions.copperCutFillMargin ??
+        defaultLbrnOptions.copperCutFillMargin
+      const finalOptions = {
+        ...lbrnOptions,
+        ...options,
+        includeSoldermaskAblation: true,
+        soldermaskAblationClearance: copperCutFillMargin,
+      }
 
       const project = await convertCircuitJsonToLbrn(circuitJson, finalOptions)
+      configureTopSoldermaskRemovalLayer(project)
       const xml = project.getString()
 
       setLbrnFileContent({
