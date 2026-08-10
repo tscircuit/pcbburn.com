@@ -10,7 +10,7 @@
         "circuit-json": "^0.0.403",
         "circuit-json-to-lbrn": "^0.0.86",
         "circuit-to-svg": "^0.0.344",
-        "kicad-to-circuit-json": "^0.0.88",
+        "kicad-to-circuit-json": "^0.0.119",
         "kicadts": "^0.0.45",
         "lbrnts": "^0.0.22",
         "lucide-react": "^0.562.0",
@@ -921,7 +921,7 @@
 
     "kicad-component-converter": ["kicad-component-converter@0.1.40", "", { "bin": { "kicad-mod-converter": "dist/cli.js", "kicad-component-converter": "dist/cli.js" } }, "sha512-k0eJpjeRF5E55Izphx87NzL9iGd5kABovG+1TRCgWktfYGWk3YuUnEZPsBVB5PH01TKA7OE8Oj7CdJcGSxWISw=="],
 
-    "kicad-to-circuit-json": ["kicad-to-circuit-json@0.0.88", "", { "dependencies": { "schematic-symbols": "^0.0.202" }, "peerDependencies": { "typescript": "^5" } }, "sha512-NwKljlPm4BDYcHq8axjUaL/OInYxOghX1iIYSOP9CYSCmNrtZmjOA7BuaRQ48Gywdr//fRkF94tN2TqvtY1N7g=="],
+    "kicad-to-circuit-json": ["kicad-to-circuit-json@0.0.119", "", { "peerDependencies": { "typescript": "^5" } }, "sha512-4tF+3H3FjPM04DkO5BORY2H9Klz4R4FbkrKruBp8cT5daU8pPk1v7/tQdmAFPrEL2WytcwavTGpVpmvmsjl2Xw=="],
 
     "kicadts": ["kicadts@0.0.45", "", { "peerDependencies": { "typescript": "^5" } }, "sha512-32atIU1pqoWyAuAy0O6YtcRMv3SrgWyC8DH3hIdjSFuAfwH1DwZscdYTRletS3XwcbNiFS1RJ0vU9Mk/4Z4U8w=="],
 
@@ -1452,8 +1452,6 @@
     "http-proxy/eventemitter3": ["eventemitter3@4.0.7", "", {}, "sha512-8guHBZCwKnFhYdHr2ysuRWErTwhoN2X8XELRlrRwpmfeY2jjuUN4taQMsULKUVo1K4DvZl+0pgfyoysHxvmvEw=="],
 
     "is-inside-container/is-docker": ["is-docker@3.0.0", "", { "bin": { "is-docker": "cli.js" } }, "sha512-eljcgEDlEns/7AXFosB5K/2nCM4P7FQPkGc/DWLy5rmFEWvZayGrik1d9/QIY5nJ4f9YsVvBkA6kJpHn9rISdQ=="],
-
-    "kicad-to-circuit-json/schematic-symbols": ["schematic-symbols@0.0.202", "", { "peerDependencies": { "typescript": "^5.5.4" } }, "sha512-zMdY7VaEg2Sc25T0h9LkWttEoyxGamgBfFDQKUXtYRoLSChrNDOKbNLaxU/GH2L2GbsasV8OLiHyHGb5u7NUpg=="],
 
     "log-symbols/chalk": ["chalk@5.6.2", "", {}, "sha512-7NzBL0rN6fMUW+f7A6Io4h40qQlG+xGmtMxfbnH/K7TAtt8JQWVQK+6g0UXKMeVJoyV5EkkNsErQ8pVD3bLHbA=="],
 
