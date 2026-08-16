@@ -160,7 +160,7 @@ export default function LandingPage() {
       </section>
 
       {/* Features Grid */}
-      <section className="container mx-auto px-4 py-16 md:py-24 ">
+      <section id="features" className="container mx-auto px-4 py-16 md:py-24 ">
         <div className="grid md:grid-cols-3 gap-6">
           <div className="bg-card border border-border rounded-lg p-6 space-y-3 hover:border-primary/50 hover:scale-105 transition-all duration-300 cursor-pointer">
             <div className="size-12 rounded-lg bg-primary/10 flex items-center justify-center">
@@ -233,10 +233,22 @@ export default function LandingPage() {
               <h4 className="font-semibold mb-3">Product</h4>
               <ul className="space-y-2 text-sm text-muted-foreground">
                 <li>
-                  <span>Features</span>
+                  <a
+                    href="#features"
+                    className="hover:text-foreground transition-colors"
+                  >
+                    Features
+                  </a>
                 </li>
                 <li>
-                  <span>Changelog</span>
+                  <a
+                    href="https://tscircuit.com/changelog"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="hover:text-foreground transition-colors"
+                  >
+                    Changelog
+                  </a>
                 </li>
               </ul>
             </div>
@@ -244,13 +256,34 @@ export default function LandingPage() {
               <h4 className="font-semibold mb-3">Resources</h4>
               <ul className="space-y-2 text-sm text-muted-foreground">
                 <li>
-                  <span>Documentation</span>
+                  <a
+                    href="https://docs.tscircuit.com/category/intro"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="hover:text-foreground transition-colors"
+                  >
+                    Documentation
+                  </a>
                 </li>
                 <li>
-                  <span>Guides</span>
+                  <a
+                    href="https://docs.tscircuit.com/category/tutorials"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="hover:text-foreground transition-colors"
+                  >
+                    Guides
+                  </a>
                 </li>
                 <li>
-                  <span>Support</span>
+                  <a
+                    href="https://github.com/tscircuit/pcbburn.com/issues"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="hover:text-foreground transition-colors"
+                  >
+                    Support
+                  </a>
                 </li>
               </ul>
             </div>
@@ -258,13 +291,32 @@ export default function LandingPage() {
               <h4 className="font-semibold mb-3">Company</h4>
               <ul className="space-y-2 text-sm text-muted-foreground">
                 <li>
-                  <span>About</span>
+                  <a
+                    href="https://tscircuit.com"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="hover:text-foreground transition-colors"
+                  >
+                    About
+                  </a>
                 </li>
                 <li>
-                  <span>Blog</span>
+                  <a
+                    href="https://blog.tscircuit.com"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="hover:text-foreground transition-colors"
+                  >
+                    Blog
+                  </a>
                 </li>
                 <li>
-                  <span>Contact</span>
+                  <a
+                    href="mailto:contact@tscircuit.com"
+                    className="hover:text-foreground transition-colors"
+                  >
+                    Contact
+                  </a>
                 </li>
               </ul>
             </div>
