@@ -233,21 +233,27 @@ export default function LandingPage() {
               <h4 className="font-semibold mb-3">Product</h4>
               <ul className="space-y-2 text-sm text-muted-foreground">
                 <li>
+                  <Link
+                    to="/workspace"
+                    className="hover:text-foreground transition-colors"
+                  >
+                    Workspace
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    to="/demo"
+                    className="hover:text-foreground transition-colors"
+                  >
+                    Demo
+                  </Link>
+                </li>
+                <li>
                   <a
                     href="#features"
                     className="hover:text-foreground transition-colors"
                   >
                     Features
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="https://tscircuit.com/changelog"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="hover:text-foreground transition-colors"
-                  >
-                    Changelog
                   </a>
                 </li>
               </ul>
@@ -272,7 +278,7 @@ export default function LandingPage() {
                     rel="noopener noreferrer"
                     className="hover:text-foreground transition-colors"
                   >
-                    Guides
+                    Examples
                   </a>
                 </li>
                 <li>
@@ -288,8 +294,28 @@ export default function LandingPage() {
               </ul>
             </div>
             <div>
-              <h4 className="font-semibold mb-3">Company</h4>
+              <h4 className="font-semibold mb-3">Community</h4>
               <ul className="space-y-2 text-sm text-muted-foreground">
+                <li>
+                  <a
+                    href="https://github.com/tscircuit/pcbburn.com"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="hover:text-foreground transition-colors"
+                  >
+                    GitHub
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="https://discord.com/channels/1233487248129921135/1436467687734902917"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="hover:text-foreground transition-colors"
+                  >
+                    Discord
+                  </a>
+                </li>
                 <li>
                   <a
                     href="https://tscircuit.com"
@@ -297,25 +323,7 @@ export default function LandingPage() {
                     rel="noopener noreferrer"
                     className="hover:text-foreground transition-colors"
                   >
-                    About
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="https://blog.tscircuit.com"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="hover:text-foreground transition-colors"
-                  >
-                    Blog
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="mailto:contact@tscircuit.com"
-                    className="hover:text-foreground transition-colors"
-                  >
-                    Contact
+                    tscircuit
                   </a>
                 </li>
               </ul>
