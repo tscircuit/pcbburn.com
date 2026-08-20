@@ -1,10 +1,22 @@
-import { ArrowRight, Code, Eye, FileUp, Flame, Zap } from "lucide-react"
+import {
+  ArrowRight,
+  Code,
+  Eye,
+  FileUp,
+  Flame,
+  Menu,
+  X,
+  Zap,
+} from "lucide-react"
+import { useState } from "react"
 import { Link } from "react-router-dom"
 import { ImageWithSkeleton } from "./image-with-skeleton"
 import { Button } from "./ui/button"
 import { VideoWithLoader } from "./video-with-loader"
 
 export default function LandingPage() {
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+
   return (
     <div className="min-h-screen bg-background">
       {/* Header */}
@@ -61,8 +73,59 @@ export default function LandingPage() {
                 Get Started <ArrowRight className="ml-2 size-4" />
               </Link>
             </Button>
+            <button
+              type="button"
+              className="md:hidden inline-flex items-center justify-center size-9 rounded-md text-muted-foreground hover:text-foreground transition-colors"
+              aria-label={isMobileMenuOpen ? "Close menu" : "Open menu"}
+              aria-expanded={isMobileMenuOpen}
+              onClick={() => setIsMobileMenuOpen((open) => !open)}
+            >
+              {isMobileMenuOpen ? (
+                <X className="size-5" />
+              ) : (
+                <Menu className="size-5" />
+              )}
+            </button>
           </div>
         </div>
+        {isMobileMenuOpen && (
+          <nav className="md:hidden border-t border-border px-4 py-4 flex flex-col gap-4 bg-white">
+            <a
+              href="https://tscircuit.com"
+              className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+              onClick={() => setIsMobileMenuOpen(false)}
+            >
+              tscircuit
+            </a>
+            <a
+              href="https://docs.tscircuit.com/category/intro"
+              className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={() => setIsMobileMenuOpen(false)}
+            >
+              Documentation
+            </a>
+            <a
+              href="https://discord.com/channels/1233487248129921135/1436467687734902917"
+              className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={() => setIsMobileMenuOpen(false)}
+            >
+              Discord
+            </a>
+            <a
+              href="https://github.com/tscircuit/pcbburn.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+              onClick={() => setIsMobileMenuOpen(false)}
+            >
+              Github
+            </a>
+          </nav>
+        )}
       </header>
 
       <div className="flex flex-col md:flex-row-reverse md:items-center md:justify-between md:py-12 md:px-12 md:h-[77vh]">
